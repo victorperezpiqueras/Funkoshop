@@ -5,14 +5,19 @@
     <title>Web page</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="stylesheets/styleflip.css">
+    <link rel="stylesheet" href="stylesheets/bootstrap.css">
 </head>
+
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
-            <a class="navbar-brand" href="/">Tienda de cosas</a>
+            <a class="navbar-brand" href="test.html">
+                <img src="images/logo.png" width="43" height="45"></img>
+                FUNKOWARE
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
                 aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -23,6 +28,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dropdown01"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shopping&nbsp;
+                            <span class="badge badge-light">0</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
                             <a class="dropdown-item" href="cart.html">Show cart</a>
@@ -61,12 +67,12 @@
         <header>
             <!-- Main jumbotron for a primary marketing message or call to action -->
             <p>Sample</p>
-            <div class="jumbotron rounded-0 bg-primary text-light">
+            <div class="jumbotronp rounded-0 text-dark">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <h1 class="display-3">Tienda de cosas</h1>
-                            <p>noseque nosecuantos blabla</p>
+                            <h1 class="display-3"><b>Your Funko Shop</b></h1>
+                            <p>Everyone is a fan of something!</p>
                         </div>
                     </div>
                 </div>
@@ -74,7 +80,7 @@
         </header>
 
         <main>
-            <h3 class="text-left">Profile</h3>
+            <h3 class="text-left" style="margin-bottom:5%"><b>Profile</b> </h3>
             <!-- <br/> -->
             <div class="container">
                 <div class="row">
@@ -100,31 +106,39 @@
             </div>
 
             <hr />
-
-            
-                <h3 class="text-left">Order list</h3>
-                <hr />
-                <ul class="list-group">
-                    <li class="list-group-item">Cras justo odio</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
-            
-
-            <hr />
+            <h3 class="text-left"> <b>Order list</b> </h3>
 
 
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Number</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Date</td>
+                        <td>Order number</td>
+                        <td>Total</td>
+                        <td>
+                            <a href="order.html" class="btn btn-info" role="button">Details</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
             <br><br>
         </main>
 
-        <footer class="bg-light fixed-bottom border-0">
+        <footer class="bg-light border-0">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col text-center text-dark pt-2">
-                        <p><small>Web and Service Engineering Game Shop</small></p>
+                    <div class="col text-center bg-light fixed-bottom text-dark pt-2">
+
+                        <p><small>Funkoware™ created by Carmen María, Carolina, Víctor and Llanos for Web Engineering
+                                and Services subject 2019</small></p>
                     </div>
                 </div>
             </div>

@@ -5,15 +5,20 @@
     <title>Web page</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="stylesheets/styleflip.css">
+    <!--Este link es para el flip-->
+    <link rel="stylesheet" href="stylesheets/bootstrap.css">
 </head>
 
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
-            <a class="navbar-brand" href="/">Tienda de cosas</a>
+            <a class="navbar-brand" href="test.html">
+                <img src="images/logo.png" width="43" height="45"></img>
+                FUNKOWARE
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
                 aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -24,6 +29,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dropdown01"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shopping&nbsp;
+                            <span class="badge badge-light">0</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
                             <a class="dropdown-item" href="cart.html">Show cart</a>
@@ -45,8 +51,8 @@
             </div>
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="cart.html">Show cart</a>
-                    <a class="dropdown-item" href="purchase.html">Purchase</a>
+                <a class="dropdown-item" href="cart.html">Show cart</a>
+                <a class="dropdown-item" href="purchase.html">Purchase</a>
             </div>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
                 <a class="dropdown-item" href="signup.html">Sign Up</a>
@@ -54,20 +60,17 @@
                 <a class="dropdown-item" href="profile.html">Profile</a>
                 <a class="dropdown-item" href="#">Sign Out</a>
             </div>
-
-
-
         </nav>
 
         <header>
             <!-- Main jumbotron for a primary marketing message or call to action -->
             <p>Sample</p>
-            <div class="jumbotron rounded-0 bg-primary text-light">
+            <div class="jumbotronp rounded-0 text-dark">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <h1 class="display-3">Tienda de cosas</h1>
-                            <p>noseque nosecuantos blabla</p>
+                            <h1 class="display-3"><b>Your Funko Shop</b></h1>
+                            <p>Everyone is a fan of something!</p>
                         </div>
                     </div>
                 </div>
@@ -75,105 +78,75 @@
         </header>
 
         <main>
+            <h3 class="text-left" style="margin-bottom:2%"><b>Order Number</b> </h3>
+            <!-- <br/> -->
             <div class="container">
                 <div class="row">
-
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                        <div class="card text-white bg-primary mb-3">
-                            <div class="card-header">Card Primary</div>
-                            <div class="card-body">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rhoncus nulla
-                                    ligula, sit amet facilisis dolor facilisis vitae. Pellentesque quis metus purus. Sed
-                                    eleifend enim eget magna pretium, quis porta est aliquam. Donec rhoncus lobortis
-                                    velit. Proin nec tempor est, vitae pharetra lacus. Fusce mollis sit amet nibh ut
-                                    venenatis. Aliquam erat volutpat.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                        <div class="card text-white bg-secondary mb-3">
-                            <div class="card-header">Card Secondary</div>
-                            <div class="card-body">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rhoncus nulla
-                                    ligula, sit amet facilisis dolor facilisis vitae. Pellentesque quis metus purus. Sed
-                                    eleifend enim eget magna pretium, quis porta est aliquam. Donec rhoncus lobortis
-                                    velit. Proin nec tempor est, vitae pharetra lacus. Fusce mollis sit amet nibh ut
-                                    venenatis. Aliquam erat volutpat.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                        <div class="card text-white bg-success mb-3">
-                            <div class="card-header">Card Success</div>
-                            <div class="card-body">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rhoncus nulla
-                                    ligula, sit amet facilisis dolor facilisis vitae. Pellentesque quis metus purus. Sed
-                                    eleifend enim eget magna pretium, quis porta est aliquam. Donec rhoncus lobortis
-                                    velit. Proin nec tempor est, vitae pharetra lacus. Fusce mollis sit amet nibh ut
-                                    venenatis. Aliquam erat volutpat.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                        <div class="card text-white bg-danger mb-3">
-                            <div class="card-header">Card Danger</div>
-                            <div class="card-body">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rhoncus nulla
-                                    ligula, sit amet facilisis dolor facilisis vitae. Pellentesque quis metus purus. Sed
-                                    eleifend enim eget magna pretium, quis porta est aliquam. Donec rhoncus lobortis
-                                    velit. Proin nec tempor est, vitae pharetra lacus. Fusce mollis sit amet nibh ut
-                                    venenatis. Aliquam erat volutpat. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                        <div class="card text-white bg-warning mb-3">
-                            <div class="card-header">Card Warning</div>
-                            <div class="card-body">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rhoncus nulla
-                                    ligula, sit amet facilisis dolor facilisis vitae. Pellentesque quis metus purus. Sed
-                                    eleifend enim eget magna pretium, quis porta est aliquam. Donec rhoncus lobortis
-                                    velit. Proin nec tempor est, vitae pharetra lacus. Fusce mollis sit amet nibh ut
-                                    venenatis. Aliquam erat volutpat. </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-4 col-md-6 col-12">
-                        <div class="card text-white bg-info mb-3">
-                            <div class="card-header">Card Info</div>
-                            <div class="card-body">
-                                <h4 class="card-title">Card title</h4>
-                                <p class="card-text">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque rhoncus nulla
-                                    ligula, sit amet facilisis dolor facilisis vitae. Pellentesque quis metus purus. Sed
-                                    eleifend enim eget magna pretium, quis porta est aliquam. Donec rhoncus lobortis
-                                    velit. Proin nec tempor est, vitae pharetra lacus. Fusce mollis sit amet nibh ut
-                                    venenatis. Aliquam erat volutpat. </p>
-                            </div>
-                        </div>
-                    </div>
-
+                    <b>Date:</b>&nbsp;
+                    <p>Date</p>
                 </div>
-            </div> <br><br>
+                <div class="row">
+                    <b>Address:</b>&nbsp;
+                    <p>Address</p>
+                </div>
+                <div class="row">
+                    <b>Card number:</b>&nbsp;
+                    <p>Number</p>
+                </div>
+                <div class="row">
+                    <b>Card holder:</b>&nbsp;
+                    <p>Owner</p>
+                </div>
+            </div>
+
+            <br>
+            
+            <hr />
+
+            <h3 class="text-left"> <b>Products</b> </h3>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Qty</td>
+                        <td>Product</td>
+                        <td>Total</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+
+            <div class="container">
+                <div class="row">
+                    <b>Subtotal:€</b>&nbsp;
+                    <p>Subtotal</p>
+                </div>
+                <div class="row">
+                    <b>Tax: €</b>&nbsp;
+                    <p>Tax</p>
+                </div>
+                <div class="row">
+                    <b>Total: €</b>&nbsp;
+                    <p>Total</p>
+                </div>
+            </div>
+
+            <br><br>
         </main>
 
         <footer class="bg-light fixed-bottom border-0">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col text-center text-dark pt-2">
-                        <p><small>Web and Service Engineering Game Shop</small></p>
+                        <p><small>Funkoware™ created by Carmen María, Carolina, Víctor and Llanos for Web Engineering
+                                and Services subject 2019</small></p>
                     </div>
                 </div>
             </div>

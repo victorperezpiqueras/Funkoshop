@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Dosis&display=swap');
+:root {
+    --font-family-sans-serif: "Open Sans Condensed", "Dosis", "Quicksand", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.navbar-brand {
+    font-family: Quicksand;
+}
+
+.jumbotronp {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #86d6d6;
+    border-radius: 0.3rem;
+    font-family: Dosis;
+  }

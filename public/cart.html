@@ -5,15 +5,21 @@
     <title>Web page</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="stylesheets/bootstrap.css">
+    <!--Este link es para el flip-->
+    <link rel="stylesheet" href="stylesheets/styleflip.css">
+    <link rel="stylesheet" href="stylesheets/styles.css">
 </head>
 
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
-            <a class="navbar-brand" href="/">Tienda de cosas</a>
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.png" width="43" height="45"></img>
+                FUNKOWARE
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
                 aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -24,6 +30,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dropdown01"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shopping&nbsp;
+                            <span class="badge badge-light">0</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
                             <a class="dropdown-item" href="cart.html">Show cart</a>
@@ -45,8 +52,8 @@
             </div>
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="cart.html">Show cart</a>
-                    <a class="dropdown-item" href="purchase.html">Purchase</a>
+                <a class="dropdown-item" href="cart.html">Show cart</a>
+                <a class="dropdown-item" href="purchase.html">Purchase</a>
             </div>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
                 <a class="dropdown-item" href="signup.html">Sign Up</a>
@@ -60,14 +67,14 @@
         </nav>
 
         <header>
-            <p>Sample</p>
             <!-- Main jumbotron for a primary marketing message or call to action -->
-            <div class="jumbotron rounded-0 bg-gray text-black">
+            <p>Sample</p>
+            <div class="jumbotronp rounded-0 text-dark">
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12 text-center">
-                            <h1 class="display-3">Tienda de cosas</h1>
-                            <p>noseque nosecuantos blabla</p>
+                            <h1 class="display-3"><b>Your Funko Shop</b></h1>
+                            <p>Everyone is a fan of something!</p>
                         </div>
                     </div>
                 </div>
@@ -76,105 +83,102 @@
 
         <main>
 
-            
-            <h3 class="text-left" style="margin-bottom:2%"><b>Shopping cart</b> </h3>
-            <!-- <br/> -->
 
+            <h3 class="text-left"><b>Shopping cart</b> </h3>
+            <hr>
+            <br>
             <div class="row justify-content-end">
-                    <b>Price:</b>&nbsp;
-                    <p>36.3</p>
+                <b>Total: €</b>&nbsp;
+                <p>36.3</p>
             </div>
+
+            <br>
 
 
             <div class="container">
-                <hr />
+
                 <h3 class="text-left"> <b>Item list</b> </h3>
-        
-        
+
+
                 <table class="table">
                     <thead>
                         <tr>
-                                <th scope="col">Qty</th>
-                                <th scope="col">Product name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Total</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Product 1</td>
-                                <td>Price</td>
-                                <td>Total</td>
-                                <td>
-                                        <div class="btn-group">
-                                                <button type="button" class="btn btn-outline-danger dropdown-toggle"
-                                                        data-toggle="dropdown">Remove<span class="caret"></span>
-                                                </button>
-                                              
-                                                <ul class="dropdown-menu" role="menu">
-                                                  <li><a href="#">All</a></li>
-                                                  <li><a href="#">One</a></li>
-                                                </ul>
-                                        </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                    <td>1</td>
-                                    <td>Product 2</td>
-                                    <td>Price</td>
-                                    <td>Total</td>
-                                    <td>
-                                            <div class="btn-group">
-                                                    <button type="button" class="btn btn-outline-danger dropdown-toggle"
-                                                            data-toggle="dropdown"> Remove <span class="caret"></span>
-                                                    </button>
-                                                  
-                                                    <ul class="dropdown-menu" role="menu">
-                                                      <li><a href="#">All</a></li>
-                                                      <li><a href="#">One</a></li>
-                                                    </ul>
-                                            </div>
-                                    </td>
-                                </tr>
-                        </tbody>
-                    </table>
-        
-                    <br>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Product name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Total</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Product 1</td>
+                            <td>Price</td>
+                            <td>Total</td>
+                            <td>
+                                <div class="dropdown show">
+                                    <a class="btn btn-outline-danger dropdown-toggle" href="#" role="button"
+                                        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Remove</a>
 
-                    <div class="row justify-content-start">
-                            <b>Subtotal:</b>&nbsp;
-                            <p>30</p>
-                    </div>
-                    
-                    <div class="row justify-content-start">
-                            <b>Tax:</b>&nbsp;
-                            <p>6.3</p>
-                    </div>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#">All</a>
+                                        <a class="dropdown-item" href="#">One</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>Product 2</td>
+                            <td>Price</td>
+                            <td>Total</td>
+                            <td>
+                                <div class="dropdown show">
+                                    <a class="btn btn-outline-danger dropdown-toggle" href="#" role="button"
+                                        id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">Remove</a>
 
-                    <div class="row justify-content-start">
-                            <b>Total:</b>&nbsp;
-                            <p>36.3</p>
-                    </div>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#">All</a>
+                                        <a class="dropdown-item" href="#">One</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                    <a href="purchase.html" class="btn btn-purchase" role="button" style="float: right;">Purchase</a>
+                <hr>
 
-                
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+                <div class="row justify-content-start">
+                    <b>Subtotal: €</b>&nbsp;
+                    <p>30</p>
+                </div>
+
+                <div class="row justify-content-start">
+                    <b>Tax: €</b>&nbsp;
+                    <p>6.3</p>
+                </div>
+
+                <div class="row justify-content-start">
+                    <b>Total: €</b>&nbsp;
+                    <p>36.3</p>
+                </div>
             </div>
+            <hr>
+            <a href="purchase.html" class="btn btn-info" role="button" style="float: right;">Purchase</a>
 
-            
+
         </main>
 
         <footer class="bg-light fixed-bottom border-0">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col text-center text-dark pt-2">
-                        <p><small>Web and Service Engineering Game Shop</small></p>
+                        <p><small>Funkoware™ created by Carmen María, Carolina, Víctor and Llanos for Web Engineering
+                                and Services subject 2019</small></p>
                     </div>
                 </div>
             </div>

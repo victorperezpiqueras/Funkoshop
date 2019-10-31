@@ -51,6 +51,13 @@ Model.getProducts = function () {
     });
 };
 
+Model.signup = function (userInfo) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            resolve(Model.products)
+        }, 100);
+    });
+};
 /*
 class User {
     constructor(name, surname, email, birth, address, password) {

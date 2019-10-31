@@ -1,7 +1,15 @@
+import { getMaxListeners } from "cluster";
 
 var Model = {};
 
-Model.users = [];
+Model.users = [
+    {
+        id: 1,
+        email: "funkoshop@gmail.com",
+        password: "funkoshop"
+    },
+];
+
 Model.orders = [];
 Model.shoppingCarts = [];
 Model.items = [];
@@ -49,6 +57,19 @@ Model.getProducts = function () {
             resolve(Model.products)
         }, 100);
     });
+};
+
+Model.signin = function (email, password) {
+    return new Promise(function (resolve, reject) {
+        if (Model.users.email == email && Model.users.password == password) {
+            resolve(Model.users)
+            Model.users.id = id;
+        }
+        else reject;    
+    });
+
+
+    
 };
 
 /*

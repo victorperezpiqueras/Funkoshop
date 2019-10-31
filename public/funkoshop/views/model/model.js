@@ -1,42 +1,61 @@
 
 var Model = {};
 
-Model.users = [];
+Model.users = [
+    {
+        _id: '1',
+        name: 'user',
+        surname: 'surname',
+        email: 'email',
+        birth: '10/10/1998',
+        address: 'Calle falsa 123',
+        password: 'password',
+        shoppingCart: {
+            subtotal: '0',
+            tax: '20',
+            total: '0',
+            shoppingCartItems: {}
+        },
+        userOrders: []
+    }
+];
+Model.user = Model.users[0]._id;
+
 Model.orders = [];
 Model.shoppingCarts = [];
 Model.items = [];
 Model.products = [
     {
         id: 1,
-        name:"Goku",
+        name: "Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         price: 10,
         url: "/images/goku.jpg"
     },
     {
         id: 2,
-        name:"Goku",
+        name: "Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         price: 10,
         url: "url/url.com"
     },
     {
         id: 3,
-        name:"Goku",
+        name: "Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         price: 10,
         url: "url/url.com"
     },
     {
         id: 4,
-        name:"Goku",
+        name: "Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         price: 10.02,
         url: "url/url.com"
     },
     {
         id: 5,
-        name:"Goku",
+        name: "Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         price: 10,
         url: "url/url.com"
@@ -50,6 +69,24 @@ Model.getProducts = function () {
         }, 100);
     });
 };
+
+Model.getUser = function () {
+    var user = Model.users.find(function (user) {
+        return user._id == Model.user;
+    });
+    return user;
+}
+
+Model.buyProduct = function (pid) {
+    var user = Model.getUser();
+    for (var item in user.shoppingCart) {
+        if (item.orderItemProduct.id == pid) {
+            item.qty++;
+            break;
+        }
+
+    }
+}
 
 /*
 class User {

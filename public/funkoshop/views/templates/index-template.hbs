@@ -8,7 +8,7 @@
         <div class="row">
 
             {{#each products}}
-            {{> product-partial this}}
+            {{> product-partial this buyProduct_onclick='Controller.controllers.index.buyProduct_clicked'}}
             {{/each}}
 
 

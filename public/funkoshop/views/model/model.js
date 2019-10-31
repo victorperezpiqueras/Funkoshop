@@ -31,7 +31,7 @@ Model.products = [
         id: 4,
         name:"Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10.00,
+        price: 10.02,
         url: "url/url.com"
     },
     {

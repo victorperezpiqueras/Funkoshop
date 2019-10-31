@@ -29,9 +29,12 @@ View.loadPartial = function (filename) {
 $(function () {
   window.addEventListener('popstate', (event) => Controller.router.route(), false);
   var promises = [
-  View.loadPartial('product-partial'),
-  View.loadPartial('footer-partial'),
-  View.loadPartial('nav-partial')];
+    View.loadPartial('nav-partial'),
+    View.loadPartial('header-partial'),
+    View.loadPartial('footer-partial'),
+
+    View.loadPartial('product-partial'),
+  ]
   Promise.all(promises)
     .then(function () {
       return $(function () {

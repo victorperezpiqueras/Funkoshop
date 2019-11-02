@@ -1,14 +1,28 @@
-import { getMaxListeners } from "cluster";
-
 var Model = {};
 
 Model.users = [
     {
-        id: 1,
-        email: "funkoshop@gmail.com",
-        password: "funkoshop"
-    },
+        _id: '1',
+        name: 'user',
+        surname: 'surname',
+        // credentials: {
+        email: 'email@email.com',
+        password: 'password',
+        // },
+        birth: '10/10/1998',
+        address: 'Calle falsa 123',
+
+        shoppingCart: {
+            subtotal: '0',
+            tax: '20',
+            total: '0',
+            shoppingCartItems: {}
+        },
+        userOrders: []
+    }
 ];
+
+Model.user = Model.users[0]._id;
 
 Model.orders = [];
 Model.shoppingCarts = [];
@@ -16,35 +30,35 @@ Model.items = [];
 Model.products = [
     {
         id: 1,
-        name:"Goku",
+        name: "Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         price: 10,
         url: "/images/goku.jpg"
     },
     {
         id: 2,
-        name:"Goku",
+        name: "Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         price: 10,
         url: "url/url.com"
     },
     {
         id: 3,
-        name:"Goku",
+        name: "Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         price: 10,
         url: "url/url.com"
     },
     {
         id: 4,
-        name:"Goku",
+        name: "Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         price: 10.02,
         url: "url/url.com"
     },
     {
         id: 5,
-        name:"Goku",
+        name: "Goku",
         description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
         price: 10,
         url: "url/url.com"
@@ -59,18 +73,38 @@ Model.getProducts = function () {
     });
 };
 
-Model.signin = function (email, password) {
-    return new Promise(function (resolve, reject) {
-        if (Model.users.email == email && Model.users.password == password) {
-            resolve(Model.users)
-            Model.users.id = id;
-        }
-        else reject;    
-    });
 
-
-    
+Model.signin = function (emailf, passwordf) {
+    return Model.findUser(emailf, passwordf)
+        .then(function (userf) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    userf._id = Model.user;
+                    resolve(userf);
+                }, 10);
+            })
+        })
 };
+
+Model.findUser = function (emailf, passwordf) {
+    return new Promise(function(resolve,reject) {
+        setTimeout(function() {
+            var i;
+            for (i=0; i<Model.users.length; i++) {
+                if (Model.users[i].email==emailf && Model.users[i].password==passwordf) {
+                    console.log('User exists!!');
+                    resolve(Model.users[i]);
+                }
+                else   
+                    reject ('User not found');
+            }
+        }, 10);
+    })
+    
+}
+
+
+
 
 /*
 class User {

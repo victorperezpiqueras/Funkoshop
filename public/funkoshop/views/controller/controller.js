@@ -9,8 +9,11 @@ Controller.router.route = function () {
   if (matching = path.match(/^\/funkoshop\/views\/index$/)) {
     Controller.controllers.index.refresh();
   } else if (matching = path.match(/^\/funkoshop\/views\/signin$/)) {
-    Controller.controllers.signin.refresh();
-  } else {
+    Controller.controllers.signin.refresh(matching);
+  } else if (matching = path.match(/^\/funkoshop\/views\/signup$/)) {
+    Controller.controllers.signup.refresh();
+  } 
+  else {
     console.error('Page not found!');
   }
 }

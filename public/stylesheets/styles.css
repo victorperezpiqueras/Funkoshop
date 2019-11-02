@@ -15,4 +15,9 @@
     background-color: #86d6d6;
     border-radius: 0.3rem;
     font-family: Dosis;
-  }
+}
+
+.product-button {
+    margin-bottom: 2%;
+    margin-right: 2%;
+}

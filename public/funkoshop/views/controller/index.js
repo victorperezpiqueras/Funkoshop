@@ -32,7 +32,25 @@ Controller.controllers.index.buyProduct_clicked = function (event, pid) {
         });
 
     //go to cart:
-    //Controller.router.go(event.target.href);
+    Controller.router.go(event.target.href);
+}
+Controller.controllers.index.addProduct_clicked = function (event, pid) {
+    event.preventDefault();
+    //add product:
+    Model.buy(pid)
+        .then(function () {
+            console.log('Product added successfully');
+        })
+        .catch(function (err) {
+            console.error('Product cannot be added', err);
+        })
+        .then(function () {
+            //update counter of products:
+            Model.cartItemCount()
+                .then(function (itemCounter) {
+                    $('#item-counter').text(itemCounter);
+                });
+        });
 }
 
 Controller.controllers.index.goToSignin_clicked = function (event) {

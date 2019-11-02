@@ -12,7 +12,10 @@ Controller.router.route = function () {
     Controller.controllers.signin.refresh();
   } else if (matching = path.match(/^\/funkoshop\/views\/signup$/)) {
     Controller.controllers.signup.refresh();
-  } 
+  } else if (matching = path.match(/^\/funkoshop\/views\/cart$/)) {
+    //Controller.controllers.cart.refresh();
+    Controller.controllers.index.refresh();
+  }
   else {
     console.error('Page not found!');
   }

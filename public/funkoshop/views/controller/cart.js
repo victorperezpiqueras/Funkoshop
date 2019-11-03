@@ -55,10 +55,5 @@ Controller.controllers.cart.removeAllCartItem_clicked = function (event, pid) {
 }
 Controller.controllers.cart.purchase_clicked = function (event) {
     event.preventDefault();
-
-    //if (event.target.className.match(/disabled/)) return;
-
     Controller.router.go(event.target.href);
-
-
 }

@@ -9,13 +9,15 @@ Controller.router.route = function () {
   if (matching = path.match(/^\/funkoshop\/views\/index$/)) {
     Controller.controllers.index.refresh();
   } else if (matching = path.match(/^\/funkoshop\/views\/signin$/)) {
-    Controller.controllers.signin.refresh(matching);
+    Controller.controllers.signin.refresh();
   } else if (matching = path.match(/^\/funkoshop\/views\/signup$/)) {
     Controller.controllers.signup.refresh();
   } else if (matching = path.match(/^\/funkoshop\/views\/cart$/)) {
     Controller.controllers.cart.refresh();
-  }else if (matching = path.match(/^\/funkoshop\/views\/purchase$/)) {
+  } else if (matching = path.match(/^\/funkoshop\/views\/purchase$/)) {
     Controller.controllers.purchase.refresh();
+  } else if (matching = path.match(/^\/funkoshop\/views\/profile$/)) {
+    Controller.controllers.profile.refresh();
   }
   else {
     console.error('Page not found!');

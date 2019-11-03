@@ -340,6 +340,7 @@ Model.checkout = function (date, address, cardHolder, cardNumber) {
                         user: Model.user,
                         orderItems: cart.shoppingCartItems
                     }
+                    console.log(order);
                     Model.orders.push(order);
                     cart = Model.resetCart();
                     resolve(Model.orders);//?

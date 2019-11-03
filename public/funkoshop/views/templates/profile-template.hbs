@@ -1,0 +1,59 @@
+<div class="container">
+    {{> nav-partial }}
+
+    {{> header-partial }}
+
+
+    <main>
+        <h3 class="text-left"><b>Profile</b> </h3>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <b>Name:</b>&nbsp;
+                <p>{{user.name}}</p>
+            </div>
+            <div class="row">
+                <b>Surname:</b>&nbsp;
+                <p>{{user.surname}}</p>
+            </div>
+            <div class="row">
+                <b>Birth:</b>&nbsp;
+                <p>{{user.birth}}</p>
+            </div>
+            <div class="row">
+                <b>Address:</b>&nbsp;
+                <p>{{user.address}}</p>
+            </div>
+            <div class="row">
+                <b>Email:</b>&nbsp;
+                <p>{{user.email}}</p>
+            </div>
+        </div>
+
+        <hr />
+        <br>
+        <h3 class="text-left"> <b>Order list</b> </h3>
+
+
+        <table id="orderstable" class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Number</th>
+                    <th scope="col">Total</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                   {{#each user.userOrders}}
+                    {{> order-partial this details_onclick='Controller.controllers.profile.details_clicked'}}
+                    {{!-- FALTA BOTON DETAILS --}}
+                {{/each}}
+            </tbody>
+        </table>
+
+        <br><br>
+    </main>
+
+    {{> footer-partial }}
+</div>

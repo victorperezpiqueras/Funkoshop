@@ -1,5 +1,5 @@
 Controller.controllers.signin = {};
-Controller.controllers.signin.refresh = function (matching) {
+Controller.controllers.signin.refresh = function () {
     var context = {};
     View.renderer.signin.render(context);
 }
@@ -10,6 +10,9 @@ Controller.controllers.signin.signin_clicked = function (event) {
 
     var email_put= $('#email').val();
     var password_put= $('#password').val();
+
+    console.log(email_put);
+    console.log(password_put);
 
     Model.signin(email_put, password_put)
         .then(function () {

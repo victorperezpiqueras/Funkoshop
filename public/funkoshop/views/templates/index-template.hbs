@@ -1,20 +1,22 @@
-{{> nav-partial }}
+<div class="container">
+    {{> nav-partial }}
 
-{{> header-partial }}
-
-
-<main>
-    <div class="container">
-        <div class="row">
-
-            {{#each products}}
-            {{> product-partial this buyProduct_onclick='Controller.controllers.index.buyProduct_clicked' addProduct_onclick='Controller.controllers.index.addProduct_clicked'}}
-            {{/each}}
+    {{> header-partial }}
 
 
+    <main>
+        <div class="container">
+            <div class="row">
+
+                {{#each products}}
+                {{> product-partial this buyProduct_onclick='Controller.controllers.index.buyProduct_clicked' addProduct_onclick='Controller.controllers.index.addProduct_clicked'}}
+                {{/each}}
+
+
+            </div>
         </div>
-    </div>
-    <br><br>
-</main>
+        <br><br>
+    </main>
 
-{{> footer-partial }}
+    {{> footer-partial }}
+</div>

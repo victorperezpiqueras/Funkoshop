@@ -15,12 +15,12 @@ Controller.controllers.signin.signin_clicked = function (event) {
     console.log(password_put);
 
     Model.signin(email_put, password_put)
-        .then(function () {
+        .then(() => {
             console.log('Signin succesfull');
             console.log('Current user signin ID: '+Model.user);
             Controller.router.go('/funkoshop/views/index');
         })
-        .catch(function (error) {
+        .catch((error) => {
             console.log('User not exists', error);
             alert(' User does not exists. \n Check your email or password'); //Feedback for the user
             Controller.router.go('/funkoshop/views/signin');

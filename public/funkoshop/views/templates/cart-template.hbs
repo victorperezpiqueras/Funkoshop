@@ -1,0 +1,56 @@
+<div class="container">
+    {{> nav-partial }}
+
+    {{> header-partial }}
+
+    <main>
+        <h3 class="text-left"><b>Shopping cart</b> </h3>
+        <hr>
+        <br>
+        <div class="row justify-content-end">
+            <b>Total: </b>&nbsp;
+            <p>{{formatPrice cart.total}}</p>
+        </div>
+        <br>
+        <div class="container">
+            <h3 class="text-left"> <b>Item list</b> </h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Product name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Total</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each cart.shoppingCartItems}}
+                    {{> cart-item-partial this removeOneCartItem_onclick='Controller.controllers.cart.removeOneCartItem_clicked' 
+                        removeAllCartItem_onclick='Controller.controllers.cart.removeAllCartItem_clicked'}}
+                    {{/each}}
+                </tbody>
+            </table>
+            <hr>
+            <div class="row justify-content-start">
+                <b>Subtotal: </b>&nbsp;
+                <p>{{formatPrice cart.subtotal}}</p>
+            </div>
+            <div class="row justify-content-start">
+                <b>Tax: </b>&nbsp;
+                <p>{{formatTax cart.tax}}</p>
+            </div>
+            <div class="row justify-content-start">
+                <b>Total: </b>&nbsp;
+                <p>{{formatPrice cart.total}}</p>
+            </div>
+        </div>
+        <hr>
+        <a id="cart-purchase" href="purchase" class="btn btn-info" role="button"
+            onclick="Controller.controllers.cart.purchase_clicked(event)" style="float: right;">Purchase</a>
+        <br><br><br><br>
+    </main>
+
+    {{> footer-partial }}
+
+</div>

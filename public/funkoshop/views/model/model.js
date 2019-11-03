@@ -123,7 +123,7 @@ Model.users = [
 Model.user = Model.users[0]._id;
 
 
-
+/* AUXILIAR METHODS */
 Model.getProducts = function () {
     return new Promise(function (resolve, reject) {
         setTimeout(function () {
@@ -131,7 +131,6 @@ Model.getProducts = function () {
         }, 100);
     });
 };
-
 Model.getUser = function (uid) {
     return new Promise(function (resolve, reject) {
         setTimeout(function () {
@@ -142,16 +141,18 @@ Model.getUser = function (uid) {
         }, 100);
     });
 }
-
 Model.getShoppingCart = function () {
-    return Model.getUser(Model.user)
-        .then(function (user) {
-            return new Promise(function (resolve, reject) {
-                setTimeout(function () {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            Model.getUser(Model.user)
+                .then(function (user) {
+                    //console.log(user)
                     resolve(user.shoppingCart);
-                }, 100);
-            });
-        });
+                });
+
+        }, 100);
+    });
+
 }
 Model.getProduct = function (pid) {
     return new Promise(function (resolve, reject) {
@@ -159,17 +160,32 @@ Model.getProduct = function (pid) {
             var product = Model.products.find(function (product) {
                 return product.id == pid;
             });
-            resolve(product);
+            if (product != null) {
+                resolve(product);
+            }
+            else {
+                reject("Product not found");
+            }
         }, 100);
     });
 }
-
+Model.resetCart = function () {
+    var cart = {
+        subtotal: 0,
+        tax: 0.2,
+        total: 0,
+        shoppingCartItems: []
+    }
+    return cart;
+};
+/* INDEX METHODS */
 Model.buy = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(function () {
             //obtain the cart of the user
             Model.getShoppingCart()
                 .then(function (cart) {
+                    console.log(cart)
                     //search for an item that contains the product
                     var newItem = cart.shoppingCartItems.find(function (item) {
                         return item.orderItemProduct.id == pid;
@@ -192,35 +208,32 @@ Model.buy = function (pid) {
                                 newItem.qty++;
                                 newItem.total = (newItem.price * newItem.qty);
                             }
+                        })
+                        .then(function () {
+                            //recalculate shopping cart
+                            Model.recalculateCart(cart);
                         });
 
-                    //recalculate shopping cart
-                    Model.recalculateCart();
-                })
+                });
+
             resolve();
         }, 100);
     });
 }
-Model.recalculateCart = function () {
+Model.recalculateCart = function (cart) {
     return new Promise(function (resolve, reject) {
         setTimeout(function () {
-
-///fake async?
-            Model.getShoppingCart()
-                .then(function (cart) {
-                    var subtotal = 0;
-                    cart.shoppingCartItems.forEach(item => {
-                        subtotal += (item.total);
-                    });
-                    cart.subtotal = subtotal;
-                    cart.total = subtotal + (subtotal * cart.tax);
-                });
-////
-
-        }, 100);
+            var subtotal = 0;
+            cart.shoppingCartItems.forEach(item => {
+                subtotal += (item.total);
+            });
+            cart.subtotal = subtotal;
+            cart.total = subtotal + (subtotal * cart.tax);
+            ////
+            resolve(cart);
+        });
     });
 };
-
 Model.cartItemCount = function () {
     return new Promise(function (resolve, reject) {
         setTimeout(function () {
@@ -236,6 +249,60 @@ Model.cartItemCount = function () {
     });
 
 };
+
+/* CART METHODS */
+Model.removeOneCartItem = function (pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            Model.getShoppingCart()
+                .then(function (cart) {
+                    cart.shoppingCartItems.forEach((item) => {
+                        if (item.orderItemProduct.id == pid) {
+                            item.qty--;
+                            if (item.qty == 0) {
+                                var index = cart.shoppingCartItems.indexOf(item);
+                                if (index > -1) {
+                                    cart.shoppingCartItems.splice(index, 1);
+                                }
+                            }
+                        }
+                    });
+                    Model.recalculateCart(cart)
+                        .then(function (cart) {
+                            resolve(cart);
+                        });
+                });
+
+        }, 100);
+    });
+};
+Model.removeAllCartItem = function (pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            Model.getShoppingCart()
+                .then(function (cart) {
+                    //cart.shoppingCartItems.filter((item) => item.orderItemProduct.id == pid);
+                    cart.shoppingCartItems.forEach((item) => {
+                        if (item.orderItemProduct.id == pid) {
+                            var index = cart.shoppingCartItems.indexOf(item);
+                            if (index > -1) {
+                                cart.shoppingCartItems.splice(index, 1);
+                            }
+                        }
+                    });
+                    resolve(cart);
+                })
+                .then(function () {
+                    Model.recalculateCart();
+                })
+                .then(resolve());
+        }, 100);
+    });
+};
+
+
+
+
 
 
 Model.signup = function (userInfo) {

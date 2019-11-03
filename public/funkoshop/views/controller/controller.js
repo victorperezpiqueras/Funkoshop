@@ -13,8 +13,7 @@ Controller.router.route = function () {
   } else if (matching = path.match(/^\/funkoshop\/views\/signup$/)) {
     Controller.controllers.signup.refresh();
   } else if (matching = path.match(/^\/funkoshop\/views\/cart$/)) {
-    //Controller.controllers.cart.refresh();
-    Controller.controllers.index.refresh();
+    Controller.controllers.cart.refresh();
   }
   else {
     console.error('Page not found!');

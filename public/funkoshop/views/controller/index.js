@@ -1,5 +1,5 @@
 Controller.controllers.index = {};
-Controller.controllers.index.refresh = function (matching) {
+Controller.controllers.index.refresh = function () {
     var context = {};
     Model.getProducts()
         .then(function (products) {
@@ -29,10 +29,14 @@ Controller.controllers.index.buyProduct_clicked = function (event, pid) {
                 .then(function (itemCounter) {
                     $('#item-counter').text(itemCounter);
                 });
+        })
+        .then(function () {
+            //go to cart:
+            Controller.router.go(event.target.href);
         });
 
-    //go to cart:
-    Controller.router.go(event.target.href);
+
+
 }
 Controller.controllers.index.addProduct_clicked = function (event, pid) {
     event.preventDefault();
@@ -53,8 +57,7 @@ Controller.controllers.index.addProduct_clicked = function (event, pid) {
         });
 }
 
-Controller.controllers.index.goToSignin_clicked = function (event) {
+Controller.controllers.index.goToIndex_clicked = function (event) {
     event.preventDefault();
-    //View.go(event.target.href);
     Controller.router.go(event.target.href);
 }

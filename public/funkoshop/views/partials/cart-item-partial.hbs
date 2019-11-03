@@ -1,0 +1,17 @@
+<tr>
+    <td>{{qty}}</td>
+    <td>{{orderItemProduct.name}}</td>
+    <td>{{formatPrice price}}</td>
+    <td>{{formatPrice total}}</td>
+    <td>
+        <div class="dropdown show">
+            <a class="btn btn-outline-danger dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Remove</a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" onclick="{{removeAllCartItem_onclick}}(event, {{orderItemProduct.id}});">All</a>
+                <a class="dropdown-item" onclick="{{removeOneCartItem_onclick}}(event, {{orderItemProduct.id}});">One</a>
+            </div>
+        </div>
+    </td>
+</tr>

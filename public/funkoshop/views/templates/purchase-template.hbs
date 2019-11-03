@@ -1,0 +1,123 @@
+<div class="container">
+    {{> nav-partial }}
+
+    {{> header-partial }}
+    <main>
+        <div class="container">
+            <h3 class="text-left"><b>Purchase</b></h3>
+            <hr>
+            <br>
+            <form>
+                <div class="form-group">
+                    <input type="date" class="form-control" id="date" aria-describedby="dateHelp">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="address" aria-describedby="addressHelp"
+                        placeholder="Buyer Address">
+                </div>
+
+                <br>
+                <h5><b>Card information</b></h5>
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="card-holder-name" id="card-holder-name"
+                            placeholder="Card Holder's Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="card-number" id="card-number"
+                            placeholder="Debit/Credit Card Number">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="expiry-month"><b>Expiration Date</b></label>
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select class="form-control" name="expiry-month" id="expiry-month">
+                                    <option>Month</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <select class="form-control" name="expiry-year">
+
+                                    <option value="19">2019</option>
+                                    <option value="20">2020</option>
+                                    <option value="21">2021</option>
+                                    <option value="22">2022</option>
+                                    <option value="23">2023</option>
+                                    <option value="24">2024</option>
+                                    <option value="25">2025</option>
+                                    <option value="26">2026</option>
+                                    <option value="27">2027</option>
+                                    <option value="28">2028</option>
+                                    <option value="29">2029</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" name="cvv" id="cvv" placeholder="CVV" length="3"
+                                     pattern="[0-9]{3}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <br>
+
+                <h5><b>Product list </b></h5>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each cart.shoppingCartItems}}
+                        {{> purchase-item-partial this }}
+                        {{/each}}
+                    </tbody>
+                </table>
+                <hr>
+                <div class="container">
+                    <div class="row">
+                        <b>Subtotal: </b>&nbsp;
+                        <p>{{formatPrice cart.subtotal}}</p>
+                    </div>
+                    <div class="row">
+                        <b>Tax: </b>&nbsp;
+                        <p>{{formatTax cart.tax}}</p>
+                    </div>
+                    <div class="row">
+                        <b>Total: </b>&nbsp;
+                        <p>{{formatPrice cart.total}}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-check">
+                    <a href="profile.html" class="btn btn-info" style="float: right;" role="button" onclick="Controller.controllers.purchase.checkout_clicked(event)">Checkout</a>
+                </div>
+
+            </form>
+
+        </div> <br><br><br><br>
+    </main>
+    {{> footer-partial }}
+</div>

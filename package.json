@@ -11,5 +11,18 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1"
-  }
+  },
+  "description": "Repo of the project of the subject",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorperezpiqueras/IWS_Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victorperezpiqueras/IWS_Project/issues"
+  },
+  "homepage": "https://github.com/victorperezpiqueras/IWS_Project#readme",
+  "devDependencies": {}
 }

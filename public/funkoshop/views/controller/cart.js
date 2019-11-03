@@ -17,17 +17,17 @@ Controller.controllers.cart.removeOneCartItem_clicked = function (event, pid) {
     //event.preventDefault();
     //add product:
     Model.removeOneCartItem(pid)
-        .then(function (cart) {
+        .then((cart) => {
             //console.log(cart);
             console.log('Item removed successfully');
         })
-        .catch(function (err) {
+        .catch((err) => {
             console.error('Item cannot be removed', err);
         })
-        .then(function () {
+        .then(() => {
             //update counter of products:
             Model.cartItemCount()
-                .then(function (itemCounter) {
+                .then((itemCounter) => {
                     $('#item-counter').text(itemCounter);
                 });
         })
@@ -37,17 +37,17 @@ Controller.controllers.cart.removeAllCartItem_clicked = function (event, pid) {
     //event.preventDefault();
     //add product:
     Model.removeAllCartItem(pid)
-        .then(function () {
+        .then(() => {
             console.log('Item removed successfully');
             //console.log(Model.users[0].shoppingCart);
         })
-        .catch(function (err) {
+        .catch((err) => {
             console.error('Item cannot be removed', err);
         })
-        .then(function () {
+        .then(() => {
             //update counter of products:
             Model.cartItemCount()
-                .then(function (itemCounter) {
+                .then((itemCounter) => {
                     $('#item-counter').text(itemCounter);
                 });
         })
@@ -55,5 +55,10 @@ Controller.controllers.cart.removeAllCartItem_clicked = function (event, pid) {
 }
 Controller.controllers.cart.purchase_clicked = function (event) {
     event.preventDefault();
+
+    //if (event.target.className.match(/disabled/)) return;
+
     Controller.router.go(event.target.href);
+
+
 }

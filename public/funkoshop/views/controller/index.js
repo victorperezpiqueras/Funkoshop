@@ -2,13 +2,13 @@ Controller.controllers.index = {};
 Controller.controllers.index.refresh = function () {
     var context = {};
     Model.getProducts()
-        .then(function (products) {
+        .then((products) => {
             context.products = products;
             View.renderer.index.render(context);
         });
     //update counter of products:
     Model.cartItemCount()
-        .then(function (itemCounter) {
+        .then((itemCounter) => {
             $('#item-counter').text(itemCounter);
             console.log(itemCounter);
         });
@@ -17,20 +17,20 @@ Controller.controllers.index.buyProduct_clicked = function (event, pid) {
     event.preventDefault();
     //add product:
     Model.buy(pid)
-        .then(function () {
+        .then(() => {
             console.log('Product added successfully');
         })
-        .catch(function (err) {
+        .catch((err) => {
             console.error('Product cannot be added', err);
         })
-        .then(function () {
+        .then(() => {
             //update counter of products:
             Model.cartItemCount()
-                .then(function (itemCounter) {
+                .then((itemCounter) => {
                     $('#item-counter').text(itemCounter);
                 });
         })
-        .then(function () {
+        .then(() => {
             //go to cart:
             Controller.router.go(event.target.href);
         });
@@ -42,16 +42,16 @@ Controller.controllers.index.addProduct_clicked = function (event, pid) {
     event.preventDefault();
     //add product:
     Model.buy(pid)
-        .then(function () {
+        .then(() => {
             console.log('Product added successfully');
         })
-        .catch(function (err) {
+        .catch((err) => {
             console.error('Product cannot be added', err);
         })
-        .then(function () {
+        .then(() => {
             //update counter of products:
             Model.cartItemCount()
-                .then(function (itemCounter) {
+                .then((itemCounter) => {
                     $('#item-counter').text(itemCounter);
                 });
         });

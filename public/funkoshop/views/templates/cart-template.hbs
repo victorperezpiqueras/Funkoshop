@@ -27,7 +27,7 @@
                 <tbody>
                     {{#each cart.shoppingCartItems}}
                     {{> cart-item-partial this removeOneCartItem_onclick='Controller.controllers.cart.removeOneCartItem_clicked' 
-                    removeAllCartItem_onclick='Controller.controllers.cart.removeAllCartItem_clicked'}}
+                        removeAllCartItem_onclick='Controller.controllers.cart.removeAllCartItem_clicked'}}
                     {{/each}}
                 </tbody>
             </table>
@@ -38,7 +38,7 @@
             </div>
             <div class="row justify-content-start">
                 <b>Tax: </b>&nbsp;
-                <p>{{formatPrice cart.tax}}</p>
+                <p>{{formatTax cart.tax}}</p>
             </div>
             <div class="row justify-content-start">
                 <b>Total: </b>&nbsp;
@@ -46,9 +46,11 @@
             </div>
         </div>
         <hr>
-        <a href="purchase" class="btn btn-info" role="button" onclick="Controller.controllers.cart.purchase_clicked(event)" style="float: right;">Purchase</a>
+        <a id="cart-purchase" href="purchase" class="btn btn-info" role="button"
+            onclick="Controller.controllers.cart.purchase_clicked(event)" style="float: right;">Purchase</a>
+<br><br><br><br>
     </main>
-
+    
     {{> footer-partial }}
 
 </div>

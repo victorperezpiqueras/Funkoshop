@@ -4,13 +4,14 @@ Controller.controllers.purchase.refresh = function (matching) {
     Model.getShoppingCart()
         .then((cart) => {
             context.cart = cart;
-            View.renderer.purchase.render(context);
+        })
+        .then(() => {
+            return Model.cartItemCount()
+                .then((itemCounter) => {
+                    context.counter = itemCounter;
+                    View.renderer.purchase.render(context);
+                });
         });
-    //update counter of products:
-   /*  Model.cartItemCount()
-        .then((itemCounter) => {
-            $('#item-counter').text(itemCounter);
-        }); */
 }
 Controller.controllers.purchase.checkout_clicked = function (event) {
     event.preventDefault();
@@ -20,7 +21,7 @@ Controller.controllers.purchase.checkout_clicked = function (event) {
     var cardNumber = $('#card-number').val();
     console.log(date);
     console.log(address);
-    
+
     /* Model.checkout(date, address, cardHolder, cardNumber)
         .then(() => {
             event.preventDefault();

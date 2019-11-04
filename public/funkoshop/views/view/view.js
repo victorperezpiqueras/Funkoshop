@@ -35,6 +35,7 @@ $(function () {
 
     View.loadPartial('product-partial'),
     View.loadPartial('cart-item-partial'),
+    View.loadPartial('purchase-item-partial'),
   ]
   Promise.all(promises)
     .then(function () {

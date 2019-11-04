@@ -18,7 +18,10 @@ Controller.router.route = function () {
     Controller.controllers.purchase.refresh();
   } else if (matching = path.match(/^\/funkoshop\/views\/profile$/)) {
     Controller.controllers.profile.refresh();
+  } else if (matching = path.match(/^\/funkoshop\/views\/order\/(\w*)$/)) {
+    Controller.controllers.order.refresh(matching);
   }
+
   else {
     console.error('Page not found!');
   }

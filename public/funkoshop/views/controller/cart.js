@@ -2,16 +2,19 @@ Controller.controllers.cart = {};
 Controller.controllers.cart.refresh = function () {
     var context = {};
     Model.getShoppingCart()
-        .then(function (cart) {
+        .then((cart) => {
             context.cart = cart;
             //console.log(cart)
             View.renderer.cart.render(context);
+        })
+        .then(() => {
+            return Model.cartItemCount()
+                .then((itemCounter) => {
+                    context.counter = itemCounter;
+                    View.renderer.cart.render(context);
+                });
         });
-    //update counter of products:
-    Model.cartItemCount()
-        .then(function (itemCounter) {
-            $('#item-counter').text(itemCounter);
-        });
+
 }
 Controller.controllers.cart.removeOneCartItem_clicked = function (event, pid) {
     //event.preventDefault();
@@ -23,13 +26,6 @@ Controller.controllers.cart.removeOneCartItem_clicked = function (event, pid) {
         })
         .catch((err) => {
             console.error('Item cannot be removed', err);
-        })
-        .then(() => {
-            //update counter of products:
-            Model.cartItemCount()
-                .then((itemCounter) => {
-                    $('#item-counter').text(itemCounter);
-                });
         })
         .then(Controller.controllers.cart.refresh());
 }
@@ -44,16 +40,10 @@ Controller.controllers.cart.removeAllCartItem_clicked = function (event, pid) {
         .catch((err) => {
             console.error('Item cannot be removed', err);
         })
-        .then(() => {
-            //update counter of products:
-            Model.cartItemCount()
-                .then((itemCounter) => {
-                    $('#item-counter').text(itemCounter);
-                });
-        })
         .then(Controller.controllers.cart.refresh());
 }
 Controller.controllers.cart.purchase_clicked = function (event) {
     event.preventDefault();
+    if (event.target.className.match(/disabled/)) return;
     Controller.router.go(event.target.href);
 }

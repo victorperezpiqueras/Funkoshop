@@ -1,20 +1,25 @@
 Controller.controllers.signin = {};
 Controller.controllers.signin.refresh = function () {
     var context = {};
-    View.renderer.signin.render(context);
+    Model.cartItemCount()
+        .then((itemCounter) => {
+            console.log(itemCounter);
+            context.counter = itemCounter;
+            View.renderer.signin.render(context);
+        });
 }
 
 
 Controller.controllers.signin.signin_clicked = function (event) {
     event.preventDefault();
 
-    var email_put= $('#email').val();
-    var password_put= $('#password').val();
+    var email_put = $('#email').val();
+    var password_put = $('#password').val();
 
     Model.signin(email_put, password_put)
         .then(() => {
             console.log('Signin succesfull');
-            console.log('Current user signin ID: '+Model.user);
+            console.log('Current user signin ID: ' + Model.user);
             Controller.router.go('/funkoshop/views/index');
         })
         .catch((error) => {

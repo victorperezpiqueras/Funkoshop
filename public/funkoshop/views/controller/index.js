@@ -4,14 +4,15 @@ Controller.controllers.index.refresh = function () {
     Model.getProducts()
         .then((products) => {
             context.products = products;
-            View.renderer.index.render(context);
+        })
+        .then(() => {
+            return Model.cartItemCount()
+                .then((itemCounter) => {
+                    context.counter = itemCounter;
+                    View.renderer.index.render(context);
+                });
         });
-    //update counter of products:
-    Model.cartItemCount()
-        .then((itemCounter) => {
-            $('#item-counter').text(itemCounter);
-            console.log(itemCounter);
-        });
+
 }
 Controller.controllers.index.buyProduct_clicked = function (event, pid) {
     event.preventDefault();
@@ -22,13 +23,6 @@ Controller.controllers.index.buyProduct_clicked = function (event, pid) {
         })
         .catch((err) => {
             console.error('Product cannot be added', err);
-        })
-        .then(() => {
-            //update counter of products:
-            Model.cartItemCount()
-                .then((itemCounter) => {
-                    $('#item-counter').text(itemCounter);
-                });
         })
         .then(() => {
             //go to cart:
@@ -49,12 +43,9 @@ Controller.controllers.index.addProduct_clicked = function (event, pid) {
             console.error('Product cannot be added', err);
         })
         .then(() => {
-            //update counter of products:
-            Model.cartItemCount()
-                .then((itemCounter) => {
-                    $('#item-counter').text(itemCounter);
-                });
-        });
+            Controller.controllers.index.refresh();
+        })
+
 }
 
 Controller.controllers.index.goToIndex_clicked = function (event) {

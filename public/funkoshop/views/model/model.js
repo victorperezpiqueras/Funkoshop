@@ -1,6 +1,20 @@
 var Model = {};
 
-Model.orders = [];
+Model.orders = [
+    {
+        _id: 1,
+        number: 1,
+        date: null,
+        address: null,
+        subtotal: null,
+        tax: null,
+        total: null,
+        cardHolder: null,
+        cardNumber: 124214124,
+        user: null,
+        orderItems: null
+    }
+];
 Model.shoppingCarts = [];
 Model.items = [];
 Model.products = [
@@ -97,6 +111,30 @@ Model.users = [
         name: 'user',
         surname: 'surname',
         email: 'email@email.com',
+        birth: '10/10/1998',
+        address: 'Calle falsa 123',
+        password: 'password',
+        shoppingCart: {
+            subtotal: 0,
+            tax: 0.21,
+            total: 0,
+            shoppingCartItems: [/* 
+                {
+                    order: null,
+                    qty: 1,
+                    price: 20,
+                    total: 20,
+                    orderItemProduct: Model.products[0]
+                }
+             */]
+        },
+        userOrders: []
+    },
+    {
+        _id: '2',
+        name: 'user',
+        surname: 'surname',
+        email: 'email2@email.com',
         birth: '10/10/1998',
         address: 'Calle falsa 123',
         password: 'password',
@@ -309,14 +347,29 @@ Model.signin = function (emailf, passwordf) {
 Model.findUser = function (emailf, passwordf) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
+            var user = null;
             var i;
-            for (i = 0; i < Model.users.length; i++) {
-                if (Model.users[i].email == emailf && Model.users[i].password == passwordf) {
-                    console.log('User exists!!');
-                    resolve(Model.users[i]);
+            Model.users.forEach((u) => {
+                if (u.email == emailf && u.password == passwordf) {
+                    //console.log('User exists!!');
+                    //resolve(Model.users[i]);
+                    user = u;
                 }
-                else
-                    reject('User not found');
+            })
+            /*   for (var u in Model.users) {
+                  if (u.email == emailf && u.password == passwordf) {
+                      //console.log('User exists!!');
+                      //resolve(Model.users[i]);
+                      user = u;
+                  } 
+  
+              }*/
+            if (user != null) {
+                console.log(user);
+                resolve(user);
+            }
+            else {
+                reject("User not found");
             }
         });
     })
@@ -349,6 +402,29 @@ Model.checkout = function (date, address, cardHolder, cardNumber) {
     })
 }
 
+Model.getOrder = function (id) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            var foundOrder;
+            console.log(Model.orders.length)
+            for(var order in Model.orders){
+                console.log(order)
+                if(order._id == id){
+                    console.log("if")
+                    foundOrder = order;
+                    break;
+                }
+            }
+            /* var foundOrder = Model.orders.find((order) => {
+                console.log(order._id)
+                console.log(id)
+                order._id == id;
+            }); */
+            console.log(foundOrder)
+            resolve(foundOrder);
+        });
+    })
+}
 
 /*
 Model.signup = function (userInfo) {

@@ -107,7 +107,7 @@ Model.products = [
 
 Model.users = [
     {
-        _id: '1',
+        _id: 1,
         name: 'user',
         surname: 'surname',
         email: 'email@email.com',
@@ -117,6 +117,36 @@ Model.users = [
         shoppingCart: {
             subtotal: 0,
             tax: 0.21,
+            total: 0,
+            shoppingCartItems: [/* 
+                {
+                    order: null,
+                    qty: 1,
+                    price: 20,
+                    total: 20,
+                    orderItemProduct: Model.products[0]
+                }
+             */]
+        },
+        userOrders: [ /*
+            {
+            date: '2019/10/31',
+            number: 11111111,
+            total: 20
+            } */
+        ]
+    },
+    {
+        _id: 2,
+        name: 'user2',
+        surname: 'surname2',
+        email: 'email2@email.com',
+        birth: '10/10/1998',
+        address: 'Calle falsa 123',
+        password: 'password2',
+        shoppingCart: {
+            subtotal: 0,
+            tax: 0.2,
             total: 0,
             shoppingCartItems: [/* 
                 {
@@ -156,8 +186,12 @@ Model.users = [
     }
 ];
 
-Model.user = Model.users[0]._id;
 
+Model.user = Model.users[0]._id;
+// Model.user = 1;
+// Model.user = {
+
+// };
 
 /* AUXILIAR METHODS */
 Model.getProducts = function () {
@@ -187,7 +221,6 @@ Model.getShoppingCart = function () {
                 });
         });
     });
-
 }
 Model.getProduct = function (pid) {
     return new Promise(function (resolve, reject) {
@@ -283,6 +316,55 @@ Model.cartItemCount = function () {
     });
 };
 
+/* SIGNIN METHODS */
+Model.signin = function (emailf, passwordf) {
+    return Model.findUser(emailf, passwordf)
+        .then(function (userf) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    Model.user = userf._id; /* Guardo el id loggeado */
+                    // console.log('id del userf ' + Model.user);
+                    resolve(userf);
+                }, 10);
+            })
+        })
+};
+Model.findUser = function (emailf, passwordf) {
+    console.log("Dentro de findUser");
+    return new Promise(function (resolve, reject) {
+        console.log("Dentro de promise finduser");
+        setTimeout(function () {
+            var i = 0;
+            var found = false;
+            console.log(Model.users);
+            while (i < Model.users.length && !found) { /* Para cuando se encuentra */
+                found = Model.users[i].email == emailf && Model.users[i].password == passwordf; /* Cuando es cumple pone a true la booleana */
+                i++;
+            }
+            if (found) {
+                // console.log('User position: ' + (i-1));
+                console.log('User exists!!');
+                resolve(Model.users[(i - 1)]); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
+            }
+            else
+                reject('User not found');
+        }, 10);
+    })
+}
+
+/* PROFILE METHODS */
+Model.getProfile = function () {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getUser(Model.user)
+                .then((user) => {
+                    //console.log(user);
+                    resolve(user);
+                });
+        });
+    });
+}
+
 /* CART METHODS */
 Model.removeOneCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
@@ -332,48 +414,6 @@ Model.removeAllCartItem = function (pid) {
         });
     });
 };
-/* SIGNIN METHODS */
-Model.signin = function (emailf, passwordf) {
-    return Model.findUser(emailf, passwordf)
-        .then((userf) => {
-            return new Promise(function (resolve, reject) {
-                setTimeout(() => {
-                    userf._id = Model.user;
-                    resolve(userf);
-                });
-            })
-        })
-};
-Model.findUser = function (emailf, passwordf) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var user = null;
-            var i;
-            Model.users.forEach((u) => {
-                if (u.email == emailf && u.password == passwordf) {
-                    //console.log('User exists!!');
-                    //resolve(Model.users[i]);
-                    user = u;
-                }
-            })
-            /*   for (var u in Model.users) {
-                  if (u.email == emailf && u.password == passwordf) {
-                      //console.log('User exists!!');
-                      //resolve(Model.users[i]);
-                      user = u;
-                  } 
-  
-              }*/
-            if (user != null) {
-                console.log(user);
-                resolve(user);
-            }
-            else {
-                reject("User not found");
-            }
-        });
-    })
-}
 
 /* PURCHASE METHODS */
 Model.checkout = function (date, address, cardHolder, cardNumber) {
@@ -402,14 +442,15 @@ Model.checkout = function (date, address, cardHolder, cardNumber) {
     })
 }
 
+/* ORDER METHODS */
 Model.getOrder = function (id) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             var foundOrder;
             console.log(Model.orders.length)
-            for(var order in Model.orders){
+            for (var order in Model.orders) {
                 console.log(order)
-                if(order._id == id){
+                if (order._id == id) {
                     console.log("if")
                     foundOrder = order;
                     break;
@@ -427,17 +468,9 @@ Model.getOrder = function (id) {
 }
 
 /*
-Model.signup = function (userInfo) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            resolve(Model.products)
-        }, 100);
-    });
-}; */
-
-/*
 class User {
-    constructor(name, surname, email, birth, address, password) {
+    constructor(_id, name, surname, email, birth, address, password) {
+        this._id = _id;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -450,7 +483,8 @@ class User {
 
 }
 class Order {
-    constructor(number, date, address, subtotal, tax, total, cardHolder, cardNumber) {
+    constructor(_id, number, date, address, subtotal, tax, total, cardHolder, cardNumber) {
+        this._id = _id;
         this.number = number;
         this.date = date;
         this.address = address;

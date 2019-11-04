@@ -13,15 +13,15 @@
             </div>
             <div class="row">
                 <b>Address:</b>&nbsp;
-                <p>Address</p>
+                <p>{{order.address}}</p>
             </div>
             <div class="row">
                 <b>Card number:</b>&nbsp;
-                <p>Number</p>
+                <p>{{order.cardNumber}}</p>
             </div>
             <div class="row">
                 <b>Card holder:</b>&nbsp;
-                <p>Owner</p>
+                <p>{{order.cardHolder}}</p>
             </div>
         </div>
 
@@ -48,16 +48,16 @@
 
         <div class="container">
             <div class="row">
-                <b>Subtotal: €</b>&nbsp;
-                <p>Subtotal</p>
+                <b>Subtotal:</b>&nbsp;
+                <p>{{formatPrice order.subtotal}}</p>
             </div>
             <div class="row">
-                <b>Tax: €</b>&nbsp;
-                <p>Tax</p>
+                <b>Tax:</b>&nbsp;
+                <p>{{formatPrice order.tax}}</p>
             </div>
             <div class="row">
-                <b>Total: €</b>&nbsp;
-                <p>Total</p>
+                <b>Total:</b>&nbsp;
+                <p>{{formatPrice order.total}}</p>
             </div>
         </div>
 

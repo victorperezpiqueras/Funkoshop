@@ -2,7 +2,6 @@ var Model = {};
 
 Model.orders = [
     {
-        _id: 1,
         number: 1,
         date: null,
         address: null,
@@ -352,19 +351,6 @@ Model.findUser = function (emailf, passwordf) {
     })
 }
 
-/* PROFILE METHODS */
-Model.getProfile = function () {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            Model.getUser(Model.user)
-                .then((user) => {
-                    //console.log(user);
-                    resolve(user);
-                });
-        });
-    });
-}
-
 /* CART METHODS */
 Model.removeOneCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
@@ -421,6 +407,7 @@ Model.checkout = function (date, address, cardHolder, cardNumber) {
         setTimeout(() => {
             Model.getShoppingCart()
                 .then((cart) => {
+                    //create order:
                     var order = {
                         number: Date.now(),
                         date: date,
@@ -433,35 +420,54 @@ Model.checkout = function (date, address, cardHolder, cardNumber) {
                         user: Model.user,
                         orderItems: cart.shoppingCartItems
                     }
-                    console.log(order);
+                    //add order to list
                     Model.orders.push(order);
-                    cart = Model.resetCart();
-                    resolve(Model.orders);//?
+                    //cart = Model.resetCart();
+                    Model.getUser(Model.user)
+                        .then((user) => {
+                            //add order and reset cart in user:
+                            user.shoppingCart = Model.resetCart();
+                            user.userOrders.push(order);
+                            resolve(Model.orders);
+                        })
                 });
         });
     })
 }
 
+/* PROFILE METHODS */
+/* Model.getProfile = function () {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getUser(Model.user)
+                .then((user) => {
+                    //console.log(user);
+                    resolve(user);
+                });
+        });
+    });
+} */
+/* Model.getOrders = function (user) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            //Model.getUser(Model.user)
+            //  .then((user) => {
+            resolve(user.userOrders);
+            // });
+        });
+    })
+} */
 /* ORDER METHODS */
 Model.getOrder = function (id) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             var foundOrder;
-            console.log(Model.orders.length)
-            for (var order in Model.orders) {
-                console.log(order)
-                if (order._id == id) {
-                    console.log("if")
+            for (var order of Model.orders) {
+                if (order.number == id) {
                     foundOrder = order;
                     break;
                 }
             }
-            /* var foundOrder = Model.orders.find((order) => {
-                console.log(order._id)
-                console.log(id)
-                order._id == id;
-            }); */
-            console.log(foundOrder)
             resolve(foundOrder);
         });
     })
@@ -483,8 +489,7 @@ class User {
 
 }
 class Order {
-    constructor(_id, number, date, address, subtotal, tax, total, cardHolder, cardNumber) {
-        this._id = _id;
+    constructor(number, date, address, subtotal, tax, total, cardHolder, cardNumber) {
         this.number = number;
         this.date = date;
         this.address = address;

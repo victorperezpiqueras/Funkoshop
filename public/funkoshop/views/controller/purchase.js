@@ -22,10 +22,10 @@ Controller.controllers.purchase.checkout_clicked = function (event) {
     console.log(date);
     console.log(address);
 
-    /* Model.checkout(date, address, cardHolder, cardNumber)
+    Model.checkout(date, address, cardHolder, cardNumber)
         .then(() => {
             event.preventDefault();
             Controller.router.go(event.target.href);
-        }); */
+        });
 }
 

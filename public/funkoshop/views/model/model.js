@@ -120,7 +120,7 @@ Model.users = [
             number: 11111111,
             total: 20
             } */
-         ]
+        ]
     },
     {
         _id: 2,
@@ -152,7 +152,7 @@ Model.users = [
 Model.user = Model.users[0]._id;
 // Model.user = 1;
 // Model.user = {
-        
+
 // };
 
 /* AUXILIAR METHODS */
@@ -286,18 +286,12 @@ Model.cartItemCount = function () {
 
 /* SIGNIN METHODS */
 Model.signin = function (emailf, passwordf) {
-    console.log("Dentro de signin");
     return Model.findUser(emailf, passwordf)
-        .then(function (userf) { //CUANDO RESUELVE FINDUSER NO ENTRA CON USER2 AQUI pero con USER1 SÍ
-            console.log("dentro de userf"); //Esto no llega a print
+        .then(function (userf) { 
             return new Promise(function (resolve, reject) {
                 setTimeout(function () {
-                    console.log("Dentro de promise");
-                   // userf._id = Model.user;
-                    // Model.user.push(userf);
-                    Model.user = userf._id;
-                    // Model.user.push(userf);
-                    console.log('id del userf '+Model.user);
+                    Model.user = userf._id; /* Guardo el id loggeado */
+                    // console.log('id del userf ' + Model.user);
                     resolve(userf);
                 }, 10);
             })
@@ -305,29 +299,32 @@ Model.signin = function (emailf, passwordf) {
 };
 Model.findUser = function (emailf, passwordf) {
     console.log("Dentro de findUser");
-    return new Promise(function(resolve,reject) {
+    return new Promise(function (resolve, reject) {
         console.log("Dentro de promise finduser");
-        setTimeout(function() {
-            var i;
-            for (i=0; i<Model.users.length; i++) {
-                if (Model.users[i].email==emailf && Model.users[i].password==passwordf) {
-                    console.log('User position: '+i);
-                    console.log('User exists!!');
-                    // Model.users[i] = Model.user;  ////////////QUITANDO ESTO VA IGUAL porque ya hago la asignacion arriba con userf
-                    console.log(Model.users[i].email);
-                    resolve(Model.users[i]); 
-                }
-                else   
-                    reject ('User not found');
+        setTimeout(function () {
+            var i = 0;
+            var found = false;
+            console.log(Model.users);
+            while (i<Model.users.length && !found) { /* Para cuando se encuentra */
+                found = Model.users[i].email == emailf && Model.users[i].password == passwordf; /* Cuando es cumple pone a true la booleana */
+                i++;
+            } 
+            if (found) {
+                // console.log('User position: ' + (i-1));
+                console.log('User exists!!');
+                resolve(Model.users[(i-1)]); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
             }
+            else
+                reject('User not found');
+
         }, 10);
     })
-    
+
 }
 
 /* PROFILE METHODS */
-Model.getProfile = function() {
-    return new Promise(function(resolve,reject) {
+Model.getProfile = function () {
+    return new Promise(function (resolve, reject) {
         setTimeout(() => {
             Model.getUser(Model.user)
                 .then((user) => {

@@ -23,7 +23,7 @@ Controller.controllers.signin.signin_clicked = function (event) {
         .catch((error) => {
             console.log('User not exists', error);
             alert(' User does not exists. \n Check your email or password'); //Feedback for the user
-            Controller.router.go('/funkoshop/views/signin');
+            Controller.router.go('/funkoshop/views/signin'); /* Como esta creado con un a se puede con href */
         })
 
 }

@@ -19,18 +19,18 @@
                 <br>
                 <h5><b>Card information</b></h5>
                 <div class="form-group">
-                    <div class="col-sm-9">
+                    {{!-- <div class="col-sm-9"> --}}
                         <input type="text" class="form-control" name="card-holder-name" id="card-holder-name"
                             placeholder="Card Holder's Name">
-                    </div>
+                    {{!-- </div> --}}
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-9">
+                   {{!--  <div class="col-sm-9"> --}}
                         <input type="text" class="form-control" name="card-number" id="card-number"
                             placeholder="Debit/Credit Card Number">
-                    </div>
+                    {{!-- </div> --}}
                 </div>
-                <div class="form-group">
+                {{!-- <div class="form-group">
                     <label class="col-sm-3 control-label" for="expiry-month"><b>Expiration Date</b></label>
                     <div class="col-sm-9">
                         <div class="row">
@@ -74,7 +74,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <hr>
                 <br>
@@ -112,7 +112,7 @@
                 </div>
                 <hr>
                 <div class="form-check">
-                    <a href="profile" class="btn btn-info" style="float: right;" role="button" onclick="Controller.controllers.purchase.checkout_clicked(event)">Checkout</a>
+                    <a href="/funkoshop/views/profile" class="btn btn-info" style="float: right;" role="button" onclick="Controller.controllers.purchase.checkout_clicked(event)">Checkout</a>
                 </div>
 
             </form>

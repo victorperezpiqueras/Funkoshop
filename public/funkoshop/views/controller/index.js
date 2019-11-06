@@ -4,20 +4,30 @@ Controller.controllers.index.refresh = function () {
     Model.getProducts()
         .then((products) => {
             context.products = products;
-        })
-        .then(()=>{
-            Model.getShoppingCart()
-            .then((cart) => {
-                context.cart = cart;
-            })
+        })//////////////////7
+        .then(() => {
+            if (localStorage.getItem("user") != null) {
+                Model.getShoppingCart()
+                    .then((cart) => {
+                        context.cart = cart;
+                    })
+                    .then(() => {
+                        return Model.cartItemCount()
+                            .then((itemCounter) => {
+                                context.counter = itemCounter;
+
+                            });
+                    });
+            }
+            else {
+                context.counter = 0;
+            }
+
         })
         .then(() => {
-            return Model.cartItemCount()
-                .then((itemCounter) => {
-                    context.counter = itemCounter;
-                    View.renderer.index.render(context);
-                });
+            View.renderer.index.render(context);
         });
+//////////////////////////////////////
 
 }
 Controller.controllers.index.buyProduct_clicked = function (event, pid) {

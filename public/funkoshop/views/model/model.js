@@ -186,8 +186,8 @@ Model.users = [
 ];
 
 
-Model.user = Model.users[0]._id;
-//Model.user = localStorage.getItem("user");
+//Model.user = Model.users[0]._id;
+Model.user = localStorage.getItem("user");
 // Model.user = {
 
 // };

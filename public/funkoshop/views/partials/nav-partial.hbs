@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
-    <a class="navbar-brand" href="index" onclick="Controller.controllers.index.goToIndex_clicked(event)">
+    <a class="navbar-brand" href="/funkoshop/views/index" onclick="Controller.controllers.index.goToIndex_clicked(event)">
         <img src="/images/logo.png" width="43" height="45"></img>
         FUNKOWARE
     </a>
@@ -17,10 +17,10 @@
                     <span class="badge badge-light">{{counter}}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="cart"
+                    <a class="dropdown-item" href="/funkoshop/views/cart"
                         onclick="Controller.controllers.index.goToIndex_clicked(event)">Show cart</a>
-                    <a class="dropdown-item {{#unless cart.shoppingCartItems.length}}disabled{{/unless}}"
-                        href="purchase" onclick="Controller.controllers.index.goToIndex_clicked(event)">Purchase</a>
+                    <a class="dropdown-item {{#unless counter}}disabled{{/unless}}"
+                        href="/funkoshop/views/purchase" onclick="Controller.controllers.index.goToIndex_clicked(event)">Purchase</a>
                 </div>
 
             </li>
@@ -28,13 +28,13 @@
                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dropdown01"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User&nbsp;</a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="signup"
+                    <a class="dropdown-item" href="/funkoshop/views/signup"
                         onclick="Controller.controllers.index.goToIndex_clicked(event)">Sign Up</a>
-                    <a class="dropdown-item" href="signin"
+                    <a class="dropdown-item" href="/funkoshop/views/signin"
                         onclick="Controller.controllers.index.goToIndex_clicked(event)">Sign In</a>
-                    <a class="dropdown-item" href="profile"
+                    <a class="dropdown-item" href="/funkoshop/views/profile"
                         onclick="Controller.controllers.index.goToIndex_clicked(event)">Profile</a>
-                    <a class="dropdown-item" href="index"
+                    <a class="dropdown-item" href="/funkoshop/views/index"
                         onclick="Controller.controllers.index.goToIndex_clicked(event)">Sign Out</a>
                 </div>
             </li>
@@ -42,19 +42,19 @@
     </div>
 
     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-        <a class="dropdown-item" href="cart" onclick="Controller.controllers.index.goToIndex_clicked(event)">Show
+        <a class="dropdown-item" href="/funkoshop/views/cart" onclick="Controller.controllers.index.goToIndex_clicked(event)">Show
             cart</a>
-        <a class="dropdown-item {{#unless cart.counter}}disabled{{/unless}}" href="purchase"
+        <a class="dropdown-item {{#unless counter}}disabled{{/unless}}" href="/funkoshop/views/purchase"
             onclick="Controller.controllers.index.goToIndex_clicked(event)">Purchase</a>
     </div>
     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-        <a class="dropdown-item" href="signup" onclick="Controller.controllers.index.goToIndex_clicked(event)">Sign
+        <a class="dropdown-item" href="/funkoshop/views/signup" onclick="Controller.controllers.index.goToIndex_clicked(event)">Sign
             Up</a>
-        <a class="dropdown-item" href="signin" onclick="Controller.controllers.index.goToIndex_clicked(event)">Sign
+        <a class="dropdown-item" href="/funkoshop/views/signin" onclick="Controller.controllers.index.goToIndex_clicked(event)">Sign
             In</a>
-        <a class="dropdown-item" href="profile"
+        <a class="dropdown-item" href="/funkoshop/views/profile"
             onclick="Controller.controllers.index.goToIndex_clicked(event)">Profile</a>
-        <a class="dropdown-item" href="index" onclick="Controller.controllers.index.goToIndex_clicked(event)">Sign
+        <a class="dropdown-item" href="/funkoshop/views/index" onclick="Controller.controllers.index.goToIndex_clicked(event)">Sign
             Out</a>
     </div>
 

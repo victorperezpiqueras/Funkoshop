@@ -1,28 +1,22 @@
 Controller.controllers.profile = {};
-/* Cargar el usuario en el sistema, Model.user */
 Controller.controllers.profile.refresh = function () {
     var context = {};
-    //Model.getProfile()
-    Model.getUser(Model.user)
+    var userId = localStorage.getItem("user");
+    Model.getUser(userId)
         .then((user) => {
             context.user = user;
         })
-        .then(()=>{
-            Model.getShoppingCart()
-            .then((cart) => {
-                context.cart = cart;
-            })
-        })
-        .then(() => {
-            return Model.cartItemCount()
-                .then((itemCounter) => {
-                    context.counter = itemCounter;
+        .then(() => {//load badge and render
+            Model.loadBadge()
+                .then((counter) => {
+                    context.counter = counter;
+                })
+                .then(() => {
                     View.renderer.profile.render(context);
                 });
         });
 
 }
-// FALTA BOTON DETAILS CUANDO ESTE EL ORDER
 Controller.controllers.profile.details_clicked = function (event, number) {
     event.preventDefault();
     Controller.router.go(event.target.href);

@@ -5,20 +5,15 @@ Controller.controllers.index.refresh = function () {
         .then((products) => {
             context.products = products;
         })
-        .then(()=>{
-            Model.getShoppingCart()
-            .then((cart) => {
-                context.cart = cart;
-            })
-        })
-        .then(() => {
-            return Model.cartItemCount()
-                .then((itemCounter) => {
-                    context.counter = itemCounter;
+        .then(() => {//load badge and render
+            Model.loadBadge()
+                .then((counter) => {
+                    context.counter = counter;
+                })
+                .then(() => {
                     View.renderer.index.render(context);
                 });
         });
-
 }
 Controller.controllers.index.buyProduct_clicked = function (event, pid) {
     event.preventDefault();

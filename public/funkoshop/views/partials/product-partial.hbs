@@ -11,7 +11,7 @@
                     <a class="btn btn-info product-button {{#if Model.user}}disabled{{/if}}" href="#" onclick="{{addProduct_onclick}}(event, {{id}});">
                         <i class="fas fa-cart-plus"></i>
                     </a>
-                    <a class="btn btn-info product-button {{#if Model.user}}disabled{{/if}}" href="cart" onclick="{{buyProduct_onclick}}(event, {{id}});">Buy</a>
+                    <a class="btn btn-info product-button" href="/funkoshop/views/cart" onclick="{{buyProduct_onclick}}(event, {{id}});">Buy</a>
                 </div>
 
             </div>

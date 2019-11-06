@@ -1,16 +1,12 @@
 Controller.controllers.signup = {};
-Controller.controllers.signup.refresh = function (matching) {
+Controller.controllers.signup.refresh = function () {
     var context = {};
-    Model.getShoppingCart()
-        .then((cart) => {
-            context.cart = cart;
+    //load badge and render
+    Model.loadBadge()
+        .then((counter) => {
+            context.counter = counter;
         })
         .then(() => {
-            Model.cartItemCount()
-                .then((itemCounter) => {
-                    console.log(itemCounter);
-                    context.counter = itemCounter;
-                    View.renderer.signup.render(context);
-                });
+            View.renderer.signup.render(context);
         });
 }

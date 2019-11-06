@@ -5,6 +5,12 @@ Controller.controllers.order.refresh = function (matching) {
         .then((order) => {
             context.order = order;
         })
+        .then(()=>{
+            Model.getShoppingCart()
+            .then((cart) => {
+                context.cart = cart;
+            })
+        })
         .then(() => {
             return Model.cartItemCount()
                 .then((itemCounter) => {

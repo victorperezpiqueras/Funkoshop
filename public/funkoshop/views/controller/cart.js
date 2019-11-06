@@ -4,8 +4,6 @@ Controller.controllers.cart.refresh = function () {
     Model.getShoppingCart()
         .then((cart) => {
             context.cart = cart;
-            //console.log(cart)
-            View.renderer.cart.render(context);
         })
         .then(() => {
             return Model.cartItemCount()

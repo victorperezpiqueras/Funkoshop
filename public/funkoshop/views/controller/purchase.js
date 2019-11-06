@@ -5,6 +5,12 @@ Controller.controllers.purchase.refresh = function (matching) {
         .then((cart) => {
             context.cart = cart;
         })
+        .then(()=>{
+            Model.getShoppingCart()
+            .then((cart) => {
+                context.cart = cart;
+            })
+        })
         .then(() => {
             return Model.cartItemCount()
                 .then((itemCounter) => {

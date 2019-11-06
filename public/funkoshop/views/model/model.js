@@ -187,7 +187,7 @@ Model.users = [
 
 
 Model.user = Model.users[0]._id;
-// Model.user = 1;
+//Model.user = localStorage.getItem("user");
 // Model.user = {
 
 // };
@@ -322,6 +322,7 @@ Model.signin = function (emailf, passwordf) {
             return new Promise(function (resolve, reject) {
                 setTimeout(function () {
                     Model.user = userf._id; /* Guardo el id loggeado */
+                    localStorage.setItem("user", Model.user);
                     // console.log('id del userf ' + Model.user);
                     resolve(userf);
                 }, 10);

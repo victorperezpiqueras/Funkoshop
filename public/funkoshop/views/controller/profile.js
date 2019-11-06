@@ -7,6 +7,12 @@ Controller.controllers.profile.refresh = function () {
         .then((user) => {
             context.user = user;
         })
+        .then(()=>{
+            Model.getShoppingCart()
+            .then((cart) => {
+                context.cart = cart;
+            })
+        })
         .then(() => {
             return Model.cartItemCount()
                 .then((itemCounter) => {

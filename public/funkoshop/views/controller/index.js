@@ -5,6 +5,12 @@ Controller.controllers.index.refresh = function () {
         .then((products) => {
             context.products = products;
         })
+        .then(()=>{
+            Model.getShoppingCart()
+            .then((cart) => {
+                context.cart = cart;
+            })
+        })
         .then(() => {
             return Model.cartItemCount()
                 .then((itemCounter) => {

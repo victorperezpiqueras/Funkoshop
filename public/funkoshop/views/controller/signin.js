@@ -1,11 +1,17 @@
 Controller.controllers.signin = {};
 Controller.controllers.signin.refresh = function () {
     var context = {};
-    Model.cartItemCount()
-        .then((itemCounter) => {
-            console.log(itemCounter);
-            context.counter = itemCounter;
-            View.renderer.signin.render(context);
+    Model.getShoppingCart()
+        .then((cart) => {
+            context.cart = cart;
+        })
+        .then(() => {
+            Model.cartItemCount()
+                .then((itemCounter) => {
+                    console.log(itemCounter);
+                    context.counter = itemCounter;
+                    View.renderer.signin.render(context);
+                });
         });
 }
 

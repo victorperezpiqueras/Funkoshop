@@ -186,11 +186,19 @@ Model.users = [
 ];
 
 
-Model.user = Model.users[0]._id;
-//Model.user = localStorage.getItem("user");
-// Model.user = {
+Model.user=null;
 
-// };
+
+/* SIGNOUT METHOD */
+Model.signOut = function() {
+    return new Promise(function(resolve,reject) {
+        setTimeout(() => {
+            Model.user=null;
+            console.log(Model.user);
+            resolve();
+        })
+    })
+}
 
 /* AUXILIAR METHODS */
 Model.getProducts = function () {
@@ -351,6 +359,7 @@ Model.findUser = function (emailf, passwordf) {
         }, 10);
     })
 }
+
 
 /* CART METHODS */
 Model.removeOneCartItem = function (pid) {

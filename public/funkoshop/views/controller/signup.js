@@ -12,7 +12,7 @@ Controller.controllers.signup.refresh = function () {
 
 }
 
-Controller.controllers.signup.signup_clicked = function (event, bid) {
+Controller.controllers.signup.signup_clicked = function (event) {
     event.preventDefault();
     var date = $('#birth').val();
     date = new Date(date);
@@ -33,8 +33,11 @@ Controller.controllers.signup.signup_clicked = function (event, bid) {
             shoppingCartItems: []
         }
     }
-    var ok = !userInfo.name.length || !userInfo.surname.length || !userInfo.address.length || !userInfo.birth.length || !userInfo.email.length || !userInfo.password.length || !userInfo.confirmpassword.length;
-    if (userInfo.password == userInfo.confirmpassword && !ok) {
+    console.log(userInfo)
+    var ok = userInfo.name.length && userInfo.surname.length && userInfo.address.length && userInfo.birth != null &&
+        userInfo.email.length && userInfo.password.length && userInfo.confirmpassword.length;
+
+    if ((userInfo.password == userInfo.confirmpassword) && ok) {
         Model.checkEmail(userInfo.email).then(function () {
             console.log('Email checked');
             Model.signup(userInfo).then(function () {
@@ -44,7 +47,7 @@ Controller.controllers.signup.signup_clicked = function (event, bid) {
         })
 
     } else {
-        console.log('MAL');
+        console.log('Couldnt sign up');
     }
     Controller.controllers.signup.refresh();
 }

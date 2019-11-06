@@ -5,16 +5,12 @@ Controller.controllers.order.refresh = function (matching) {
         .then((order) => {
             context.order = order;
         })
-        .then(()=>{
-            Model.getShoppingCart()
-            .then((cart) => {
-                context.cart = cart;
-            })
-        })
-        .then(() => {
-            return Model.cartItemCount()
-                .then((itemCounter) => {
-                    context.counter = itemCounter;
+        .then(() => {//load badge and render
+            Model.loadBadge()
+                .then((counter) => {
+                    context.counter = counter;
+                })
+                .then(() => {
                     View.renderer.order.render(context);
                 });
         });

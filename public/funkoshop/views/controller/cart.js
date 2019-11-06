@@ -1,21 +1,24 @@
 Controller.controllers.cart = {};
 Controller.controllers.cart.refresh = function () {
     var context = {};
-    Model.getShoppingCart()
+    var userId = localStorage.getItem("user");
+    Model.getShoppingCart(userId)
         .then((cart) => {
             context.cart = cart;
         })
-        .then(() => {
-            return Model.cartItemCount()
-                .then((itemCounter) => {
-                    context.counter = itemCounter;
+        .then(() => {//load badge and render
+            Model.loadBadge()
+                .then((counter) => {
+                    context.counter = counter;
+                })
+                .then(() => {
                     View.renderer.cart.render(context);
                 });
         });
 
 }
 Controller.controllers.cart.removeOneCartItem_clicked = function (event, pid) {
-    //event.preventDefault();
+    event.preventDefault();
     //add product:
     Model.removeOneCartItem(pid)
         .then((cart) => {
@@ -28,12 +31,11 @@ Controller.controllers.cart.removeOneCartItem_clicked = function (event, pid) {
         .then(Controller.controllers.cart.refresh());
 }
 Controller.controllers.cart.removeAllCartItem_clicked = function (event, pid) {
-    //event.preventDefault();
+    event.preventDefault();
     //add product:
     Model.removeAllCartItem(pid)
         .then(() => {
             console.log('Item removed successfully');
-            //console.log(Model.users[0].shoppingCart);
         })
         .catch((err) => {
             console.error('Item cannot be removed', err);

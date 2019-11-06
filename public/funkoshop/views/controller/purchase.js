@@ -1,20 +1,17 @@
 Controller.controllers.purchase = {};
-Controller.controllers.purchase.refresh = function (matching) {
+Controller.controllers.purchase.refresh = function () {
     var context = {};
-    Model.getShoppingCart()
+    var userId = localStorage.getItem("user");
+    Model.getShoppingCart(userId)
         .then((cart) => {
             context.cart = cart;
         })
-        .then(()=>{
-            Model.getShoppingCart()
-            .then((cart) => {
-                context.cart = cart;
-            })
-        })
-        .then(() => {
-            return Model.cartItemCount()
-                .then((itemCounter) => {
-                    context.counter = itemCounter;
+        .then(() => {//load badge and render
+            Model.loadBadge()
+                .then((counter) => {
+                    context.counter = counter;
+                })
+                .then(() => {
                     View.renderer.purchase.render(context);
                 });
         });
@@ -22,11 +19,10 @@ Controller.controllers.purchase.refresh = function (matching) {
 Controller.controllers.purchase.checkout_clicked = function (event) {
     event.preventDefault();
     var date = $('#purchase-date').val();
+    date = new Date(date);
     var address = $('#purchase-address').val();
     var cardHolder = $('#card-holder-name').val();
     var cardNumber = $('#card-number').val();
-    console.log(date);
-    console.log(address);
 
     Model.checkout(date, address, cardHolder, cardNumber)
         .then(() => {

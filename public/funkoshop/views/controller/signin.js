@@ -1,18 +1,15 @@
 Controller.controllers.signin = {};
 Controller.controllers.signin.refresh = function () {
     var context = {};
-    Model.getShoppingCart()
-        .then((cart) => {
-            context.cart = cart;
+    //load badge and render
+    Model.loadBadge()
+        .then((counter) => {
+            context.counter = counter;
         })
         .then(() => {
-            Model.cartItemCount()
-                .then((itemCounter) => {
-                    console.log(itemCounter);
-                    context.counter = itemCounter;
-                    View.renderer.signin.render(context);
-                });
+            View.renderer.signin.render(context);
         });
+
 }
 
 
@@ -22,14 +19,15 @@ Controller.controllers.signin.signin_clicked = function (event) {
     var email_put = $('#email').val();
     var password_put = $('#password').val();
 
-    console.log(email_put);
-    console.log(password_put);
+    //console.log(email_put);
+    //console.log(password_put);
 
     Model.signin(email_put, password_put)
         .then(() => {
-            console.log('Signin succesfull');
+            console.log('Signin successful');
             console.log('Current user signin ID: ' + Model.user);
-            Controller.router.go('/funkoshop/views/index');
+            //Controller.router.go('/funkoshop/views/index');
+            Controller.router.go(event.target.href);
         })
         .catch((error) => {
             console.log('User not exists', error);

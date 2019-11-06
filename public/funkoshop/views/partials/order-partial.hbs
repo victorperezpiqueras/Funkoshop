@@ -1,10 +1,9 @@
 <tr>
-    <td>{{date}}</td>
+    <td>{{formatDate date}}</td>
     <td>{{number}}</td>
     <td>{{total}}</td>
     <td>
-        {{!-- FALTA BOTON DETAILS --}}
-        <a class="btn btn-info" role="button" style="float: right;" href="order/{{number}}"
+        <a class="btn btn-info" role="button" style="float: right;" href="/funkoshop/views/order/{{number}}"
             onclick="Controller.controllers.profile.details_clicked(event,{{number}});">Details</a>
     </td>
 </tr>

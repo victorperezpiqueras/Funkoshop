@@ -110,7 +110,7 @@ Model.users = [
         name: 'user',
         surname: 'surname',
         email: 'email@email.com',
-        birth: '10/10/1998',
+        birth: new Date('10/10/1998'),
         address: 'Calle falsa 123',
         password: 'password',
         shoppingCart: {
@@ -140,7 +140,7 @@ Model.users = [
         name: 'user2',
         surname: 'surname2',
         email: 'email2@email.com',
-        birth: '10/10/1998',
+        birth: new Date('10/10/1998'),
         address: 'Calle falsa 123',
         password: 'password2',
         shoppingCart: {
@@ -186,13 +186,38 @@ Model.users = [
 ];
 
 
-Model.user = Model.users[0]._id;
-//Model.user = localStorage.getItem("user");
-// Model.user = {
+Model.user=null;
 
-// };
+
+/* SIGNOUT METHOD */
+Model.signOut = function() {
+    return new Promise(function(resolve,reject) {
+        setTimeout(() => {
+            Model.user=null;
+            console.log(Model.user);
+            resolve();
+        })
+    })
+}
 
 /* AUXILIAR METHODS */
+    //
+Model.loadBadge = function () {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            var userId = localStorage.getItem("user");
+            if (userId != null) {
+                Model.cartItemCount(userId)
+                    .then((itemCounter) => {
+                        resolve(itemCounter);
+                    });
+            }
+            else {
+                resolve(0);
+            }
+        });
+    });
+}
 Model.getProducts = function () {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -203,17 +228,17 @@ Model.getProducts = function () {
 Model.getUser = function (uid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            var user = Model.users.find(function (user) {
+            var user = Model.users.find(function (user) {//get cookie user
                 return user._id == uid;
             });
             resolve(user);
         });
     });
 }
-Model.getShoppingCart = function () {
+Model.getShoppingCart = function (userId) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.getUser(Model.user)
+            Model.getUser(userId)
                 .then((user) => {
                     //console.log(user)
                     resolve(user.shoppingCart);
@@ -251,7 +276,8 @@ Model.buy = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             //obtain the cart of the user
-            Model.getShoppingCart()
+            var userId = localStorage.getItem("user");
+            Model.getShoppingCart(userId)
                 .then((cart) => {
                     console.log(cart)
                     //search for an item that contains the product
@@ -300,10 +326,10 @@ Model.recalculateCart = function (cart) {
         });
     });
 };
-Model.cartItemCount = function () {
+Model.cartItemCount = function (userId) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.getShoppingCart()
+            Model.getShoppingCart(userId)
                 .then((cart) => {
                     var itemCount = 0;
                     cart.shoppingCartItems.forEach(item => {
@@ -352,11 +378,12 @@ Model.findUser = function (emailf, passwordf) {
     })
 }
 
+
 /* CART METHODS */
 Model.removeOneCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.getShoppingCart()
+            Model.getShoppingCart(localStorage.getItem("user"))
                 .then((cart) => {
                     cart.shoppingCartItems.forEach((item) => {
                         if (item.orderItemProduct.id == pid) {
@@ -381,7 +408,7 @@ Model.removeOneCartItem = function (pid) {
 Model.removeAllCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.getShoppingCart()
+            Model.getShoppingCart(localStorage.getItem("user"))
                 .then((cart) => {
                     //cart.shoppingCartItems.filter((item) => item.orderItemProduct.id == pid);
                     cart.shoppingCartItems.forEach((item) => {
@@ -406,7 +433,7 @@ Model.removeAllCartItem = function (pid) {
 Model.checkout = function (date, address, cardHolder, cardNumber) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.getShoppingCart()
+            Model.getShoppingCart(localStorage.getItem("user"))
                 .then((cart) => {
                     //create order:
                     var order = {

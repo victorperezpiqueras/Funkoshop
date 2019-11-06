@@ -1,20 +1,8 @@
 Controller.controllers.signup = {};
-Controller.controllers.signup.refresh = function (matching) {
+Controller.controllers.signup.refresh = function () {
     var context = {};
     View.renderer.signup.render(context);
-    // Model.getShoppingCart()
-    // .then((cart) => {
-    //     context.cart = cart;
-    // })
-    // .then(() => {
-    //     Model.cartItemCount()
-    //         .then((itemCounter) => {
-    //             console.log(itemCounter);
-    //             context.counter = itemCounter;
-    //             View.renderer.signup.render(context);
-    //         });
-    // });
-
+    
 }
 
 Controller.controllers.signup.signup_clicked = function (event, bid) {
@@ -50,3 +38,11 @@ Controller.controllers.signup.signup_clicked = function (event, bid) {
     }
 
 
+    //load badge and render
+    Model.loadBadge()
+        .then((counter) => {
+            context.counter = counter;
+        })
+        .then(() => {
+            View.renderer.signup.render(context);
+        });

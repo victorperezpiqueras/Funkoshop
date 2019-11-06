@@ -1,4 +1,4 @@
-Handlebars.registerHelper("prettifyDate", function (date) {
+Handlebars.registerHelper("formatDate", function (date) {
     var day = date.getDate();
     var month = date.getMonth();
     var year = date.getFullYear();

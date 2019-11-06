@@ -1,6 +1,7 @@
-{{> nav-partial }}
+<div class="container">
+    {{> nav-partial }}
 
-{{> header-partial }}
+    {{> header-partial }}
 
 <main>
     <div class="container">
@@ -19,7 +20,7 @@
                     placeholder="Address">
             </div>
             <div class="form-group">
-                <input type="date" class="form-control" id="birth" aria-describedby="birthHelp">
+                <input type="date" class="form-control" id="birth" aria-describedby="birthHelp" value="2019-11-30">
             </div>
             <div class="form-group">
                 <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
@@ -42,4 +43,5 @@
 </main>
 
 
-{{> footer-partial }}
+    {{> footer-partial }}
+</div>

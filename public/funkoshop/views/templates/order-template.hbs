@@ -1,0 +1,68 @@
+<div class="container">
+    {{> nav-partial }}
+
+    {{> header-partial }}
+
+    <main>
+        <h3 class="text-left"><b>{{order.number}}</b> </h3>
+        <hr />
+        <div class="container">
+            <div class="row">
+                <b>Date:</b>&nbsp;
+                <p>{{order.date}}</p>
+            </div>
+            <div class="row">
+                <b>Address:</b>&nbsp;
+                <p>{{order.address}}</p>
+            </div>
+            <div class="row">
+                <b>Card number:</b>&nbsp;
+                <p>{{order.cardNumber}}</p>
+            </div>
+            <div class="row">
+                <b>Card holder:</b>&nbsp;
+                <p>{{order.cardHolder}}</p>
+            </div>
+        </div>
+
+        <hr />
+        <br>
+        <h3 class="text-left"> <b>Products</b> </h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each order.orderItems}}
+                {{> purchase-item-partial this }}
+                {{/each}}
+               
+            </tbody>
+        </table>
+        <br>
+
+        <div class="container">
+            <div class="row">
+                <b>Subtotal:</b>&nbsp;
+                <p>{{formatPrice order.subtotal}}</p>
+            </div>
+            <div class="row">
+                <b>Tax:</b>&nbsp;
+                <p>{{formatPrice order.tax}}</p>
+            </div>
+            <div class="row">
+                <b>Total:</b>&nbsp;
+                <p>{{formatPrice order.total}}</p>
+            </div>
+        </div>
+
+        <br><br>
+    </main>
+
+    {{> footer-partial }}
+</div>

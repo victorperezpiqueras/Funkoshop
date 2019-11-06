@@ -13,35 +13,41 @@ Controller.router.route = function () {
   } else if (matching = path.match(/^\/funkoshop\/views\/signup$/)) {
     Controller.controllers.signup.refresh();
   } else if (matching = path.match(/^\/funkoshop\/views\/cart$/)) {
-    //Controller.controllers.cart.refresh();
-    Controller.controllers.index.refresh();
+    Controller.controllers.cart.refresh();
+  } else if (matching = path.match(/^\/funkoshop\/views\/purchase$/)) {
+    Controller.controllers.purchase.refresh();
+  } else if (matching = path.match(/^\/funkoshop\/views\/profile$/)) {
+    Controller.controllers.profile.refresh();
+  } else if (matching = path.match(/^\/funkoshop\/views\/order\/(\w*)$/)) {
+    Controller.controllers.order.refresh(matching);
   }
+
   else {
-    console.error('Page not found!');
+      console.error('Page not found!');
+    }
   }
-}
 
-Controller.router.go = function (url) {
-  history.pushState(null, '', url);
-  Controller.router.route();
-}
-
-Controller.messages = {};
-Controller.messages.errors = []
-Controller.messages.pushError = function (error) {
-  Controller.messages.errors.push(error);
-}
-Controller.messages.infos = []
-Controller.messages.pushInfo = function (info) {
-  Controller.messages.infos.push(info);
-}
-
-Controller.messages.popMessages = function () {
-  var result = {
-    errors: Controller.messages.errors.slice(),
-    infos: Controller.messages.infos.slice()
+  Controller.router.go = function (url) {
+    history.pushState(null, '', url);
+    Controller.router.route();
   }
-  Controller.messages.infos = [];
-  Controller.messages.errors = [];
-  return result;
-}
+
+  Controller.messages = {};
+  Controller.messages.errors = []
+  Controller.messages.pushError = function (error) {
+    Controller.messages.errors.push(error);
+  }
+  Controller.messages.infos = []
+  Controller.messages.pushInfo = function (info) {
+    Controller.messages.infos.push(info);
+  }
+
+  Controller.messages.popMessages = function () {
+    var result = {
+      errors: Controller.messages.errors.slice(),
+      infos: Controller.messages.infos.slice()
+    }
+    Controller.messages.infos = [];
+    Controller.messages.errors = [];
+    return result;
+  }

@@ -1,8 +1,19 @@
-
 var Model = {};
 
-
-Model.orders = [];
+Model.orders = [
+    {
+        number: 1,
+        date: null,
+        address: null,
+        subtotal: null,
+        tax: null,
+        total: null,
+        cardHolder: null,
+        cardNumber: 124214124,
+        user: null,
+        orderItems: null
+    }
+];
 Model.shoppingCarts = [];
 Model.items = [];
 Model.products = [
@@ -95,13 +106,43 @@ Model.products = [
 
 Model.users = [
     {
-        _id: '1',
+        _id: 1,
         name: 'user',
         surname: 'surname',
-        email: 'email',
+        email: 'email@email.com',
         birth: '10/10/1998',
         address: 'Calle falsa 123',
         password: 'password',
+        shoppingCart: {
+            subtotal: 0,
+            tax: 0.21,
+            total: 0,
+            shoppingCartItems: [/* 
+                {
+                    order: null,
+                    qty: 1,
+                    price: 20,
+                    total: 20,
+                    orderItemProduct: Model.products[0]
+                }
+             */]
+        },
+        userOrders: [ /*
+            {
+            date: '2019/10/31',
+            number: 11111111,
+            total: 20
+            } */
+        ]
+    },
+    {
+        _id: 2,
+        name: 'user2',
+        surname: 'surname2',
+        email: 'email2@email.com',
+        birth: '10/10/1998',
+        address: 'Calle falsa 123',
+        password: 'password2',
         shoppingCart: {
             subtotal: 0,
             tax: 0.2,
@@ -117,66 +158,108 @@ Model.users = [
              */]
         },
         userOrders: []
+    },
+    {
+        _id: '2',
+        name: 'user',
+        surname: 'surname',
+        email: 'email2@email.com',
+        birth: '10/10/1998',
+        address: 'Calle falsa 123',
+        password: 'password',
+        shoppingCart: {
+            subtotal: 0,
+            tax: 0.21,
+            total: 0,
+            shoppingCartItems: [/* 
+                {
+                    order: null,
+                    qty: 1,
+                    price: 20,
+                    total: 20,
+                    orderItemProduct: Model.products[0]
+                }
+             */]
+        },
+        userOrders: []
     }
 ];
 
+
 Model.user = Model.users[0]._id;
+//Model.user = localStorage.getItem("user");
+// Model.user = {
 
+// };
 
-
+/* AUXILIAR METHODS */
 Model.getProducts = function () {
     return new Promise(function (resolve, reject) {
-        setTimeout(function () {
+        setTimeout(() => {
             resolve(Model.products)
-        }, 100);
+        });
     });
 };
-
 Model.getUser = function (uid) {
     return new Promise(function (resolve, reject) {
-        setTimeout(function () {
+        setTimeout(() => {
             var user = Model.users.find(function (user) {
                 return user._id == uid;
             });
             resolve(user);
-        }, 100);
+        });
     });
 }
-
 Model.getShoppingCart = function () {
-    return Model.getUser(Model.user)
-        .then(function (user) {
-            return new Promise(function (resolve, reject) {
-                setTimeout(function () {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getUser(Model.user)
+                .then((user) => {
+                    //console.log(user)
                     resolve(user.shoppingCart);
-                }, 100);
-            });
+                });
         });
+    });
 }
 Model.getProduct = function (pid) {
     return new Promise(function (resolve, reject) {
-        setTimeout(function () {
+        setTimeout(() => {
             var product = Model.products.find(function (product) {
                 return product.id == pid;
             });
-            resolve(product);
-        }, 100);
+            if (product != null) {
+                resolve(product);
+            }
+            else {
+                reject("Product not found");
+            }
+        });
     });
 }
+Model.resetCart = function () {
+    var cart = {
+        subtotal: 0,
+        tax: 0.2,
+        total: 0,
+        shoppingCartItems: []
+    }
+    return cart;
+};
 
+/* INDEX METHODS */
 Model.buy = function (pid) {
     return new Promise(function (resolve, reject) {
-        setTimeout(function () {
+        setTimeout(() => {
             //obtain the cart of the user
             Model.getShoppingCart()
-                .then(function (cart) {
+                .then((cart) => {
+                    console.log(cart)
                     //search for an item that contains the product
                     var newItem = cart.shoppingCartItems.find(function (item) {
                         return item.orderItemProduct.id == pid;
                     });
-
                     Model.getProduct(pid)
-                        .then(function (product) {
+                        .then((product) => {
                             //if not found-->add a new item with a reference to the product
                             if (newItem == null) {
                                 newItem = {
@@ -192,63 +275,209 @@ Model.buy = function (pid) {
                                 newItem.qty++;
                                 newItem.total = (newItem.price * newItem.qty);
                             }
+                            return cart;//
+                        })
+                        .then((cart/**/) => {
+                            //recalculate shopping cart
+                            Model.recalculateCart(cart)
+                                .then(resolve(cart));
                         });
-
-                    //recalculate shopping cart
-                    Model.recalculateCart();
-                })
-            resolve();
-        }, 100);
+                });
+        });
     });
 }
-Model.recalculateCart = function () {
+Model.recalculateCart = function (cart) {
     return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-
-///fake async?
-            Model.getShoppingCart()
-                .then(function (cart) {
-                    var subtotal = 0;
-                    cart.shoppingCartItems.forEach(item => {
-                        subtotal += (item.total);
-                    });
-                    cart.subtotal = subtotal;
-                    cart.total = subtotal + (subtotal * cart.tax);
-                });
-////
-
-        }, 100);
+        setTimeout(() => {
+            var subtotal = 0;
+            cart.shoppingCartItems.forEach(item => {
+                subtotal += (item.total);
+            });
+            cart.subtotal = subtotal;
+            cart.total = subtotal + (subtotal * cart.tax);
+            ////
+            resolve(cart);
+        });
     });
 };
-
 Model.cartItemCount = function () {
     return new Promise(function (resolve, reject) {
-        setTimeout(function () {
+        setTimeout(() => {
             Model.getShoppingCart()
-                .then(function (cart) {
+                .then((cart) => {
                     var itemCount = 0;
                     cart.shoppingCartItems.forEach(item => {
                         itemCount += item.qty;
                     });
                     resolve(itemCount);
                 });
-        }, 100);
+        });
     });
-
 };
 
-
-Model.signup = function (userInfo) {
+/* SIGNIN METHODS */
+Model.signin = function (emailf, passwordf) {
+    return Model.findUser(emailf, passwordf)
+        .then(function (userf) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    Model.user = userf._id; /* Guardo el id loggeado */
+                    localStorage.setItem("user", Model.user);
+                    // console.log('id del userf ' + Model.user);
+                    resolve(userf);
+                }, 10);
+            })
+        })
+};
+Model.findUser = function (emailf, passwordf) {
+    console.log("Dentro de findUser");
     return new Promise(function (resolve, reject) {
+        console.log("Dentro de promise finduser");
         setTimeout(function () {
-            resolve(Model.products)
-        }, 100);
+            var i = 0;
+            var found = false;
+            console.log(Model.users);
+            while (i < Model.users.length && !found) { /* Para cuando se encuentra */
+                found = Model.users[i].email == emailf && Model.users[i].password == passwordf; /* Cuando es cumple pone a true la booleana */
+                i++;
+            }
+            if (found) {
+                // console.log('User position: ' + (i-1));
+                console.log('User exists!!');
+                resolve(Model.users[(i - 1)]); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
+            }
+            else
+                reject('User not found');
+        }, 10);
+    })
+}
+
+/* CART METHODS */
+Model.removeOneCartItem = function (pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getShoppingCart()
+                .then((cart) => {
+                    cart.shoppingCartItems.forEach((item) => {
+                        if (item.orderItemProduct.id == pid) {
+                            item.qty--;
+                            if (item.qty == 0) {
+                                var index = cart.shoppingCartItems.indexOf(item);
+                                if (index > -1) {
+                                    cart.shoppingCartItems.splice(index, 1);
+                                }
+                            }
+                        }
+                    });
+                    Model.recalculateCart(cart)
+                        .then((cart) => {
+                            resolve(cart);
+                        });
+                });
+
+        });
     });
 };
+Model.removeAllCartItem = function (pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getShoppingCart()
+                .then((cart) => {
+                    //cart.shoppingCartItems.filter((item) => item.orderItemProduct.id == pid);
+                    cart.shoppingCartItems.forEach((item) => {
+                        if (item.orderItemProduct.id == pid) {
+                            var index = cart.shoppingCartItems.indexOf(item);
+                            if (index > -1) {
+                                cart.shoppingCartItems.splice(index, 1);
+                            }
+                        }
+                    });
+                    //resolve(cart);
+                    Model.recalculateCart(cart)
+                        .then((cart) => {
+                            resolve(cart);
+                        });
+                });
+        });
+    });
+};
+
+/* PURCHASE METHODS */
+Model.checkout = function (date, address, cardHolder, cardNumber) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getShoppingCart()
+                .then((cart) => {
+                    //create order:
+                    var order = {
+                        number: Date.now(),
+                        date: date,
+                        address: address,
+                        cardHolder: cardHolder,
+                        cardNumber: cardNumber,
+                        subtotal: cart.subtotal,
+                        tax: cart.tax,
+                        total: cart.total,
+                        user: Model.user,
+                        orderItems: cart.shoppingCartItems
+                    }
+                    //add order to list
+                    Model.orders.push(order);
+                    //cart = Model.resetCart();
+                    Model.getUser(Model.user)
+                        .then((user) => {
+                            //add order and reset cart in user:
+                            user.shoppingCart = Model.resetCart();
+                            user.userOrders.push(order);
+                            resolve(Model.orders);
+                        })
+                });
+        });
+    })
+}
+
+/* PROFILE METHODS */
+/* Model.getProfile = function () {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getUser(Model.user)
+                .then((user) => {
+                    //console.log(user);
+                    resolve(user);
+                });
+        });
+    });
+} */
+/* Model.getOrders = function (user) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            //Model.getUser(Model.user)
+            //  .then((user) => {
+            resolve(user.userOrders);
+            // });
+        });
+    })
+} */
+/* ORDER METHODS */
+Model.getOrder = function (id) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            var foundOrder;
+            for (var order of Model.orders) {
+                if (order.number == id) {
+                    foundOrder = order;
+                    break;
+                }
+            }
+            resolve(foundOrder);
+        });
+    })
+}
 
 /*
 class User {
-    constructor(name, surname, email, birth, address, password) {
+    constructor(_id, name, surname, email, birth, address, password) {
+        this._id = _id;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -305,5 +534,52 @@ class Product {
 
 }
 */
+//SIGNUP METHODS
+Model.signup = function (userInfo) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+                var newuser = {
+                    _id: Date.now(),
+                    name: userInfo.name,
+                    surname: userInfo.surname,
+                    email: userInfo.email,
+                    birth: userInfo.birth,
+                    address: userInfo.address,
+                    password: userInfo.password,
+                }
+                
+                //add user to list
+                Model.users.push(newuser);
+                resolve();
+            
+        })
+    })
+}
 
-
+Model.checkEmail = function (emailf) {
+    console.log("Dentro de findEmail");
+    return new Promise(function (resolve, reject) {
+        console.log("Dentro de promise findEmail");
+        setTimeout(function () {
+            var i = 0;
+            var found = false;
+            console.log(Model.users);
+            while (i < Model.users.length && !found) { /* Para cuando se encuentra */
+                if (emailf == Model.users[i].email) {
+                    found = true;
+                }
+                i++;
+            }
+            if (!found) {
+                // console.log('User position: ' + (i-1));
+                console.log('Email is not already used');
+                resolve(); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
+            }
+            else{
+                console.log('Email already used');
+                reject();
+            }
+            
+        }, 10);
+    })
+}

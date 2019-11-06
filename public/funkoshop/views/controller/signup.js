@@ -2,6 +2,18 @@ Controller.controllers.signup = {};
 Controller.controllers.signup.refresh = function (matching) {
     var context = {};
     View.renderer.signup.render(context);
+    // Model.getShoppingCart()
+    // .then((cart) => {
+    //     context.cart = cart;
+    // })
+    // .then(() => {
+    //     Model.cartItemCount()
+    //         .then((itemCounter) => {
+    //             console.log(itemCounter);
+    //             context.counter = itemCounter;
+    //             View.renderer.signup.render(context);
+    //         });
+    // });
 
 }
 
@@ -17,28 +29,24 @@ Controller.controllers.signup.signup_clicked = function (event, bid) {
         confirmpassword: $('#confirmpassword').val()
     }
 
-    //var ok = !userInfo.name.length && !userInfo.surname.length && !userInfo.address.length && !userInfo.birth.length && !userInfo.email.length && !userInfo.password.length && !userInfo.confirmpassword.length;
     var ok = !userInfo.name.length || !userInfo.surname.length || !userInfo.address.length || !userInfo.birth.length || !userInfo.email.length || !userInfo.password.length || !userInfo.confirmpassword.length;
     var equalpasswd = false;
-    if (userInfo.password == userInfo.confirmpassword){
-        equalpasswd = true;
-        console.log('TRUE');
-    }
-    if (!ok && equalpasswd) {
-        Model.signup(userInfo)
-            .then(function () {
-                console.log('Comment added successfully');
-            })
-            .catch(function (err) {
-                console.error('Comment cannot be added', err);
-            })
-            .then(function () {
+    if (userInfo.password == userInfo.confirmpassword && !ok) {
+        Model.checkEmail(userInfo.email).then(function(){
+            console.log('Email checked');
+            Model.signup(userInfo).then(function () {
+                console.log('User added successfully');
                 Controller.router.go('/funkoshop/views/index');
             });
+
+        })
+    
     } else {
-        console.error('MAL');
+        console.log('MAL');
 
         this.refresh;
     }
 
-}
+    }
+
+

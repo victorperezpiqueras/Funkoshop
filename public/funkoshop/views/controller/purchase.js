@@ -19,11 +19,10 @@ Controller.controllers.purchase.refresh = function () {
 Controller.controllers.purchase.checkout_clicked = function (event) {
     event.preventDefault();
     var date = $('#purchase-date').val();
+    date = new Date(date);
     var address = $('#purchase-address').val();
     var cardHolder = $('#card-holder-name').val();
     var cardNumber = $('#card-number').val();
-    //console.log(date);
-    //console.log(address);
 
     Model.checkout(date, address, cardHolder, cardNumber)
         .then(() => {

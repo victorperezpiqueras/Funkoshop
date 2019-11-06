@@ -159,30 +159,7 @@ Model.users = [
         },
         userOrders: []
     },
-    {
-        _id: '2',
-        name: 'user',
-        surname: 'surname',
-        email: 'email2@email.com',
-        birth: '10/10/1998',
-        address: 'Calle falsa 123',
-        password: 'password',
-        shoppingCart: {
-            subtotal: 0,
-            tax: 0.21,
-            total: 0,
-            shoppingCartItems: [/* 
-                {
-                    order: null,
-                    qty: 1,
-                    price: 20,
-                    total: 20,
-                    orderItemProduct: Model.products[0]
-                }
-             */]
-        },
-        userOrders: []
-    }
+    
 ];
 
 
@@ -193,8 +170,9 @@ Model.user=null;
 Model.signOut = function() {
     return new Promise(function(resolve,reject) {
         setTimeout(() => {
-            Model.user=null;
-            console.log(Model.user);
+            Model.user=null
+            //console.log(Model.user);
+            localStorage.removeItem("user");
             resolve();
         })
     })
@@ -228,7 +206,7 @@ Model.getProducts = function () {
 Model.getUser = function (uid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            var user = Model.users.find(function (user) {//get cookie user
+            var user = Model.users.find(function (user) {
                 return user._id == uid;
             });
             resolve(user);
@@ -240,7 +218,6 @@ Model.getShoppingCart = function (userId) {
         setTimeout(() => {
             Model.getUser(userId)
                 .then((user) => {
-                    //console.log(user)
                     resolve(user.shoppingCart);
                 });
         });
@@ -383,11 +360,13 @@ Model.findUser = function (emailf, passwordf) {
 Model.removeOneCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.getShoppingCart(localStorage.getItem("user"))
+            var userId = localStorage.getItem("user");
+            Model.getShoppingCart(userId)
                 .then((cart) => {
                     cart.shoppingCartItems.forEach((item) => {
                         if (item.orderItemProduct.id == pid) {
                             item.qty--;
+                            item.total-=item.price;
                             if (item.qty == 0) {
                                 var index = cart.shoppingCartItems.indexOf(item);
                                 if (index > -1) {
@@ -396,21 +375,20 @@ Model.removeOneCartItem = function (pid) {
                             }
                         }
                     });
-                    Model.recalculateCart(cart)
+                     Model.recalculateCart(cart)
                         .then((cart) => {
                             resolve(cart);
-                        });
+                        }); 
                 });
-
         });
     });
 };
 Model.removeAllCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.getShoppingCart(localStorage.getItem("user"))
+            var userId = localStorage.getItem("user");
+            Model.getShoppingCart(userId)
                 .then((cart) => {
-                    //cart.shoppingCartItems.filter((item) => item.orderItemProduct.id == pid);
                     cart.shoppingCartItems.forEach((item) => {
                         if (item.orderItemProduct.id == pid) {
                             var index = cart.shoppingCartItems.indexOf(item);
@@ -419,7 +397,6 @@ Model.removeAllCartItem = function (pid) {
                             }
                         }
                     });
-                    //resolve(cart);
                     Model.recalculateCart(cart)
                         .then((cart) => {
                             resolve(cart);
@@ -433,7 +410,8 @@ Model.removeAllCartItem = function (pid) {
 Model.checkout = function (date, address, cardHolder, cardNumber) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.getShoppingCart(localStorage.getItem("user"))
+            var userId = localStorage.getItem("user");
+            Model.getShoppingCart(userId)
                 .then((cart) => {
                     //create order:
                     var order = {
@@ -445,13 +423,12 @@ Model.checkout = function (date, address, cardHolder, cardNumber) {
                         subtotal: cart.subtotal,
                         tax: cart.tax,
                         total: cart.total,
-                        user: Model.user,
+                        user: userId,
                         orderItems: cart.shoppingCartItems
                     }
                     //add order to list
                     Model.orders.push(order);
-                    //cart = Model.resetCart();
-                    Model.getUser(Model.user)
+                    Model.getUser(userId)
                         .then((user) => {
                             //add order and reset cart in user:
                             user.shoppingCart = Model.resetCart();
@@ -463,28 +440,6 @@ Model.checkout = function (date, address, cardHolder, cardNumber) {
     })
 }
 
-/* PROFILE METHODS */
-/* Model.getProfile = function () {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            Model.getUser(Model.user)
-                .then((user) => {
-                    //console.log(user);
-                    resolve(user);
-                });
-        });
-    });
-} */
-/* Model.getOrders = function (user) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            //Model.getUser(Model.user)
-            //  .then((user) => {
-            resolve(user.userOrders);
-            // });
-        });
-    })
-} */
 /* ORDER METHODS */
 Model.getOrder = function (id) {
     return new Promise(function (resolve, reject) {

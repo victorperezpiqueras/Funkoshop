@@ -1,6 +1,7 @@
 Controller.controllers.order = {};
 Controller.controllers.order.refresh = function (matching) {
     var context = {};
+    context.user=Model.user; //Load Model.user to disable or not the nav buttons
     Model.getOrder(matching[1])
         .then((order) => {
             context.order = order;

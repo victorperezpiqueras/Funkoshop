@@ -1,6 +1,7 @@
 Controller.controllers.cart = {};
 Controller.controllers.cart.refresh = function () {
     var context = {};
+    context.user=Model.user; //Load Model.user to disable or not the nav buttons
     var userId = localStorage.getItem("user");
     Model.getShoppingCart(userId)
         .then((cart) => {

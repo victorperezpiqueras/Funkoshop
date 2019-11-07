@@ -8,7 +8,7 @@ Controller.controllers.signout.goToIndexSignOut_clicked = function(event){
     Model.signOut()
         .then(() => {
             if(event.target.className.match(/disabled/)) return;
-            console.log('Current user signin ID (logout): ' + Model.user);
+            alert('You have been logged out.'); //Feedback for the user
             Controller.router.go(event.target.href);
         })
 

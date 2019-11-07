@@ -559,6 +559,7 @@ Model.checkEmail = function (emailf) {
                 resolve(); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
             }
             else{
+                alert("The email is already used");
                 console.log('Email already used');
                 reject();
             }

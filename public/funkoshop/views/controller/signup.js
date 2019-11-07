@@ -48,6 +48,12 @@ Controller.controllers.signup.signup_clicked = function (event) {
         })
 
     } else {
+        if(userInfo.password != userInfo.confirmpassword){
+            alert("The passwords do not match");
+        }
+        if( !ok){
+            alert("Some input field is empty");
+        }
         console.log('Couldnt sign up');
     }
     Controller.controllers.signup.refresh();

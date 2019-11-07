@@ -528,6 +528,7 @@ Model.signup = function (userInfo) {
                     birth: userInfo.birth,
                     address: userInfo.address,
                     password: userInfo.password,
+                    shoppingCart: userInfo.shoppingCart
                 }
                 
                 //add user to list

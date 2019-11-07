@@ -1,10 +1,14 @@
 Controller.controllers.index = {};
 Controller.controllers.index.refresh = function () {
     var context = {};
-    context.user=Model.user; //Load Model.user to disable or not the nav buttons
+    context.user = localStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+    console.log(context.user)
     Model.getProducts()
         .then((products) => {
             context.products = products;
+            context.products.forEach(product => {
+                product.user = context.user;
+            });
         })
         .then(() => {//load badge and render
             Model.loadBadge()

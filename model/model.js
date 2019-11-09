@@ -1,5 +1,171 @@
 var Model = {};
 
+Model.orders = [
+    {
+        number: 1,
+        date: null,
+        address: null,
+        subtotal: null,
+        tax: null,
+        total: null,
+        cardHolder: null,
+        cardNumber: 124214124,
+        user: null,
+        orderItems: null
+    }
+];
+Model.shoppingCarts = [];
+Model.items = [];
+Model.products = [
+    {
+        id: 1,
+        name: "Goku",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/goku.jpg"
+    },
+    {
+        id: 2,
+        name: "Naruto",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/naruto.jpg"
+    },
+    {
+        id: 3,
+        name: "Krillin",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/krillin.jpg"
+    },
+    {
+        id: 4,
+        name: "Batman",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/batman.jpg"
+    },
+    {
+        id: 5,
+        name: "Charmander",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/charmander.jpg"
+    },
+    {
+        id: 6,
+        name: "Harry Potter",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/harrypotter.jpg"
+    },
+    {
+        id: 7,
+        name: "Captain America",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/capitanamerica.jpg"
+    },
+    {
+        id: 8,
+        name: "Timón",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/timon.jpg"
+    },
+    {
+        id: 9,
+        name: "Groot",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/groot.jpg"
+    },
+    {
+        id: 10,
+        name: "Toothless",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/toothless.jpg"
+    },
+    {
+        id: 11,
+        name: "Logan",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/logan.jpg"
+    },
+    {
+        id: 12,
+        name: "Ironspider",
+        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+        price: 10,
+        url: "/images/ironspider.jpg"
+    }
+];
+
+
+Model.users = [
+    {
+        _id: 1,
+        name: 'user',
+        surname: 'surname',
+        email: 'email@email.com',
+        birth: new Date('10/10/1998'),
+        address: 'Calle falsa 123',
+        password: 'password',
+        shoppingCart: {
+            subtotal: 0,
+            tax: 0.21,
+            total: 0,
+            shoppingCartItems: [/* 
+                {
+                    order: null,
+                    qty: 1,
+                    price: 20,
+                    total: 20,
+                    orderItemProduct: Model.products[0]
+                }
+             */]
+        },
+        userOrders: [ /*
+            {
+            date: '2019/10/31',
+            number: 11111111,
+            total: 20
+            } */
+        ]
+    },
+    {
+        _id: 2,
+        name: 'user2',
+        surname: 'surname2',
+        email: 'email2@email.com',
+        birth: new Date('10/10/1998'),
+        address: 'Calle falsa 123',
+        password: 'password2',
+        shoppingCart: {
+            subtotal: 0,
+            tax: 0.2,
+            total: 0,
+            shoppingCartItems: [/* 
+                {
+                    order: null,
+                    qty: 1,
+                    price: 20,
+                    total: 20,
+                    orderItemProduct: Model.products[0]
+                }
+             */]
+        },
+        userOrders: []
+    },
+    
+];
+
+
+Model.user=null;
+
+
 /* SIGNOUT METHOD */
 Model.signOut = function() {
     return new Promise(function(resolve,reject) {
@@ -30,35 +196,13 @@ Model.loadBadge = function () {
         });
     });
 }
-//NEW API CALLS
 Model.getProducts = function () {
     return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: '/api/products',
-            method: 'GET',
-        })
-            .done(function (data) {
-                resolve(data);
-            })
-            .fail(function (err) {
-                reject(err);
-            });
+        setTimeout(() => {
+            resolve(Model.products)
+        });
     });
 };
-Model.getProduct = function (pid) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: '/api/products/'+pid,
-            method: 'GET',
-        })
-            .done(function (data) {
-                resolve(data);
-            })
-            .fail(function (err) {
-                reject(err);
-            });
-    });
-}
 Model.getUser = function (uid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -76,6 +220,21 @@ Model.getShoppingCart = function (userId) {
                 .then((user) => {
                     resolve(user.shoppingCart);
                 });
+        });
+    });
+}
+Model.getProduct = function (pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            var product = Model.products.find(function (product) {
+                return product.id == pid;
+            });
+            if (product != null) {
+                resolve(product);
+            }
+            else {
+                reject("Product not found");
+            }
         });
     });
 }
@@ -297,66 +456,6 @@ Model.getOrder = function (id) {
     })
 }
 
-/*
-class User {
-    constructor(_id, name, surname, email, birth, address, password) {
-        this._id = _id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.birth = birth;
-        this.address = address;
-        this.password = password;
-        this.shoppingCart = new ShoppingCart();
-        this.userOrders = [];
-    }
-
-}
-class Order {
-    constructor(number, date, address, subtotal, tax, total, cardHolder, cardNumber) {
-        this.number = number;
-        this.date = date;
-        this.address = address;
-        this.subtotal = subtotal;
-        this.tax = tax;
-        this.total = total;
-        this.cardHolder = cardHolder;
-        this.cardNumber = cardNumber;
-        this.user = {};
-        this.orderItems = [];
-    }
-
-}
-class ShoppingCart {
-    constructor(subtotal, tax, total) {
-        this.subtotal = subtotal;
-        this.tax = tax;
-        this.total = total;
-        this.shoppingCartItems = [];
-    }
-
-}
-class Item {
-    constructor(order, qty, price, total) {
-        this.order = order;
-        this.qty = qty;
-        this.price = price;
-        this.total = total;
-        this.orderItemProduct = {};
-    }
-
-}
-class Product {
-    constructor(id, name, description, price, url) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.url = url;
-    }
-
-}
-*/
 //SIGNUP METHODS
 Model.signup = function (userInfo) {
     return new Promise(function (resolve, reject) {
@@ -369,7 +468,6 @@ Model.signup = function (userInfo) {
                     birth: userInfo.birth,
                     address: userInfo.address,
                     password: userInfo.password,
-                    shoppingCart: userInfo.shoppingCart
                 }
                 
                 //add user to list
@@ -400,7 +498,6 @@ Model.checkEmail = function (emailf) {
                 resolve(); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
             }
             else{
-                alert("The email is already used");
                 console.log('Email already used');
                 reject();
             }
@@ -408,3 +505,6 @@ Model.checkEmail = function (emailf) {
         }, 10);
     })
 }
+
+/* global Model */
+module.exports = Model;

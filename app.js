@@ -7,6 +7,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var viewsRouter = require('./routes/views');
 
+//API router
+var apiRouter = require('./routes/api');
+
 var app = express();
 
 app.use(logger('dev'));
@@ -18,5 +21,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/funkoshop/views', viewsRouter);
+
+//use API
+app.use('/api', apiRouter);
 
 module.exports = app;

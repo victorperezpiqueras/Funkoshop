@@ -32,9 +32,24 @@ router.get('/users/:uid/cart/items', function (req, res, next) {
 });
 router.post('/users/:uid/cart/items/:pid', function (req, res, next) {
 });
+
 router.delete('/users/:uid/cart/items/:pid', function (req, res, next) {
+    model.userRemoveAllCartItem(req.params.uid, req.params.pid)
+        .then(function (cart) {
+            res.json(cart);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
 router.delete('/users/:uid/cart/items/:pid/decrease', function (req, res, next) {
+    model.userRemoveOneCartItem(req.params.uid, req.params.pid)
+        .then(function (cart) {
+            res.json(cart);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
 
 /* GET users */

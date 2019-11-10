@@ -159,18 +159,18 @@ Model.users = [
         },
         userOrders: []
     },
-    
+
 ];
 
 
-Model.user=null;
+Model.user = null;
 
 
 /* SIGNOUT METHOD */
-Model.signOut = function() {
-    return new Promise(function(resolve,reject) {
+Model.signOut = function () {
+    return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.user=null
+            Model.user = null
             //console.log(Model.user);
             localStorage.removeItem("user");
             resolve();
@@ -179,7 +179,7 @@ Model.signOut = function() {
 }
 
 /* AUXILIAR METHODS */
-    //
+//
 Model.loadBadge = function () {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -366,7 +366,7 @@ Model.removeOneCartItem = function (pid) {
                     cart.shoppingCartItems.forEach((item) => {
                         if (item.orderItemProduct.id == pid) {
                             item.qty--;
-                            item.total-=item.price;
+                            item.total -= item.price;
                             if (item.qty == 0) {
                                 var index = cart.shoppingCartItems.indexOf(item);
                                 if (index > -1) {
@@ -375,10 +375,10 @@ Model.removeOneCartItem = function (pid) {
                             }
                         }
                     });
-                     Model.recalculateCart(cart)
+                    Model.recalculateCart(cart)
                         .then((cart) => {
                             resolve(cart);
-                        }); 
+                        });
                 });
         });
     });
@@ -460,20 +460,20 @@ Model.getOrder = function (id) {
 Model.signup = function (userInfo) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-                var newuser = {
-                    _id: Date.now(),
-                    name: userInfo.name,
-                    surname: userInfo.surname,
-                    email: userInfo.email,
-                    birth: userInfo.birth,
-                    address: userInfo.address,
-                    password: userInfo.password,
-                }
-                
-                //add user to list
-                Model.users.push(newuser);
-                resolve();
-            
+            var newuser = {
+                _id: Date.now(),
+                name: userInfo.name,
+                surname: userInfo.surname,
+                email: userInfo.email,
+                birth: userInfo.birth,
+                address: userInfo.address,
+                password: userInfo.password,
+            }
+
+            //add user to list
+            Model.users.push(newuser);
+            resolve();
+
         })
     })
 }
@@ -497,14 +497,100 @@ Model.checkEmail = function (emailf) {
                 console.log('Email is not already used');
                 resolve(); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
             }
-            else{
+            else {
                 console.log('Email already used');
                 reject();
             }
-            
+
         }, 10);
     })
 }
+
+
+
+
+
+
+
+
+
+
+/* API METHODS */
+Model.userRemoveOneCartItem = function (userId, pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getShoppingCart(userId)
+                .then((cart) => {
+                    cart.shoppingCartItems.forEach((item) => {
+                        if (item.orderItemProduct.id == pid) {
+                            item.qty--;
+                            item.total -= item.price;
+                            if (item.qty == 0) {
+                                var index = cart.shoppingCartItems.indexOf(item);
+                                if (index > -1) {
+                                    cart.shoppingCartItems.splice(index, 1);
+                                }
+                            }
+                        }
+                    });
+                    Model.recalculateCart(cart)
+                        .then((cart) => {
+                            resolve(cart);
+                        });
+                });
+        });
+    });
+};
+Model.userRemoveAllCartItem = function (userId, pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getShoppingCart(userId)
+                .then((cart) => {
+                    cart.shoppingCartItems.forEach((item) => {
+                        if (item.orderItemProduct.id == pid) {
+                            var index = cart.shoppingCartItems.indexOf(item);
+                            if (index > -1) {
+                                cart.shoppingCartItems.splice(index, 1);
+                            }
+                        }
+                    });
+                    Model.recalculateCart(cart)
+                        .then((cart) => {
+                            resolve(cart);
+                        });
+                });
+        });
+    });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* global Model */
 module.exports = Model;

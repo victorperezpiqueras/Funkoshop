@@ -357,7 +357,53 @@ Model.findUser = function (emailf, passwordf) {
 
 
 /* CART METHODS */
-Model.removeOneCartItem = function (pid) {
+Model.removeOneCartItem = function (userId, pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getShoppingCart(userId)
+                .then((cart) => {
+                    cart.shoppingCartItems.forEach((item) => {
+                        if (item.orderItemProduct.id == pid) {
+                            item.qty--;
+                            item.total -= item.price;
+                            if (item.qty == 0) {
+                                var index = cart.shoppingCartItems.indexOf(item);
+                                if (index > -1) {
+                                    cart.shoppingCartItems.splice(index, 1);
+                                }
+                            }
+                        }
+                    });
+                    Model.recalculateCart(cart)
+                        .then((cart) => {
+                            resolve(cart);
+                        });
+                });
+        });
+    });
+};
+Model.removeAllCartItem = function (userId, pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getShoppingCart(userId)
+                .then((cart) => {
+                    cart.shoppingCartItems.forEach((item) => {
+                        if (item.orderItemProduct.id == pid) {
+                            var index = cart.shoppingCartItems.indexOf(item);
+                            if (index > -1) {
+                                cart.shoppingCartItems.splice(index, 1);
+                            }
+                        }
+                    });
+                    Model.recalculateCart(cart)
+                        .then((cart) => {
+                            resolve(cart);
+                        });
+                });
+        });
+    });
+};
+/* Model.removeOneCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             var userId = localStorage.getItem("user");
@@ -404,7 +450,7 @@ Model.removeAllCartItem = function (pid) {
                 });
         });
     });
-};
+}; */
 
 /* PURCHASE METHODS */
 Model.checkout = function (date, address, cardHolder, cardNumber) {
@@ -505,91 +551,6 @@ Model.checkEmail = function (emailf) {
         }, 10);
     })
 }
-
-
-
-
-
-
-
-
-
-
-/* API METHODS */
-Model.userRemoveOneCartItem = function (userId, pid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    cart.shoppingCartItems.forEach((item) => {
-                        if (item.orderItemProduct.id == pid) {
-                            item.qty--;
-                            item.total -= item.price;
-                            if (item.qty == 0) {
-                                var index = cart.shoppingCartItems.indexOf(item);
-                                if (index > -1) {
-                                    cart.shoppingCartItems.splice(index, 1);
-                                }
-                            }
-                        }
-                    });
-                    Model.recalculateCart(cart)
-                        .then((cart) => {
-                            resolve(cart);
-                        });
-                });
-        });
-    });
-};
-Model.userRemoveAllCartItem = function (userId, pid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    cart.shoppingCartItems.forEach((item) => {
-                        if (item.orderItemProduct.id == pid) {
-                            var index = cart.shoppingCartItems.indexOf(item);
-                            if (index > -1) {
-                                cart.shoppingCartItems.splice(index, 1);
-                            }
-                        }
-                    });
-                    Model.recalculateCart(cart)
-                        .then((cart) => {
-                            resolve(cart);
-                        });
-                });
-        });
-    });
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* global Model */

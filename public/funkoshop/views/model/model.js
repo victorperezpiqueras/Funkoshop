@@ -198,55 +198,36 @@ Model.findUser = function (emailf, passwordf) {
 
 
 /* CART METHODS */
-Model.removeOneCartItem = function (pid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var userId = localStorage.getItem("user");
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    cart.shoppingCartItems.forEach((item) => {
-                        if (item.orderItemProduct.id == pid) {
-                            item.qty--;
-                            item.total -= item.price;
-                            if (item.qty == 0) {
-                                var index = cart.shoppingCartItems.indexOf(item);
-                                if (index > -1) {
-                                    cart.shoppingCartItems.splice(index, 1);
-                                }
-                            }
-                        }
-                    });
-                    Model.recalculateCart(cart)
-                        .then((cart) => {
-                            resolve(cart);
-                        });
-                });
-        });
-    });
-};
 Model.removeAllCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var userId = localStorage.getItem("user");
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    cart.shoppingCartItems.forEach((item) => {
-                        if (item.orderItemProduct.id == pid) {
-                            var index = cart.shoppingCartItems.indexOf(item);
-                            if (index > -1) {
-                                cart.shoppingCartItems.splice(index, 1);
-                            }
-                        }
-                    });
-                    Model.recalculateCart(cart)
-                        .then((cart) => {
-                            resolve(cart);
-                        });
-                });
-        });
+        var userId = localStorage.getItem("user");
+        $.ajax({
+            url: '/api/users/' + userId + '/cart/items/' + pid,
+            method: 'DELETE',
+        })
+            .done(function (data) {
+                resolve(data);
+            })
+            .fail(function (err) {
+                reject(err);
+            });
     });
 };
-
+Model.removeOneCartItem = function (pid) {
+    return new Promise(function (resolve, reject) {
+        var userId = localStorage.getItem("user");
+        $.ajax({
+            url: '/api/users/' + userId + '/cart/items/' + pid + '/decrease',
+            method: 'DELETE',
+        })
+            .done(function (data) {
+                resolve(data);
+            })
+            .fail(function (err) {
+                reject(err);
+            });
+    });
+};
 /* PURCHASE METHODS */
 Model.checkout = function (date, address, cardHolder, cardNumber) {
     return new Promise(function (resolve, reject) {
@@ -294,6 +275,58 @@ Model.getOrder = function (id) {
             }
             resolve(foundOrder);
         });
+    })
+}
+
+//SIGNUP METHODS
+Model.signup = function (userInfo) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            var newuser = {
+                _id: Date.now(),
+                name: userInfo.name,
+                surname: userInfo.surname,
+                email: userInfo.email,
+                birth: userInfo.birth,
+                address: userInfo.address,
+                password: userInfo.password,
+                shoppingCart: userInfo.shoppingCart
+            }
+
+            //add user to list
+            Model.users.push(newuser);
+            resolve();
+
+        })
+    })
+}
+
+Model.checkEmail = function (emailf) {
+    console.log("Dentro de findEmail");
+    return new Promise(function (resolve, reject) {
+        console.log("Dentro de promise findEmail");
+        setTimeout(function () {
+            var i = 0;
+            var found = false;
+            console.log(Model.users);
+            while (i < Model.users.length && !found) { /* Para cuando se encuentra */
+                if (emailf == Model.users[i].email) {
+                    found = true;
+                }
+                i++;
+            }
+            if (!found) {
+                // console.log('User position: ' + (i-1));
+                console.log('Email is not already used');
+                resolve(); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
+            }
+            else {
+                alert("The email is already used");
+                console.log('Email already used');
+                reject();
+            }
+
+        }, 10);
     })
 }
 
@@ -357,85 +390,3 @@ class Product {
 
 }
 */
-//SIGNUP METHODS
-Model.signup = function (userInfo) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var newuser = {
-                _id: Date.now(),
-                name: userInfo.name,
-                surname: userInfo.surname,
-                email: userInfo.email,
-                birth: userInfo.birth,
-                address: userInfo.address,
-                password: userInfo.password,
-                shoppingCart: userInfo.shoppingCart
-            }
-
-            //add user to list
-            Model.users.push(newuser);
-            resolve();
-
-        })
-    })
-}
-
-Model.checkEmail = function (emailf) {
-    console.log("Dentro de findEmail");
-    return new Promise(function (resolve, reject) {
-        console.log("Dentro de promise findEmail");
-        setTimeout(function () {
-            var i = 0;
-            var found = false;
-            console.log(Model.users);
-            while (i < Model.users.length && !found) { /* Para cuando se encuentra */
-                if (emailf == Model.users[i].email) {
-                    found = true;
-                }
-                i++;
-            }
-            if (!found) {
-                // console.log('User position: ' + (i-1));
-                console.log('Email is not already used');
-                resolve(); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
-            }
-            else {
-                alert("The email is already used");
-                console.log('Email already used');
-                reject();
-            }
-
-        }, 10);
-    })
-}
-
-
-/* API METHODS */
-Model.userRemoveOneCartItem = function (userId, pid) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: '/api/users/' + userId + '/cart/items/' + pid,
-            method: 'DELETE',
-        })
-            .done(function (data) {
-                resolve(data);
-            })
-            .fail(function (err) {
-                reject(err);
-            });
-    });
-};
-Model.userRemoveAllCartItem = function (userId, pid) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: '/api/users/' + userId + '/cart/items/' + pid + '/decrease',
-            method: 'DELETE',
-        })
-            .done(function (data) {
-                resolve(data);
-            })
-            .fail(function (err) {
-                reject(err);
-            });
-    });
-};

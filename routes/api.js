@@ -34,7 +34,7 @@ router.post('/users/:uid/cart/items/:pid', function (req, res, next) {
 });
 
 router.delete('/users/:uid/cart/items/:pid', function (req, res, next) {
-    model.userRemoveAllCartItem(req.params.uid, req.params.pid)
+    model.removeAllCartItem(req.params.uid, req.params.pid)
         .then(function (cart) {
             res.json(cart);
         })
@@ -43,7 +43,7 @@ router.delete('/users/:uid/cart/items/:pid', function (req, res, next) {
         })
 });
 router.delete('/users/:uid/cart/items/:pid/decrease', function (req, res, next) {
-    model.userRemoveOneCartItem(req.params.uid, req.params.pid)
+    model.removeOneCartItem(req.params.uid, req.params.pid)
         .then(function (cart) {
             res.json(cart);
         })

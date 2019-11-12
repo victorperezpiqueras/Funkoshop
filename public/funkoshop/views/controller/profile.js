@@ -5,6 +5,7 @@ Controller.controllers.profile.refresh = function () {
     var userId = context.user;
     Model.getUser(userId)
         .then((user) => {
+            console.log("en el controller then ",user);
             context.user = user;
         })
         .then(() => {//load badge and render

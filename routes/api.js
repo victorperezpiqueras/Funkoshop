@@ -25,12 +25,35 @@ router.get('/products/:id', function (req, res, next) {
 
 /* GET shopping cart */
 router.get('/users/:uid/cart', function (req, res, next) {
-    //Model.getShoppingCart
+    model.getShoppingCart(req.params.uid)
+    .then(function(cart){
+        res.json(cart);
+    })
+    .catch(function(err){
+        res.status(500).json(err);
+    })
 });
+
+
 router.get('/users/:uid/cart/items', function (req, res, next) {
-    //Model.getShoppingCart.items
+    model.getShoppingCartItems(req.params.uid)
+    .then(function(cart){
+        res.json(cart);
+    })
+    .catch(function(err){
+        res.status(500).json(err);
+    })
 });
+
+
 router.post('/users/:uid/cart/items/:pid', function (req, res, next) {
+    model.buy(req.params.uid, req.params.pid)
+        .then(function (cart) {
+            res.json(cart);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
 
 router.delete('/users/:uid/cart/items/:pid', function (req, res, next) {

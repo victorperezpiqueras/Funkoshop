@@ -240,6 +240,21 @@ Model.getShoppingCart = function (userId) {
         });
     });
 }
+
+Model.getShoppingCartItems = function(userId){
+    return new Promise(function(resolve, reject){
+        setTimeout(()=> {
+            for (var user of Model.users){
+                if (user._id == userId){
+                    for (var shoppingCart of user.shoppingCart){
+                        resolve(order.orderItems);
+                    }
+                }
+            }
+        })
+    })
+}
+
 Model.getProduct = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -413,6 +428,8 @@ Model.removeAllCartItem = function (userId, pid) {
         });
     });
 };
+
+
 /* Model.removeOneCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {

@@ -127,12 +127,19 @@ Model.users = [
                 }
              */]
         },
-        userOrders: [ /*
+        userOrders: [ 
             {
             date: '2019/10/31',
             number: 11111111,
-            total: 20
-            } */
+            total: 20,
+            orderItems: [{
+                id: 1,
+                name: "Goku",
+                description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+                price: 10,
+                url: "/images/goku.jpg"
+            }]
+            } 
         ]
     },
     {
@@ -440,7 +447,10 @@ Model.checkout = function (date, address, cardHolder, cardNumber) {
     })
 }
 
+
+///////////////////
 /* ORDER METHODS */
+///////////////////
 Model.getOrder = function (id) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -455,6 +465,70 @@ Model.getOrder = function (id) {
         });
     })
 }
+
+Model.getUserOrders = function (uid){
+    return new Promise(function(resolve, reject){
+        setTimeout(()=> {
+            for (var user of Model.users){
+                if (user._id == uid){
+                    //break
+                    resolve(user.userOrders);
+                }
+            }
+        })
+    })
+}
+
+Model.postUserOrder = function (uid, order){
+    console.log(uid, order);
+    return new Promise(function(resolve, reject){
+        setTimeout(()=> {
+            for (var user of Model.users){
+                if (user._id == uid){
+                    //break
+                    user.userOrders.push(order);
+                    resolve(order);
+                }
+            }
+        })
+    })
+}
+
+Model.getUserOrdersByNumber = function(uid, number){
+    return new Promise(function(resolve, reject){
+        console.log(Model);
+        console.log(uid,number);
+        setTimeout(()=> {
+            for (var user of Model.users){
+                if (user._id == uid){
+                    for (var order of user.userOrders){
+                        if(order.number == number){
+                            console.log(order);
+                            resolve(order);
+                        }
+                    }
+                }
+            }
+        })
+    })
+}
+
+Model.getUserOrderItems = function(uid, number){
+    return new Promise(function(resolve, reject){
+        setTimeout(()=> {
+            for (var user of Model.users){
+                if (user._id == uid){
+                    for (var order of user.userOrders){
+                        if(order.number == number){
+                            resolve(order.orderItems);
+                        }
+                    }
+                }
+            }
+        })
+    })
+}
+
 
 //SIGNUP METHODS
 Model.signup = function (userInfo) {

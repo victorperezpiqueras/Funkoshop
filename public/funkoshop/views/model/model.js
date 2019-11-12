@@ -297,6 +297,70 @@ Model.getOrder = function (id) {
     })
 }
 
+/* PRACTICE 3 ORDER*/ 
+
+Model.getUserOrders = function(uid){
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/'+uid+'/orders',
+            method:'GET'
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
+}
+
+Model.postUserOrders = function (uid, order){
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/'+uid+'/orders',
+            method:'POST',
+            data: order
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
+}
+
+Model.getUserOrdersByNumber = function(uid, number){
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/' + uid + '/orders/' + number,
+            method:'GET'
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
+}
+
+Model.getUserOrderItems = function(uid, number){
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/' + uid + '/orders/' + number + '/items',
+            method:'GET'
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
+}
+
+
 /*
 class User {
     constructor(_id, name, surname, email, birth, address, password) {

@@ -50,12 +50,45 @@ router.get('/users/profile', function (req, res, next) {
 
 /* GET orders */
 router.get('/users/:uid/orders', function (req, res, next) {
+    model.getUserOrders(req.params.uid)
+        .then(function (uid) {
+            res.json(uid);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
+
 router.post('/users/:uid/orders', function (req, res, next) {
+    var order = req.body;
+    console.log(order);
+    model.postUserOrder(req.params.uid, order)
+        .then(function (uid) {
+            res.json(uid);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
+
 router.get('/users/:uid/orders/:number', function (req, res, next) {
+    model.getUserOrdersByNumber(req.params.uid, req.params.number)
+        .then(function (order) { //LO QUE NOS DEVUELVE RESOLVE
+            res.json(order);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
+
 router.get('/users/:uid/orders/:number/items', function (req, res, next) {
+    model.getUserOrderItems(req.params.uid, req.params.number)
+        .then(function (order) { //LO QUE NOS DEVUELVE RESOLVE
+            res.json(order);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
 
 

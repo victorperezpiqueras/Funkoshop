@@ -189,55 +189,36 @@ Model.signin = function (emailf, passwordf) { //FUNCIONA
 
 
 /* CART METHODS */
-Model.removeOneCartItem = function (pid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var userId = localStorage.getItem("user");
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    cart.shoppingCartItems.forEach((item) => {
-                        if (item.orderItemProduct.id == pid) {
-                            item.qty--;
-                            item.total -= item.price;
-                            if (item.qty == 0) {
-                                var index = cart.shoppingCartItems.indexOf(item);
-                                if (index > -1) {
-                                    cart.shoppingCartItems.splice(index, 1);
-                                }
-                            }
-                        }
-                    });
-                    Model.recalculateCart(cart)
-                        .then((cart) => {
-                            resolve(cart);
-                        });
-                });
-        });
-    });
-};
 Model.removeAllCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var userId = localStorage.getItem("user");
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    cart.shoppingCartItems.forEach((item) => {
-                        if (item.orderItemProduct.id == pid) {
-                            var index = cart.shoppingCartItems.indexOf(item);
-                            if (index > -1) {
-                                cart.shoppingCartItems.splice(index, 1);
-                            }
-                        }
-                    });
-                    Model.recalculateCart(cart)
-                        .then((cart) => {
-                            resolve(cart);
-                        });
-                });
-        });
+        var userId = localStorage.getItem("user");
+        $.ajax({
+            url: '/api/users/' + userId + '/cart/items/' + pid,
+            method: 'DELETE',
+        })
+            .done(function (data) {
+                resolve(data);
+            })
+            .fail(function (err) {
+                reject(err);
+            });
     });
 };
-
+Model.removeOneCartItem = function (pid) {
+    return new Promise(function (resolve, reject) {
+        var userId = localStorage.getItem("user");
+        $.ajax({
+            url: '/api/users/' + userId + '/cart/items/' + pid + '/decrease',
+            method: 'DELETE',
+        })
+            .done(function (data) {
+                resolve(data);
+            })
+            .fail(function (err) {
+                reject(err);
+            });
+    });
+};
 /* PURCHASE METHODS */
 Model.checkout = function (date, address, cardHolder, cardNumber) {
     return new Promise(function (resolve, reject) {
@@ -288,6 +269,7 @@ Model.getOrder = function (id) {
     })
 }
 
+
 //SIGNUP METHODS
 Model.signup = function (userInfo) {
     return new Promise(function (resolve, reject) {
@@ -305,4 +287,131 @@ Model.signup = function (userInfo) {
     });
 
 }
+
+
+/* PRACTICE 3 ORDER*/ 
+
+Model.getUserOrders = function(uid){
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/'+uid+'/orders',
+            method:'GET'
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
+}
+
+Model.postUserOrders = function (uid, order){
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/'+uid+'/orders',
+            method:'POST',
+            data: order
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
+}
+
+Model.getUserOrdersByNumber = function(uid, number){
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/' + uid + '/orders/' + number,
+            method:'GET'
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
+}
+
+Model.getUserOrderItems = function(uid, number){
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/' + uid + '/orders/' + number + '/items',
+            method:'GET'
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
+}
+
+
+
+/*
+class User {
+    constructor(_id, name, surname, email, birth, address, password) {
+        this._id = _id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.birth = birth;
+        this.address = address;
+        this.password = password;
+        this.shoppingCart = new ShoppingCart();
+        this.userOrders = [];
+    }
+
+}
+class Order {
+    constructor(number, date, address, subtotal, tax, total, cardHolder, cardNumber) {
+        this.number = number;
+        this.date = date;
+        this.address = address;
+        this.subtotal = subtotal;
+        this.tax = tax;
+        this.total = total;
+        this.cardHolder = cardHolder;
+        this.cardNumber = cardNumber;
+        this.user = {};
+        this.orderItems = [];
+    }
+
+}
+class ShoppingCart {
+    constructor(subtotal, tax, total) {
+        this.subtotal = subtotal;
+        this.tax = tax;
+        this.total = total;
+        this.shoppingCartItems = [];
+    }
+
+}
+class Item {
+    constructor(order, qty, price, total) {
+        this.order = order;
+        this.qty = qty;
+        this.price = price;
+        this.total = total;
+        this.orderItemProduct = {};
+    }
+
+}
+class Product {
+    constructor(id, name, description, price, url) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.url = url;
+    }
+
+}
+*/
 

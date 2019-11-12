@@ -32,9 +32,24 @@ router.get('/users/:uid/cart/items', function (req, res, next) {
 });
 router.post('/users/:uid/cart/items/:pid', function (req, res, next) {
 });
+
 router.delete('/users/:uid/cart/items/:pid', function (req, res, next) {
+    model.removeAllCartItem(req.params.uid, req.params.pid)
+        .then(function (cart) {
+            res.json(cart);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
 router.delete('/users/:uid/cart/items/:pid/decrease', function (req, res, next) {
+    model.removeOneCartItem(req.params.uid, req.params.pid)
+        .then(function (cart) {
+            res.json(cart);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
 
 /* GET users */
@@ -73,12 +88,45 @@ router.get('/users/:uid/profile', function (req, res, next) { //Hay que añadir 
 
 /* GET orders */
 router.get('/users/:uid/orders', function (req, res, next) {
+    model.getUserOrders(req.params.uid)
+        .then(function (uid) {
+            res.json(uid);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
+
 router.post('/users/:uid/orders', function (req, res, next) {
+    var order = req.body;
+    console.log(order);
+    model.postUserOrder(req.params.uid, order)
+        .then(function (uid) {
+            res.json(uid);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
+
 router.get('/users/:uid/orders/:number', function (req, res, next) {
+    model.getUserOrdersByNumber(req.params.uid, req.params.number)
+        .then(function (order) { //LO QUE NOS DEVUELVE RESOLVE
+            res.json(order);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
+
 router.get('/users/:uid/orders/:number/items', function (req, res, next) {
+    model.getUserOrderItems(req.params.uid, req.params.number)
+        .then(function (order) { //LO QUE NOS DEVUELVE RESOLVE
+            res.json(order);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
 
 

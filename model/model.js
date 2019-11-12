@@ -127,12 +127,19 @@ Model.users = [
                 }
              */]
         },
-        userOrders: [ /*
+        userOrders: [ 
             {
             date: '2019/10/31',
             number: 11111111,
-            total: 20
-            } */
+            total: 20,
+            orderItems: [{
+                id: 1,
+                name: "Goku",
+                description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+                price: 10,
+                url: "/images/goku.jpg"
+            }]
+            } 
         ]
     },
     {
@@ -362,7 +369,53 @@ Model.findUser = function (emailf, passwordf) {
 
 
 /* CART METHODS */
-Model.removeOneCartItem = function (pid) {
+Model.removeOneCartItem = function (userId, pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getShoppingCart(userId)
+                .then((cart) => {
+                    cart.shoppingCartItems.forEach((item) => {
+                        if (item.orderItemProduct.id == pid) {
+                            item.qty--;
+                            item.total -= item.price;
+                            if (item.qty == 0) {
+                                var index = cart.shoppingCartItems.indexOf(item);
+                                if (index > -1) {
+                                    cart.shoppingCartItems.splice(index, 1);
+                                }
+                            }
+                        }
+                    });
+                    Model.recalculateCart(cart)
+                        .then((cart) => {
+                            resolve(cart);
+                        });
+                });
+        });
+    });
+};
+Model.removeAllCartItem = function (userId, pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getShoppingCart(userId)
+                .then((cart) => {
+                    cart.shoppingCartItems.forEach((item) => {
+                        if (item.orderItemProduct.id == pid) {
+                            var index = cart.shoppingCartItems.indexOf(item);
+                            if (index > -1) {
+                                cart.shoppingCartItems.splice(index, 1);
+                            }
+                        }
+                    });
+                    Model.recalculateCart(cart)
+                        .then((cart) => {
+                            resolve(cart);
+                        });
+                });
+        });
+    });
+};
+/* Model.removeOneCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             var userId = localStorage.getItem("user"); //IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE
@@ -409,7 +462,7 @@ Model.removeAllCartItem = function (pid) {
                 });
         });
     });
-};
+}; */
 
 /* PURCHASE METHODS */
 Model.checkout = function (date, address, cardHolder, cardNumber) {
@@ -445,7 +498,10 @@ Model.checkout = function (date, address, cardHolder, cardNumber) {
     })
 }
 
+
+///////////////////
 /* ORDER METHODS */
+///////////////////
 Model.getOrder = function (id) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -460,6 +516,70 @@ Model.getOrder = function (id) {
         });
     })
 }
+
+Model.getUserOrders = function (uid){
+    return new Promise(function(resolve, reject){
+        setTimeout(()=> {
+            for (var user of Model.users){
+                if (user._id == uid){
+                    //break
+                    resolve(user.userOrders);
+                }
+            }
+        })
+    })
+}
+
+Model.postUserOrder = function (uid, order){
+    console.log(uid, order);
+    return new Promise(function(resolve, reject){
+        setTimeout(()=> {
+            for (var user of Model.users){
+                if (user._id == uid){
+                    //break
+                    user.userOrders.push(order);
+                    resolve(order);
+                }
+            }
+        })
+    })
+}
+
+Model.getUserOrdersByNumber = function(uid, number){
+    return new Promise(function(resolve, reject){
+        console.log(Model);
+        console.log(uid,number);
+        setTimeout(()=> {
+            for (var user of Model.users){
+                if (user._id == uid){
+                    for (var order of user.userOrders){
+                        if(order.number == number){
+                            console.log(order);
+                            resolve(order);
+                        }
+                    }
+                }
+            }
+        })
+    })
+}
+
+Model.getUserOrderItems = function(uid, number){
+    return new Promise(function(resolve, reject){
+        setTimeout(()=> {
+            for (var user of Model.users){
+                if (user._id == uid){
+                    for (var order of user.userOrders){
+                        if(order.number == number){
+                            resolve(order.orderItems);
+                        }
+                    }
+                }
+            }
+        })
+    })
+}
+
 
 //SIGNUP METHODS
 

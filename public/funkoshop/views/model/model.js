@@ -5,7 +5,6 @@ var Model = {};
 Model.signOut = function () {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.user = null
             localStorage.removeItem("user");
             resolve();
         })

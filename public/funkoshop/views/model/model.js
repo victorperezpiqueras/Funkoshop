@@ -1,10 +1,12 @@
 var Model = {};
 
+// Model.user=null;
+
 /* SIGNOUT METHOD */
-Model.signOut = function() {
-    return new Promise(function(resolve,reject) {
+Model.signOut = function () {
+    return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            Model.user=null
+            Model.user = null
             //console.log(Model.user);
             localStorage.removeItem("user");
             resolve();
@@ -13,7 +15,7 @@ Model.signOut = function() {
 }
 
 /* AUXILIAR METHODS */
-    //
+//
 Model.loadBadge = function () {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -48,7 +50,7 @@ Model.getProducts = function () {
 Model.getProduct = function (pid) {
     return new Promise(function (resolve, reject) {
         $.ajax({
-            url: '/api/products/'+pid,
+            url: '/api/products/' + pid,
             method: 'GET',
         })
             .done(function (data) {
@@ -59,14 +61,21 @@ Model.getProduct = function (pid) {
             });
     });
 }
-Model.getUser = function (uid) {
+
+Model.getUser = function (uid) { //FUNCIONA P3
+    console.log("dentro del getUser client. Userid:", uid);
     return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var user = Model.users.find(function (user) {
-                return user._id == uid;
-            });
-            resolve(user);
-        });
+        uid = localStorage.getItem("user"); //Cogemos el id de localstorage
+        $.ajax({
+            url: '/api/users/' + uid + '/profile',
+            method: 'GET'
+        })
+            .done(function (user) {
+                resolve(user);
+            })
+            .fail(function (err) {
+                reject(err);
+            })
     });
 }
 Model.getShoppingCart = function (userId) {
@@ -159,42 +168,24 @@ Model.cartItemCount = function (userId) {
     });
 };
 
-/* SIGNIN METHODS */
-Model.signin = function (emailf, passwordf) {
-    return Model.findUser(emailf, passwordf)
-        .then(function (userf) {
-            return new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                    Model.user = userf._id; /* Guardo el id loggeado */
-                    localStorage.setItem("user", Model.user);
-                    // console.log('id del userf ' + Model.user);
-                    resolve(userf);
-                }, 10);
-            })
-        })
-};
-Model.findUser = function (emailf, passwordf) {
-    console.log("Dentro de findUser");
+/* SIGNIN METHOD - CLIENT */
+Model.signin = function (emailf, passwordf) { //FUNCIONA
     return new Promise(function (resolve, reject) {
-        console.log("Dentro de promise finduser");
-        setTimeout(function () {
-            var i = 0;
-            var found = false;
-            console.log(Model.users);
-            while (i < Model.users.length && !found) { /* Para cuando se encuentra */
-                found = Model.users[i].email == emailf && Model.users[i].password == passwordf; /* Cuando es cumple pone a true la booleana */
-                i++;
-            }
-            if (found) {
-                // console.log('User position: ' + (i-1));
-                console.log('User exists!!');
-                resolve(Model.users[(i - 1)]); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
-            }
-            else
-                reject('User not found');
-        }, 10);
-    })
-}
+        $.ajax({
+            url: '/api/users/signin',
+            method: 'POST',
+            data: { email: emailf, password: passwordf }
+        })
+            .done(function (user) {
+                localStorage.setItem("user", user._id); //Almacenamos el id en localstorage
+                resolve();
+            })
+            .fail(function (err) {
+                reject(err);
+            });
+    });
+};
+
 
 
 /* CART METHODS */
@@ -207,7 +198,7 @@ Model.removeOneCartItem = function (pid) {
                     cart.shoppingCartItems.forEach((item) => {
                         if (item.orderItemProduct.id == pid) {
                             item.qty--;
-                            item.total-=item.price;
+                            item.total -= item.price;
                             if (item.qty == 0) {
                                 var index = cart.shoppingCartItems.indexOf(item);
                                 if (index > -1) {
@@ -216,10 +207,10 @@ Model.removeOneCartItem = function (pid) {
                             }
                         }
                     });
-                     Model.recalculateCart(cart)
+                    Model.recalculateCart(cart)
                         .then((cart) => {
                             resolve(cart);
-                        }); 
+                        });
                 });
         });
     });
@@ -297,114 +288,21 @@ Model.getOrder = function (id) {
     })
 }
 
-/*
-class User {
-    constructor(_id, name, surname, email, birth, address, password) {
-        this._id = _id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.birth = birth;
-        this.address = address;
-        this.password = password;
-        this.shoppingCart = new ShoppingCart();
-        this.userOrders = [];
-    }
-
-}
-class Order {
-    constructor(number, date, address, subtotal, tax, total, cardHolder, cardNumber) {
-        this.number = number;
-        this.date = date;
-        this.address = address;
-        this.subtotal = subtotal;
-        this.tax = tax;
-        this.total = total;
-        this.cardHolder = cardHolder;
-        this.cardNumber = cardNumber;
-        this.user = {};
-        this.orderItems = [];
-    }
-
-}
-class ShoppingCart {
-    constructor(subtotal, tax, total) {
-        this.subtotal = subtotal;
-        this.tax = tax;
-        this.total = total;
-        this.shoppingCartItems = [];
-    }
-
-}
-class Item {
-    constructor(order, qty, price, total) {
-        this.order = order;
-        this.qty = qty;
-        this.price = price;
-        this.total = total;
-        this.orderItemProduct = {};
-    }
-
-}
-class Product {
-    constructor(id, name, description, price, url) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.url = url;
-    }
-
-}
-*/
 //SIGNUP METHODS
 Model.signup = function (userInfo) {
     return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-                var newuser = {
-                    _id: Date.now(),
-                    name: userInfo.name,
-                    surname: userInfo.surname,
-                    email: userInfo.email,
-                    birth: userInfo.birth,
-                    address: userInfo.address,
-                    password: userInfo.password,
-                    shoppingCart: userInfo.shoppingCart
-                }
-                
-                //add user to list
-                Model.users.push(newuser);
-                resolve();
-            
+        $.ajax({
+            url: '/api/users/signup',
+            method: 'POST',
+            data: userInfo
         })
-    })
+            .done(function (user) {
+                resolve(user);
+            })
+            .fail(function (error) {
+                reject(error);
+            });
+    });
+
 }
 
-Model.checkEmail = function (emailf) {
-    console.log("Dentro de findEmail");
-    return new Promise(function (resolve, reject) {
-        console.log("Dentro de promise findEmail");
-        setTimeout(function () {
-            var i = 0;
-            var found = false;
-            console.log(Model.users);
-            while (i < Model.users.length && !found) { /* Para cuando se encuentra */
-                if (emailf == Model.users[i].email) {
-                    found = true;
-                }
-                i++;
-            }
-            if (!found) {
-                // console.log('User position: ' + (i-1));
-                console.log('Email is not already used');
-                resolve(); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
-            }
-            else{
-                alert("The email is already used");
-                console.log('Email already used');
-                reject();
-            }
-            
-        }, 10);
-    })
-}

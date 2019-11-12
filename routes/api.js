@@ -38,14 +38,37 @@ router.delete('/users/:uid/cart/items/:pid/decrease', function (req, res, next) 
 });
 
 /* GET users */
-router.post('/users/signin', function (req, res, next) {
-    //Model.signin
+
+router.post('/users/signin', function (req, res, next) { //FUNCIONA - P3
+    var emailf = req.body.email;
+    var passwordf = req.body.password;
+    model.signin(emailf, passwordf)
+        .then(function (userf) {
+            res.json(userf);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
 router.post('/users/signup', function (req, res, next) {
-    //Model.signup
+    var newUser = req.body;
+    model.signup(newUser)
+        .then(function (user) {
+            res.json(user);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
-router.get('/users/profile', function (req, res, next) {
-    //Model.getUser (?)
+router.get('/users/:uid/profile', function (req, res, next) { //Hay que añadir el :uid -> Fallo pdf // FUNCIONA P3
+    model.getUser(req.params.uid)
+        .then(function (user) {
+            // console.log(user);
+            res.json(user);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 });
 
 /* GET orders */

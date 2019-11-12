@@ -15,10 +15,11 @@ Controller.controllers.signup.refresh = function () {
 
 Controller.controllers.signup.signup_clicked = function (event) {
     event.preventDefault();
+    
     var date = $('#birth').val();
     date = new Date(date);
-    var userInfo = {
-        id: Date.now(),
+    var newUser = {
+        _id: Date.now(),
         name: $('#name').val(),
         surname: $('#surname').val(),
         address: $('#address').val(),
@@ -34,27 +35,28 @@ Controller.controllers.signup.signup_clicked = function (event) {
             shoppingCartItems: []
         }
     }
-    console.log(userInfo)
-    var ok = userInfo.name.length && userInfo.surname.length && userInfo.address.length && userInfo.birth != null &&
-        userInfo.email.length && userInfo.password.length && userInfo.confirmpassword.length;
 
-    if ((userInfo.password == userInfo.confirmpassword) && ok) {
-        Model.checkEmail(userInfo.email).then(function () {
-            console.log('Email checked');
-            Model.signup(userInfo).then(function () {
-                console.log('User added successfully');
-                Controller.router.go('/funkoshop/views/index');
-            });
+    Model.signup(newUser)
+        .then(() => {
+            console.log('Signup successful');
+            Controller.router.go('/funkoshop/views/index'); //He pensado que cuando se crea la cuenta le vaya a iniciar sesión --> Reducir el numero de clicks del usuario
         })
+        .catch((error) => {
+            console.log('User cannot signup');
 
-    } else {
-        if(userInfo.password != userInfo.confirmpassword){
-            alert("The passwords do not match");
-        }
-        if( !ok){
-            alert("Some input field is empty");
-        }
-        console.log('Couldnt sign up');
-    }
-    Controller.controllers.signup.refresh();
+            //Para mostrar los alerts
+            var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
+            newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
+            
+            if (newUser.password != newUser.confirmpassword) {
+                alert("The passwords do not match");
+            }
+            
+            if (!ok) {
+                alert("Some input field is empty");
+            }          
+            
+            Controller.router.go('/funkoshop/views/signup'); /* Como esta creado con un a se puede con href */
+        })
+    //Controller.controllers.signup.refresh();
 }

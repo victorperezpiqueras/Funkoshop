@@ -159,31 +159,31 @@ Model.users = [
         },
         userOrders: []
     },
-    
+
 ];
 
 
-Model.user=null;
 
 
-/* SIGNOUT METHOD */
-Model.signOut = function() {
-    return new Promise(function(resolve,reject) {
-        setTimeout(() => {
-            Model.user=null
-            //console.log(Model.user);
-            localStorage.removeItem("user");
-            resolve();
-        })
-    })
-}
+/* SIGNOUT METHOD */ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Creo que habria que llevarlo al cliente, en el server no hace nada ¿?
+// Model.signOut = function() {
+//     return new Promise(function(resolve,reject) {
+//         setTimeout(() => {
+//             Model.user=null 
+//             //console.log(Model.user);
+//             localStorage.removeItem("user"); //ESTO EN SERVIDOR NO
+//             resolve();
+//         })
+//     })
+// }
 
 /* AUXILIAR METHODS */
-    //
+//
 Model.loadBadge = function () {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            var userId = localStorage.getItem("user");
+            var userId = localStorage.getItem("user"); //IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE /////////////////////////////////////////
             if (userId != null) {
                 Model.cartItemCount(userId)
                     .then((itemCounter) => {
@@ -203,7 +203,7 @@ Model.getProducts = function () {
         });
     });
 };
-Model.getUser = function (uid) {
+Model.getUser = function (uid) { //FUNCIONA P3
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             var user = Model.users.find(function (user) {
@@ -213,6 +213,17 @@ Model.getUser = function (uid) {
         });
     });
 }
+// Model.getUser = function () { //PARA AUTORIZACION (SEMINARIO SIGUIENTE SE NECESITARÁ - NO BORRAR)
+//     return new Promise(function (resolve, reject) {
+//         setTimeout(() => {
+//             var userId = localStorage.getItem("user");
+//             var user = Model.users.find(function (user) {
+//                 return user._id == userId;
+//             });
+//             resolve(user);
+//         });
+//     });
+// }
 Model.getShoppingCart = function (userId) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -253,7 +264,7 @@ Model.buy = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             //obtain the cart of the user
-            var userId = localStorage.getItem("user");
+            var userId = localStorage.getItem("user"); // IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE
             Model.getShoppingCart(userId)
                 .then((cart) => {
                     console.log(cart)
@@ -318,28 +329,22 @@ Model.cartItemCount = function (userId) {
     });
 };
 
-/* SIGNIN METHODS */
+/* SIGNIN METHODS - SERVER --> FUNCIONA P3*/
 Model.signin = function (emailf, passwordf) {
     return Model.findUser(emailf, passwordf)
         .then(function (userf) {
             return new Promise(function (resolve, reject) {
                 setTimeout(function () {
-                    Model.user = userf._id; /* Guardo el id loggeado */
-                    localStorage.setItem("user", Model.user);
-                    // console.log('id del userf ' + Model.user);
-                    resolve(userf);
+                    resolve({ _id: userf._id });
                 }, 10);
             })
         })
 };
 Model.findUser = function (emailf, passwordf) {
-    console.log("Dentro de findUser");
     return new Promise(function (resolve, reject) {
-        console.log("Dentro de promise finduser");
         setTimeout(function () {
             var i = 0;
             var found = false;
-            console.log(Model.users);
             while (i < Model.users.length && !found) { /* Para cuando se encuentra */
                 found = Model.users[i].email == emailf && Model.users[i].password == passwordf; /* Cuando es cumple pone a true la booleana */
                 i++;
@@ -360,13 +365,13 @@ Model.findUser = function (emailf, passwordf) {
 Model.removeOneCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            var userId = localStorage.getItem("user");
+            var userId = localStorage.getItem("user"); //IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE
             Model.getShoppingCart(userId)
                 .then((cart) => {
                     cart.shoppingCartItems.forEach((item) => {
                         if (item.orderItemProduct.id == pid) {
                             item.qty--;
-                            item.total-=item.price;
+                            item.total -= item.price;
                             if (item.qty == 0) {
                                 var index = cart.shoppingCartItems.indexOf(item);
                                 if (index > -1) {
@@ -375,10 +380,10 @@ Model.removeOneCartItem = function (pid) {
                             }
                         }
                     });
-                     Model.recalculateCart(cart)
+                    Model.recalculateCart(cart)
                         .then((cart) => {
                             resolve(cart);
-                        }); 
+                        });
                 });
         });
     });
@@ -386,7 +391,7 @@ Model.removeOneCartItem = function (pid) {
 Model.removeAllCartItem = function (pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            var userId = localStorage.getItem("user");
+            var userId = localStorage.getItem("user"); //IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE
             Model.getShoppingCart(userId)
                 .then((cart) => {
                     cart.shoppingCartItems.forEach((item) => {
@@ -410,7 +415,7 @@ Model.removeAllCartItem = function (pid) {
 Model.checkout = function (date, address, cardHolder, cardNumber) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            var userId = localStorage.getItem("user");
+            var userId = localStorage.getItem("user"); //IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE
             Model.getShoppingCart(userId)
                 .then((cart) => {
                     //create order:
@@ -457,54 +462,51 @@ Model.getOrder = function (id) {
 }
 
 //SIGNUP METHODS
-Model.signup = function (userInfo) {
+
+Model.signup = function (newUser) {
     return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-                var newuser = {
-                    _id: Date.now(),
-                    name: userInfo.name,
-                    surname: userInfo.surname,
-                    email: userInfo.email,
-                    birth: userInfo.birth,
-                    address: userInfo.address,
-                    password: userInfo.password,
-                }
-                
-                //add user to list
-                Model.users.push(newuser);
-                resolve();
-            
+        setTimeout(function () {
+
+            var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
+            newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
+
+            if ((newUser.password == newUser.confirmpassword) && ok) {
+                Model.checkEmail(newUser.email).then(function () {
+                    console.log('Passwords equals & Email checked');
+                    Model.users.push(newUser);
+                    console.log('new User: ', newUser);
+                    resolve(newUser);
+                })
+            } else {
+                reject("Could't signup");
+            }
         })
     })
 }
-
 Model.checkEmail = function (emailf) {
-    console.log("Dentro de findEmail");
     return new Promise(function (resolve, reject) {
-        console.log("Dentro de promise findEmail");
         setTimeout(function () {
             var i = 0;
             var found = false;
-            console.log(Model.users);
-            while (i < Model.users.length && !found) { /* Para cuando se encuentra */
+            while (i < Model.users.length && !found) { 
                 if (emailf == Model.users[i].email) {
                     found = true;
                 }
                 i++;
             }
             if (!found) {
-                // console.log('User position: ' + (i-1));
                 console.log('Email is not already used');
-                resolve(); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
+                resolve(); 
             }
-            else{
+            else {
                 console.log('Email already used');
                 reject();
             }
-            
+
         }, 10);
     })
 }
+
 
 /* global Model */
 module.exports = Model;

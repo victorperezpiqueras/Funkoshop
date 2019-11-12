@@ -1,19 +1,5 @@
 var Model = {};
 
-Model.orders = [
-    {
-        number: 1,
-        date: null,
-        address: null,
-        subtotal: null,
-        tax: null,
-        total: null,
-        cardHolder: null,
-        cardNumber: 124214124,
-        user: null,
-        orderItems: null
-    }
-];
 Model.shoppingCarts = [];
 Model.items = [];
 Model.products = [
@@ -129,7 +115,7 @@ Model.users = [
         },
         userOrders: [ 
             {
-            date: '2019/10/31',
+            date: new Date('31/10/2019'),
             number: 11111111,
             total: 20,
             orderItems: [{
@@ -213,6 +199,7 @@ Model.getUser = function (uid) { //FUNCIONA P3
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             var user = Model.users.find(function (user) {
+                console.log("get user serv: ", uid)
                 return user._id == uid;
             });
             resolve(user);

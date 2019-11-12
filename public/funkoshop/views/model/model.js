@@ -68,6 +68,7 @@ Model.getUser = function (uid) { //FUNCIONA P3
             method: 'GET'
         })
             .done(function (user) {
+                console.log("dentro del done getUser ",user);
                 resolve(user);
             })
             .fail(function (err) {

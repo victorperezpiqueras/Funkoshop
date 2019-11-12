@@ -101,7 +101,7 @@ router.post('/users/signup', function (req, res, next) {
 router.get('/users/:uid/profile', function (req, res, next) { //Hay que añadir el :uid -> Fallo pdf // FUNCIONA P3
     model.getUser(req.params.uid)
         .then(function (user) {
-            // console.log(user);
+            console.log("en api: ",user);
             res.json(user);
         })
         .catch(function (err) {

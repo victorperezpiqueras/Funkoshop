@@ -8,7 +8,7 @@ Controller.controllers.purchase.refresh = function () {
             context.cart = cart;
         })
         .then(() => {//load badge and render
-            Model.loadBadge()
+            Model.loadBadge(userId)
                 .then((counter) => {
                     context.counter = counter;
                 })
@@ -25,7 +25,9 @@ Controller.controllers.purchase.checkout_clicked = function (event) {
     var cardHolder = $('#card-holder-name').val();
     var cardNumber = $('#card-number').val();
 
-    Model.checkout(date, address, cardHolder, cardNumber)
+    var userId = localStorage.getItem("user");
+
+    Model.checkout(userId, date, address, cardHolder, cardNumber)
         .then(() => {
             event.preventDefault();
             Controller.router.go(event.target.href);

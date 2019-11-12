@@ -177,7 +177,7 @@ Model.users = [
 // Model.signOut = function() {
 //     return new Promise(function(resolve,reject) {
 //         setTimeout(() => {
-//             Model.user=null 
+//            // Model.user=null 
 //             //console.log(Model.user);
 //             localStorage.removeItem("user"); //ESTO EN SERVIDOR NO
 //             resolve();
@@ -187,10 +187,9 @@ Model.users = [
 
 /* AUXILIAR METHODS */
 //
-Model.loadBadge = function () {
+Model.loadBadge = function (userId) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            var userId = localStorage.getItem("user"); //IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE /////////////////////////////////////////
             if (userId != null) {
                 Model.cartItemCount(userId)
                     .then((itemCounter) => {
@@ -223,7 +222,7 @@ Model.getUser = function (uid) { //FUNCIONA P3
 // Model.getUser = function () { //PARA AUTORIZACION (SEMINARIO SIGUIENTE SE NECESITARÁ - NO BORRAR)
 //     return new Promise(function (resolve, reject) {
 //         setTimeout(() => {
-//             var userId = localStorage.getItem("user");
+//             var userId = localStorage.getItem("user"); //PERO OBV EL LOCALSTORAGE EN EL SERVIDOR NO
 //             var user = Model.users.find(function (user) {
 //                 return user._id == userId;
 //             });
@@ -267,11 +266,10 @@ Model.resetCart = function () {
 };
 
 /* INDEX METHODS */
-Model.buy = function (pid) {
+Model.buy = function (userId, pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             //obtain the cart of the user
-            var userId = localStorage.getItem("user"); // IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE
             Model.getShoppingCart(userId)
                 .then((cart) => {
                     console.log(cart)
@@ -465,10 +463,9 @@ Model.removeAllCartItem = function (pid) {
 }; */
 
 /* PURCHASE METHODS */
-Model.checkout = function (date, address, cardHolder, cardNumber) {
+Model.checkout = function (userId, date, address, cardHolder, cardNumber) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            var userId = localStorage.getItem("user"); //IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE
             Model.getShoppingCart(userId)
                 .then((cart) => {
                     //create order:

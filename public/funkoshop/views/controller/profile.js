@@ -8,7 +8,7 @@ Controller.controllers.profile.refresh = function () {
             context.user = user;
         })
         .then(() => {//load badge and render
-            Model.loadBadge()
+            Model.loadBadge(userId)
                 .then((counter) => {
                     context.counter = counter;
                 })

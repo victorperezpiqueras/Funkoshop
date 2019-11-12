@@ -8,7 +8,7 @@ Controller.controllers.cart.refresh = function () {
             context.cart = cart;
         })
         .then(() => {//load badge and render
-            Model.loadBadge()
+            Model.loadBadge(userId)
                 .then((counter) => {
                     context.counter = counter;
                 })

@@ -1,13 +1,11 @@
 var Model = {};
 
-// Model.user=null;
 
 /* SIGNOUT METHOD */
 Model.signOut = function () {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             Model.user = null
-            //console.log(Model.user);
             localStorage.removeItem("user");
             resolve();
         })
@@ -16,10 +14,10 @@ Model.signOut = function () {
 
 /* AUXILIAR METHODS */
 //
-Model.loadBadge = function () {
+Model.loadBadge = function (userId) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            var userId = localStorage.getItem("user");
+            // userId = localStorage.getItem("user"); //Ya está cogido en el controller
             if (userId != null) {
                 Model.cartItemCount(userId)
                     .then((itemCounter) => {
@@ -99,11 +97,11 @@ Model.resetCart = function () {
 };
 
 /* INDEX METHODS */
-Model.buy = function (pid) {
+Model.buy = function (userId, pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
             //obtain the cart of the user
-            var userId = localStorage.getItem("user");
+            // userId = localStorage.getItem("user"); //Ya está cogido en el controller
             Model.getShoppingCart(userId)
                 .then((cart) => {
                     console.log(cart)
@@ -220,10 +218,10 @@ Model.removeOneCartItem = function (pid) {
     });
 };
 /* PURCHASE METHODS */
-Model.checkout = function (date, address, cardHolder, cardNumber) {
+Model.checkout = function (userId, date, address, cardHolder, cardNumber) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            var userId = localStorage.getItem("user");
+            // userId = localStorage.getItem("user"); //Ya está cogido en el controller
             Model.getShoppingCart(userId)
                 .then((cart) => {
                     //create order:

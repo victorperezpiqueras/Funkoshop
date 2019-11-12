@@ -2,8 +2,9 @@ Controller.controllers.signup = {};
 Controller.controllers.signup.refresh = function () {
     var context = {};
     context.user = localStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+    var userId = context.user;
     //load badge and render
-    Model.loadBadge()
+    Model.loadBadge(userId)
         .then((counter) => {
             context.counter = counter;
         })

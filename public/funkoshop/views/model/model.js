@@ -76,16 +76,7 @@ Model.getUser = function (uid) { //FUNCIONA P3
             })
     });
 }
-Model.getShoppingCart = function (userId) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            Model.getUser(userId)
-                .then((user) => {
-                    resolve(user.shoppingCart);
-                });
-        });
-    });
-}
+
 Model.resetCart = function () {
     var cart = {
         subtotal: 0,
@@ -97,46 +88,46 @@ Model.resetCart = function () {
 };
 
 /* INDEX METHODS */
-Model.buy = function (userId, pid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            //obtain the cart of the user
-            // userId = localStorage.getItem("user"); //Ya está cogido en el controller
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    console.log(cart)
-                    //search for an item that contains the product
-                    var newItem = cart.shoppingCartItems.find(function (item) {
-                        return item.orderItemProduct.id == pid;
-                    });
-                    Model.getProduct(pid)
-                        .then((product) => {
-                            //if not found-->add a new item with a reference to the product
-                            if (newItem == null) {
-                                newItem = {
-                                    order: null,
-                                    qty: 1,
-                                    price: product.price,
-                                    total: (product.price * 1),
-                                    orderItemProduct: product
-                                };
-                                cart.shoppingCartItems.push(newItem);
-                            }
-                            else {
-                                newItem.qty++;
-                                newItem.total = (newItem.price * newItem.qty);
-                            }
-                            return cart;//
-                        })
-                        .then((cart/**/) => {
-                            //recalculate shopping cart
-                            Model.recalculateCart(cart)
-                                .then(resolve(cart));
-                        });
-                });
-        });
-    });
-}
+// Model.buy = function (userId, pid) {
+//     return new Promise(function (resolve, reject) {
+//         setTimeout(() => {
+//             //obtain the cart of the user
+//             // userId = localStorage.getItem("user"); //Ya está cogido en el controller
+//             Model.getShoppingCart(userId)
+//                 .then((cart) => {
+//                     console.log(cart)
+//                     //search for an item that contains the product
+//                     var newItem = cart.shoppingCartItems.find(function (item) {
+//                         return item.orderItemProduct.id == pid;
+//                     });
+//                     Model.getProduct(pid)
+//                         .then((product) => {
+//                             //if not found-->add a new item with a reference to the product
+//                             if (newItem == null) {
+//                                 newItem = {
+//                                     order: null,
+//                                     qty: 1,
+//                                     price: product.price,
+//                                     total: (product.price * 1),
+//                                     orderItemProduct: product
+//                                 };
+//                                 cart.shoppingCartItems.push(newItem);
+//                             }
+//                             else {
+//                                 newItem.qty++;
+//                                 newItem.total = (newItem.price * newItem.qty);
+//                             }
+//                             return cart;//
+//                         })
+//                         .then((cart/**/) => {
+//                             //recalculate shopping cart
+//                             Model.recalculateCart(cart)
+//                                 .then(resolve(cart));
+//                         });
+//                 });
+//         });
+//     });
+// }
 Model.recalculateCart = function (cart) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -285,6 +276,52 @@ Model.signup = function (userInfo) {
             });
     });
 
+}
+
+/* PRACTICE 3 CART */
+Model.getShoppingCart = function (uid) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/'+uid+'/cart',
+            method:'GET'
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
+}
+
+Model.getShoppingCartItems = function (uid) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/'+uid+'/cart/items',
+            method:'GET'
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
+}
+
+Model.buy = function (uid, pid) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url:'/api/users/'+uid+'/cart/items/'+pid,
+            method:'POST'
+        })
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err){
+            reject(err);
+        })
+    });
 }
 
 

@@ -37,6 +37,36 @@ Controller.controllers.signup.signup_clicked = function (event) {
         }
     }
 
+    // var found = false;
+    
+    // Model.checkEmail = function (emailf) {
+    //     return new Promise(function (resolve, reject) {
+    //         setTimeout(function () {
+    //             var i = 0;
+    //             var found = false;
+    //             while (i < Model.users.length && !found) { 
+    //                 if (emailf == Model.users[i].email) {
+    //                     found = true;
+    //                 }
+    //                 i++;
+    //             }
+    //             if (!found) {
+    //                 console.log('Email is not already used');
+    //                 resolve(); 
+    //             }
+    //             else {
+    //                 console.log('Email already used');
+    //                 alert('Email already used');
+    //                 reject();
+    //             }
+    
+    //         }, 10);
+    //     })
+    // }
+    
+    
+
+
     Model.signup(newUser)
         .then(() => {
             console.log('Signup successful');

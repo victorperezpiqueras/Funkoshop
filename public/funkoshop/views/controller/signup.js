@@ -40,22 +40,12 @@ Controller.controllers.signup.signup_clicked = function (event) {
     Model.signup(newUser)
         .then(() => {
             console.log('Signup successful');
-            Controller.router.go('/funkoshop/views/index'); //He pensado que cuando se crea la cuenta le vaya a iniciar sesión --> Reducir el numero de clicks del usuario
+            Controller.router.go('/funkoshop/views/signin'); //He pensado que cuando se crea la cuenta le vaya a iniciar sesión --> Reducir el numero de clicks del usuario
         })
         .catch((error) => {
-            console.log('User cannot signup');
 
-            //Para mostrar los alerts
-            var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
-            newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
-            
-            if (newUser.password != newUser.confirmpassword) {
-                alert("The passwords do not match");
-            }
-            
-            if (!ok) {
-                alert("Some input field is empty");
-            }          
+            console.log(error);
+            alert(error);       
             
             Controller.router.go('/funkoshop/views/signup'); /* Como esta creado con un a se puede con href */
         })

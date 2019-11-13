@@ -280,7 +280,8 @@ Model.signup = function (userInfo) {
                 resolve(user);
             })
             .fail(function (error) {
-                reject(error);
+                console.log(error.responseJSON.error);
+                reject(error.responseJSON.error);
             });
     });
 

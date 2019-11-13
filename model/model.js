@@ -209,7 +209,7 @@ Model.getUser = function (uid) { //FUNCIONA P3
 // Model.getUser = function () { //PARA AUTORIZACION (SEMINARIO SIGUIENTE SE NECESITARÁ - NO BORRAR)
 //     return new Promise(function (resolve, reject) {
 //         setTimeout(() => {
-//             var userId = localStorage.getItem("user"); //PERO OBV EL LOCALSTORAGE EN EL SERVIDOR NO
+//             //var userId = localStorage.getItem("user"); //PERO OBV EL LOCALSTORAGE EN EL SERVIDOR NO
 //             var user = Model.users.find(function (user) {
 //                 return user._id == userId;
 //             });
@@ -573,17 +573,25 @@ Model.signup = function (newUser) {
 
             var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
             newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
-
-            if ((newUser.password == newUser.confirmpassword) && ok) {
-                Model.checkEmail(newUser.email).then(function () {
-                    console.log('Passwords equals & Email checked');
-                    Model.users.push(newUser);
-                    console.log('new User: ', newUser);
-                    resolve(newUser);
-                })
-            } else {
-                reject("Could't signup");
+            if (ok) {
+                if (newUser.password == newUser.confirmpassword) {
+                    Model.checkEmail(newUser.email).then(function () {
+                        console.log('Passwords equals & Email checked');
+                        Model.users.push(newUser);
+                        console.log('new User: ', newUser);
+                        resolve(newUser);
+                    })
+                    .catch((error) => {
+                        reject({error:"Email already used"});
+                    })
+                } else {
+                    reject({error:"Passwords do not match"});
+                }
             }
+            else {
+                reject({error:"Some field is empty"});
+            }
+            
         })
     })
 }
@@ -604,7 +612,7 @@ Model.checkEmail = function (emailf) {
             }
             else {
                 console.log('Email already used');
-                reject();
+                reject({error:"Email already used"});
             }
 
         }, 10);

@@ -306,19 +306,25 @@ Model.signin = function (emailf, passwordf) {
 Model.signup = function (newUser) {
     return new Promise(function (resolve, reject) {
         setTimeout(function () {
-
             var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
                 newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
-
-            if ((newUser.password == newUser.confirmpassword) && ok) {
-                Model.checkEmail(newUser.email).then(function () {
-                    console.log('Passwords equals & Email checked');
-                    Model.users.push(newUser);
-                    console.log('new User: ', newUser);
-                    resolve(newUser);
-                })
-            } else {
-                reject("Could't signup");
+            if (ok) {
+                if (newUser.password == newUser.confirmpassword) {
+                    Model.checkEmail(newUser.email).then(function () {
+                        console.log('Passwords equals & Email checked');
+                        Model.users.push(newUser);
+                        console.log('new User: ', newUser);
+                        resolve(newUser);
+                    })
+                        .catch((error) => {
+                            reject({ error: "Email already used" });
+                        })
+                } else {
+                    reject({ error: "Passwords do not match" });
+                }
+            }
+            else {
+                reject({ error: "Some field is empty" });
             }
         });
     });

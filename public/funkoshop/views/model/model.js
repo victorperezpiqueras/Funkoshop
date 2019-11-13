@@ -10,8 +10,8 @@ Model.signOut = function () {
             localStorage.removeItem("user");
             resolve();
         })
-    })
-}
+    });
+};
 Model.loadBadge = function (userId) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -27,7 +27,7 @@ Model.loadBadge = function (userId) {
             }
         });
     });
-}
+};
 Model.resetCart = function () {
     var cart = {
         subtotal: 0,
@@ -176,7 +176,25 @@ Model.removeOneCartItem = function (pid) {
     });
 };
 
-/* CART */
+//SIGNUP METHODS
+Model.signup = function (userInfo) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: '/api/users/signup',
+            method: 'POST',
+            data: userInfo
+        })
+            .done(function (user) {
+                resolve(user);
+            })
+            .fail(function (error) {
+                console.log(error.responseJSON.error);
+                reject(error.responseJSON.error);
+            });
+    });
+}
+
+/* PRACTICE 3 CART */
 Model.getShoppingCart = function (uid) {
     return new Promise(function (resolve, reject) {
         $.ajax({

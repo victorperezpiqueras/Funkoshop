@@ -233,8 +233,8 @@ Model.getShoppingCartItems = function(userId){
         setTimeout(()=> {
             for (var user of Model.users){
                 if (user._id == userId){
-                    for (var shoppingCart of user.shoppingCart){
-                        resolve(order.orderItems);
+                    for (var shoppingCartItems of user.shoppingCart.shoppingCartItems){
+                        resolve(user.shoppingCart.shoppingCartItems);
                     }
                 }
             }

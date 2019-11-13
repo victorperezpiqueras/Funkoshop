@@ -1,7 +1,4 @@
 var Model = {};
-
-Model.shoppingCarts = [];
-Model.items = [];
 Model.products = [
     {
         id: 1,
@@ -165,24 +162,7 @@ Model.users = [
 
 ];
 
-
-
-
-/* SIGNOUT METHOD */ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Creo que habria que llevarlo al cliente, en el server no hace nada ¿?
-// Model.signOut = function() {
-//     return new Promise(function(resolve,reject) {
-//         setTimeout(() => {
-//            // Model.user=null 
-//             //console.log(Model.user);
-//             localStorage.removeItem("user"); //ESTO EN SERVIDOR NO
-//             resolve();
-//         })
-//     })
-// }
-
 /* AUXILIAR METHODS */
-//
 Model.loadBadge = function (userId) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -198,75 +178,6 @@ Model.loadBadge = function (userId) {
         });
     });
 }
-Model.getProducts = function () {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            resolve(Model.products)
-        });
-    });
-};
-Model.getUser = function (uid) { //FUNCIONA P3
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var user = Model.users.find(function (user) {
-                console.log("get user serv: ", uid)
-                return user._id == uid;
-            });
-            resolve(user);
-        });
-    });
-}
-// Model.getUser = function () { //PARA AUTORIZACION (SEMINARIO SIGUIENTE SE NECESITARÁ - NO BORRAR)
-//     return new Promise(function (resolve, reject) {
-//         setTimeout(() => {
-//             var userId = localStorage.getItem("user"); //PERO OBV EL LOCALSTORAGE EN EL SERVIDOR NO
-//             var user = Model.users.find(function (user) {
-//                 return user._id == userId;
-//             });
-//             resolve(user);
-//         });
-//     });
-// }
-Model.getShoppingCart = function (userId) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            Model.getUser(userId)
-                .then((user) => {
-                    resolve(user.shoppingCart);
-                });
-        });
-    });
-}
-
-Model.getShoppingCartItems = function (userId) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            for (var user of Model.users) {
-                if (user._id == userId) {
-                    for (var shoppingCart of user.shoppingCart) {
-                        resolve(order.orderItems);
-                    }
-                }
-            }
-        })
-    })
-}
-
-Model.getProduct = function (pid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var product = Model.products.find(function (product) {
-                return product.id == pid;
-            });
-            if (product != null) {
-                resolve(product);
-            }
-            else {
-                reject("Product not found");
-            }
-        });
-    });
-}
 Model.resetCart = function () {
     var cart = {
         subtotal: 0,
@@ -276,47 +187,6 @@ Model.resetCart = function () {
     }
     return cart;
 };
-
-/* INDEX METHODS */
-Model.buy = function (userId, pid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            //obtain the cart of the user
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    console.log(cart)
-                    //search for an item that contains the product
-                    var newItem = cart.shoppingCartItems.find(function (item) {
-                        return item.orderItemProduct.id == pid;
-                    });
-                    Model.getProduct(pid)
-                        .then((product) => {
-                            //if not found-->add a new item with a reference to the product
-                            if (newItem == null) {
-                                newItem = {
-                                    order: null,
-                                    qty: 1,
-                                    price: product.price,
-                                    total: (product.price * 1),
-                                    orderItemProduct: product
-                                };
-                                cart.shoppingCartItems.push(newItem);
-                            }
-                            else {
-                                newItem.qty++;
-                                newItem.total = (newItem.price * newItem.qty);
-                            }
-                            return cart;//
-                        })
-                        .then((cart/**/) => {
-                            //recalculate shopping cart
-                            Model.recalculateCart(cart)
-                                .then(resolve(cart));
-                        });
-                });
-        });
-    });
-}
 Model.recalculateCart = function (cart) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -345,18 +215,6 @@ Model.cartItemCount = function (userId) {
         });
     });
 };
-
-/* SIGNIN METHODS - SERVER --> FUNCIONA P3*/
-Model.signin = function (emailf, passwordf) {
-    return Model.findUser(emailf, passwordf)
-        .then(function (userf) {
-            return new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                    resolve({ _id: userf._id });
-                }, 10);
-            })
-        })
-};
 Model.findUser = function (emailf, passwordf) {
     return new Promise(function (resolve, reject) {
         setTimeout(function () {
@@ -367,7 +225,6 @@ Model.findUser = function (emailf, passwordf) {
                 i++;
             }
             if (found) {
-                // console.log('User position: ' + (i-1));
                 console.log('User exists!!');
                 resolve(Model.users[(i - 1)]); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
             }
@@ -375,10 +232,159 @@ Model.findUser = function (emailf, passwordf) {
                 reject('User not found');
         }, 10);
     })
-}
+};
+Model.checkEmail = function (emailf) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            var i = 0;
+            var found = false;
+            while (i < Model.users.length && !found) {
+                if (emailf == Model.users[i].email) {
+                    found = true;
+                }
+                i++;
+            }
+            if (!found) {
+                console.log('Email is not already used');
+                resolve();
+            }
+            else {
+                console.log('Email already used');
+                reject();
+            }
 
+        }, 10);
+    });
+};
+
+/* PRODUCT METHODS */
+Model.getProducts = function () {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            resolve(Model.products)
+        });
+    });
+};
+Model.getProduct = function (pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            var product = Model.products.find(function (product) {
+                return product.id == pid;
+            });
+            if (product != null) {
+                resolve(product);
+            }
+            else {
+                reject("Product not found");
+            }
+        });
+    });
+};
+
+/* USER METHODS */
+Model.getUser = function (uid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            var user = Model.users.find(function (user) {
+                console.log("get user serv: ", uid)
+                return user._id == uid;
+            });
+            resolve(user);
+        });
+    });
+};
+Model.signin = function (emailf, passwordf) {
+    return Model.findUser(emailf, passwordf)
+        .then(function (userf) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    resolve({ _id: userf._id });
+                }, 10);
+            })
+        })
+};
+Model.signup = function (newUser) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+
+            var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
+                newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
+
+            if ((newUser.password == newUser.confirmpassword) && ok) {
+                Model.checkEmail(newUser.email).then(function () {
+                    console.log('Passwords equals & Email checked');
+                    Model.users.push(newUser);
+                    console.log('new User: ', newUser);
+                    resolve(newUser);
+                })
+            } else {
+                reject("Could't signup");
+            }
+        });
+    });
+};
 
 /* CART METHODS */
+Model.getShoppingCart = function (userId) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            Model.getUser(userId)
+                .then((user) => {
+                    resolve(user.shoppingCart);
+                });
+        });
+    });
+};
+Model.getShoppingCartItems = function (userId) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            for (var user of Model.users) {
+                if (user._id == userId) {
+                    resolve(user.shoppingCart.shoppingCartItems);
+                }
+            }
+        })
+    })
+};
+Model.buy = function (userId, pid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            //obtain the cart of the user
+            Model.getShoppingCart(userId)
+                .then((cart) => {
+                    console.log(cart)
+                    //search for an item that contains the product
+                    var newItem = cart.shoppingCartItems.find(function (item) {
+                        return item.orderItemProduct.id == pid;
+                    });
+                    Model.getProduct(pid)
+                        .then((product) => {
+                            //if not found-->add a new item with a reference to the product
+                            if (newItem == null) {
+                                newItem = {
+                                    order: null,
+                                    qty: 1,
+                                    price: product.price,
+                                    total: (product.price * 1),
+                                    orderItemProduct: product
+                                };
+                                cart.shoppingCartItems.push(newItem);
+                            }
+                            else {
+                                newItem.qty++;
+                                newItem.total = (newItem.price * newItem.qty);
+                            }
+                            return cart;
+                        })
+                        .then((cart) => {
+                            //recalculate shopping cart
+                            Model.recalculateCart(cart)
+                                .then(resolve(cart));
+                        });
+                });
+        });
+    });
+};
 Model.removeOneCartItem = function (userId, pid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -426,108 +432,7 @@ Model.removeAllCartItem = function (userId, pid) {
     });
 };
 
-
-/* Model.removeOneCartItem = function (pid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var userId = localStorage.getItem("user"); //IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    cart.shoppingCartItems.forEach((item) => {
-                        if (item.orderItemProduct.id == pid) {
-                            item.qty--;
-                            item.total -= item.price;
-                            if (item.qty == 0) {
-                                var index = cart.shoppingCartItems.indexOf(item);
-                                if (index > -1) {
-                                    cart.shoppingCartItems.splice(index, 1);
-                                }
-                            }
-                        }
-                    });
-                    Model.recalculateCart(cart)
-                        .then((cart) => {
-                            resolve(cart);
-                        });
-                });
-        });
-    });
-};
-Model.removeAllCartItem = function (pid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var userId = localStorage.getItem("user"); //IMPOSIBLE USAR AQUI LOCAL STORAGE --> CLIENTE
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    cart.shoppingCartItems.forEach((item) => {
-                        if (item.orderItemProduct.id == pid) {
-                            var index = cart.shoppingCartItems.indexOf(item);
-                            if (index > -1) {
-                                cart.shoppingCartItems.splice(index, 1);
-                            }
-                        }
-                    });
-                    Model.recalculateCart(cart)
-                        .then((cart) => {
-                            resolve(cart);
-                        });
-                });
-        });
-    });
-}; */
-
-/* PURCHASE METHODS */
-Model.checkout = function (userId, date, address, cardHolder, cardNumber) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    //create order:
-                    var order = {
-                        number: Date.now(),
-                        date: date,
-                        address: address,
-                        cardHolder: cardHolder,
-                        cardNumber: cardNumber,
-                        subtotal: cart.subtotal,
-                        tax: cart.tax,
-                        total: cart.total,
-                        user: userId,
-                        orderItems: cart.shoppingCartItems
-                    }
-                    //add order to list
-                    //Model.orders.push(order);
-                    Model.getUser(userId)
-                        .then((user) => {
-                            //add order and reset cart in user:
-                            user.shoppingCart = Model.resetCart();
-                            user.userOrders.push(order);
-                            resolve(user.userOrders);
-                        })
-                });
-        });
-    })
-}
-
-
-///////////////////
 /* ORDER METHODS */
-///////////////////
-Model.getOrder = function (id) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var foundOrder;
-            for (var order of Model.orders) {
-                if (order.number == id) {
-                    foundOrder = order;
-                    break;
-                }
-            }
-            resolve(foundOrder);
-        });
-    })
-}
-
 Model.getUserOrders = function (uid) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -537,25 +442,38 @@ Model.getUserOrders = function (uid) {
                     resolve(user.userOrders);
                 }
             }
-        })
-    })
-}
-
-Model.postUserOrder = function (uid, order) {
-    console.log(uid, order);
+        });
+    });
+};
+Model.postUserOrder = function (uid, orderData) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            for (var user of Model.users) {
-                if (user._id == uid) {
-                    //break
-                    user.userOrders.push(order);
-                    resolve(order);
-                }
-            }
-        })
-    })
-}
-
+            Model.getShoppingCart(uid)
+                .then((cart) => {
+                    //create order:
+                    var order = {
+                        number: Date.now(),
+                        date: orderData.date,
+                        address: orderData.address,
+                        cardHolder: orderData.cardHolder,
+                        cardNumber: orderData.cardNumber,
+                        subtotal: cart.subtotal,
+                        tax: cart.tax,
+                        total: cart.total,
+                        user: uid,
+                        orderItems: cart.shoppingCartItems
+                    }
+                    Model.getUser(uid)
+                        .then((user) => {
+                            //add order and reset cart in user:
+                            user.shoppingCart = Model.resetCart();
+                            user.userOrders.push(order);
+                            resolve(order);
+                        });
+                });
+        });
+    });
+};
 Model.getUserOrdersByNumber = function (uid, number) {
     return new Promise(function (resolve, reject) {
         console.log(Model);
@@ -571,10 +489,9 @@ Model.getUserOrdersByNumber = function (uid, number) {
                     }
                 }
             }
-        })
-    })
-}
-
+        });
+    });
+};
 Model.getUserOrderItems = function (uid, number) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
@@ -587,57 +504,9 @@ Model.getUserOrderItems = function (uid, number) {
                     }
                 }
             }
-        })
-    })
-}
-
-
-//SIGNUP METHODS
-
-Model.signup = function (newUser) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-
-            var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
-                newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
-
-            if ((newUser.password == newUser.confirmpassword) && ok) {
-                Model.checkEmail(newUser.email).then(function () {
-                    console.log('Passwords equals & Email checked');
-                    Model.users.push(newUser);
-                    console.log('new User: ', newUser);
-                    resolve(newUser);
-                })
-            } else {
-                reject("Could't signup");
-            }
-        })
-    })
-}
-Model.checkEmail = function (emailf) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            var i = 0;
-            var found = false;
-            while (i < Model.users.length && !found) {
-                if (emailf == Model.users[i].email) {
-                    found = true;
-                }
-                i++;
-            }
-            if (!found) {
-                console.log('Email is not already used');
-                resolve();
-            }
-            else {
-                console.log('Email already used');
-                reject();
-            }
-
-        }, 10);
-    })
-}
-
+        });
+    });
+};
 
 /* global Model */
 module.exports = Model;

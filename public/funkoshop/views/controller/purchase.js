@@ -27,7 +27,14 @@ Controller.controllers.purchase.checkout_clicked = function (event) {
 
     var userId = localStorage.getItem("user");
 
-    Model.checkout(userId, date, address, cardHolder, cardNumber)
+    var orderData = {
+        date: date,
+        address: address,
+        cardHolder: cardHolder,
+        cardNumber: cardNumber
+    };
+
+    Model.postUserOrder(userId, orderData)
         .then(() => {
             event.preventDefault();
             Controller.router.go(event.target.href);

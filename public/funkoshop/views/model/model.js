@@ -274,7 +274,6 @@ Model.signup = function (userInfo) {
                 reject(error);
             });
     });
-
 }
 
 /* PRACTICE 3 CART */

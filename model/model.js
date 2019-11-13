@@ -113,19 +113,29 @@ Model.users = [
                 }
              */]
         },
-        userOrders: [ 
+        userOrders: [
             {
-            date: new Date('31/10/2019'),
-            number: 11111111,
-            total: 20,
-            orderItems: [{
-                id: 1,
-                name: "Goku",
-                description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-                price: 10,
-                url: "/images/goku.jpg"
-            }]
-            } 
+                date: new Date('31/10/2019'),
+                number: 11111111,
+                address: "aaa",
+                subtotal: 20,
+                tax: 0.2,
+                total: 20,
+                cardHolder: 22222,
+                cardNumber: 3423424,
+                orderItems: [{
+                    qty: 1,
+                    price: 10,
+                    total: 20,
+                    orderItemProduct: {
+                        id: 1,
+                        name: "Goku",
+                        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
+                        price: 10,
+                        url: "/images/goku.jpg"
+                    }
+                }]
+            }
         ]
     },
     {
@@ -228,12 +238,12 @@ Model.getShoppingCart = function (userId) {
     });
 }
 
-Model.getShoppingCartItems = function(userId){
-    return new Promise(function(resolve, reject){
-        setTimeout(()=> {
-            for (var user of Model.users){
-                if (user._id == userId){
-                    for (var shoppingCart of user.shoppingCart){
+Model.getShoppingCartItems = function (userId) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            for (var user of Model.users) {
+                if (user._id == userId) {
+                    for (var shoppingCart of user.shoppingCart) {
                         resolve(order.orderItems);
                     }
                 }
@@ -486,13 +496,13 @@ Model.checkout = function (userId, date, address, cardHolder, cardNumber) {
                         orderItems: cart.shoppingCartItems
                     }
                     //add order to list
-                    Model.orders.push(order);
+                    //Model.orders.push(order);
                     Model.getUser(userId)
                         .then((user) => {
                             //add order and reset cart in user:
                             user.shoppingCart = Model.resetCart();
                             user.userOrders.push(order);
-                            resolve(Model.orders);
+                            resolve(user.userOrders);
                         })
                 });
         });
@@ -518,11 +528,11 @@ Model.getOrder = function (id) {
     })
 }
 
-Model.getUserOrders = function (uid){
-    return new Promise(function(resolve, reject){
-        setTimeout(()=> {
-            for (var user of Model.users){
-                if (user._id == uid){
+Model.getUserOrders = function (uid) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            for (var user of Model.users) {
+                if (user._id == uid) {
                     //break
                     resolve(user.userOrders);
                 }
@@ -531,12 +541,12 @@ Model.getUserOrders = function (uid){
     })
 }
 
-Model.postUserOrder = function (uid, order){
+Model.postUserOrder = function (uid, order) {
     console.log(uid, order);
-    return new Promise(function(resolve, reject){
-        setTimeout(()=> {
-            for (var user of Model.users){
-                if (user._id == uid){
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            for (var user of Model.users) {
+                if (user._id == uid) {
                     //break
                     user.userOrders.push(order);
                     resolve(order);
@@ -546,15 +556,15 @@ Model.postUserOrder = function (uid, order){
     })
 }
 
-Model.getUserOrdersByNumber = function(uid, number){
-    return new Promise(function(resolve, reject){
+Model.getUserOrdersByNumber = function (uid, number) {
+    return new Promise(function (resolve, reject) {
         console.log(Model);
-        console.log(uid,number);
-        setTimeout(()=> {
-            for (var user of Model.users){
-                if (user._id == uid){
-                    for (var order of user.userOrders){
-                        if(order.number == number){
+        console.log(uid, number);
+        setTimeout(() => {
+            for (var user of Model.users) {
+                if (user._id == uid) {
+                    for (var order of user.userOrders) {
+                        if (order.number == number) {
                             console.log(order);
                             resolve(order);
                         }
@@ -565,13 +575,13 @@ Model.getUserOrdersByNumber = function(uid, number){
     })
 }
 
-Model.getUserOrderItems = function(uid, number){
-    return new Promise(function(resolve, reject){
-        setTimeout(()=> {
-            for (var user of Model.users){
-                if (user._id == uid){
-                    for (var order of user.userOrders){
-                        if(order.number == number){
+Model.getUserOrderItems = function (uid, number) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(() => {
+            for (var user of Model.users) {
+                if (user._id == uid) {
+                    for (var order of user.userOrders) {
+                        if (order.number == number) {
                             resolve(order.orderItems);
                         }
                     }
@@ -589,7 +599,7 @@ Model.signup = function (newUser) {
         setTimeout(function () {
 
             var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
-            newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
+                newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
 
             if ((newUser.password == newUser.confirmpassword) && ok) {
                 Model.checkEmail(newUser.email).then(function () {
@@ -609,7 +619,7 @@ Model.checkEmail = function (emailf) {
         setTimeout(function () {
             var i = 0;
             var found = false;
-            while (i < Model.users.length && !found) { 
+            while (i < Model.users.length && !found) {
                 if (emailf == Model.users[i].email) {
                     found = true;
                 }
@@ -617,7 +627,7 @@ Model.checkEmail = function (emailf) {
             }
             if (!found) {
                 console.log('Email is not already used');
-                resolve(); 
+                resolve();
             }
             else {
                 console.log('Email already used');

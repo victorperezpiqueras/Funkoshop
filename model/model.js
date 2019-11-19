@@ -1,4 +1,12 @@
 var Model = {};
+
+//Mongo schema models:
+var Cart = require('../model/cart');
+var Item = require('../model/item');
+var Order = require('../model/order');
+var Product = require('../model/product');
+var User = require('../model/user');
+
 Model.products = [
     {
         id: 1,

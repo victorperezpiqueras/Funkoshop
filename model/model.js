@@ -267,26 +267,10 @@ Model.checkEmail = function (emailf) {
 
 /* PRODUCT METHODS */
 Model.getProducts = function () {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            resolve(Model.products)
-        });
-    });
+    return Product.find();
 };
 Model.getProduct = function (pid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var product = Model.products.find(function (product) {
-                return product.id == pid;
-            });
-            if (product != null) {
-                resolve(product);
-            }
-            else {
-                reject("Product not found");
-            }
-        });
-    });
+    return Product.findById(pid);
 };
 
 /* USER METHODS */
@@ -369,7 +353,7 @@ Model.buy = function (userId, pid) {
                     console.log(cart)
                     //search for an item that contains the product
                     var newItem = cart.shoppingCartItems.find(function (item) {
-                        return item.orderItemProduct.id == pid;
+                        return item.orderItemProduct._id == pid;
                     });
                     Model.getProduct(pid)
                         .then((product) => {
@@ -400,12 +384,12 @@ Model.buy = function (userId, pid) {
     });
 };
 Model.removeOneCartItem = function (userId, pid) {
-    return new Promise(function (resolve, reject) {
+    /* return new Promise(function (resolve, reject) {
         setTimeout(() => {
             Model.getShoppingCart(userId)
                 .then((cart) => {
                     cart.shoppingCartItems.forEach((item) => {
-                        if (item.orderItemProduct.id == pid) {
+                        if (item.orderItemProduct._id == pid) {
                             item.qty--;
                             item.total -= item.price;
                             if (item.qty == 0) {
@@ -422,15 +406,35 @@ Model.removeOneCartItem = function (userId, pid) {
                         });
                 });
         });
-    });
+    }); */
+    return Model.getShoppingCart(userId)
+        .then((cart) => {
+            cart.shoppingCartItems.forEach((item) => {
+                if (item.orderItemProduct._id.toString() == pid) { //.toString()
+                    item.qty--;
+                    item.total -= item.price;
+                    if (item.qty == 0) {
+                        var index = cart.shoppingCartItems.indexOf(item);
+                        if (index > -1) {
+                            cart.shoppingCartItems.splice(index, 1);
+                        }
+                    }
+                }
+            });
+            Model.recalculateCart(cart)
+                .then((cart) => {
+                    //resolve(cart);
+                    return cart.save();
+                });
+        });
 };
 Model.removeAllCartItem = function (userId, pid) {
-    return new Promise(function (resolve, reject) {
+    /* return new Promise(function (resolve, reject) {
         setTimeout(() => {
             Model.getShoppingCart(userId)
                 .then((cart) => {
                     cart.shoppingCartItems.forEach((item) => {
-                        if (item.orderItemProduct.id == pid) {
+                        if (item.orderItemProduct._id == pid) {
                             var index = cart.shoppingCartItems.indexOf(item);
                             if (index > -1) {
                                 cart.shoppingCartItems.splice(index, 1);
@@ -443,7 +447,23 @@ Model.removeAllCartItem = function (userId, pid) {
                         });
                 });
         });
-    });
+    }); */
+    return Model.getShoppingCart(userId)
+        .then((cart) => {
+            cart.shoppingCartItems.forEach((item) => {
+                if (item.orderItemProduct._id.toString() == pid) { //.toString()
+                    var index = cart.shoppingCartItems.indexOf(item);
+                    if (index > -1) {
+                        cart.shoppingCartItems.splice(index, 1);
+                    }
+                }
+            });
+            Model.recalculateCart(cart)
+                .then((cart) => {
+                    //resolve(cart);
+                    return cart.save();
+                });
+        });
 };
 
 /* ORDER METHODS */

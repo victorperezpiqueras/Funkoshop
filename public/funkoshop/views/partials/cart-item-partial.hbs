@@ -9,8 +9,8 @@
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Remove</a>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" onclick="{{removeAllCartItem_onclick}}(event, {{orderItemProduct.id}});">All</a>
-                <a class="dropdown-item" onclick="{{removeOneCartItem_onclick}}(event, {{orderItemProduct.id}});">One</a>
+                <a class="dropdown-item" onclick="{{removeAllCartItem_onclick}}(event, '{{orderItemProduct._id}}');">All</a>
+                <a class="dropdown-item" onclick="{{removeOneCartItem_onclick}}(event, '{{orderItemProduct._id}}');">One</a>
             </div>
         </div>
     </td>

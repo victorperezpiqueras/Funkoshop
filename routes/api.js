@@ -124,7 +124,7 @@ router.post('/users/:uid/orders', function (req, res, next) {
         })
 });
 router.get('/users/:uid/orders/:number', function (req, res, next) {
-    model.getUserOrdersByNumber(req.params.uid, req.params.number)
+    model.getUserOrderByNumber(req.params.uid, req.params.number)
         .then(function (order) {
             res.json(order);
         })

@@ -269,7 +269,7 @@ Model.postUserOrder = function (uid, orderData) {
             })
     });
 }
-Model.getUserOrdersByNumber = function (uid, number) {
+Model.getUserOrderByNumber = function (uid, number) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/api/users/' + uid + '/orders/' + number,

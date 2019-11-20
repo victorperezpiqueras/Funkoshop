@@ -120,7 +120,7 @@ Model.users = [
         },
         userOrders: [
             {
-                date: new Date('31/10/2019'),
+                date: new Date('3/10/2019'),
                 number: 11111111,
                 address: "aaa",
                 subtotal: 20,
@@ -275,15 +275,7 @@ Model.getProduct = function (pid) {
 
 /* USER METHODS */
 Model.getUser = function (uid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var user = Model.users.find(function (user) {
-                console.log("get user serv: ", uid)
-                return user._id == uid;
-            });
-            resolve(user);
-        });
-    });
+    return User.findById(uid);
 };
 Model.signin = function (emailf, passwordf) {
     return Model.findUser(emailf, passwordf)
@@ -366,6 +358,7 @@ Model.buy = function (userId, pid) {
                                     total: (product.price * 1),
                                     orderItemProduct: product
                                 };
+                                //new Item(..,..,..,..).save()-->promise.all/o solo then->then->push
                                 cart.shoppingCartItems.push(newItem);
                             }
                             else {
@@ -377,7 +370,10 @@ Model.buy = function (userId, pid) {
                         .then((cart) => {
                             //recalculate shopping cart
                             Model.recalculateCart(cart)
-                                .then(resolve(cart));
+                                .then(function (cart) {
+                                    resolve(cart);
+                                    //return cart.save();
+                                });
                         });
                 });
         });
@@ -468,16 +464,10 @@ Model.removeAllCartItem = function (userId, pid) {
 
 /* ORDER METHODS */
 Model.getUserOrders = function (uid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            for (var user of Model.users) {
-                if (user._id == uid) {
-                    //break
-                    resolve(user.userOrders);
-                }
-            }
+    return User.findById(uid).populate({ path: "userOrders" })
+        .then(function (user) {
+            return user.userOrders.find().populate({ path: "orderItems" });
         });
-    });
 };
 Model.postUserOrder = function (uid, orderData) {
     return new Promise(function (resolve, reject) {
@@ -508,38 +498,20 @@ Model.postUserOrder = function (uid, orderData) {
         });
     });
 };
-Model.getUserOrdersByNumber = function (uid, number) {
-    return new Promise(function (resolve, reject) {
-        console.log(Model);
-        console.log(uid, number);
-        setTimeout(() => {
-            for (var user of Model.users) {
-                if (user._id == uid) {
-                    for (var order of user.userOrders) {
-                        if (order.number == number) {
-                            console.log(order);
-                            resolve(order);
-                        }
-                    }
-                }
-            }
+Model.getUserOrderByNumber = function (uid, number) {
+    return User.findById(uid).populate({ path: "userOrders" })
+        .then(function (user) {
+            return user.userOrders.findOne({ number: number }).populate({ path: "orderItems" });
         });
-    });
 };
 Model.getUserOrderItems = function (uid, number) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            for (var user of Model.users) {
-                if (user._id == uid) {
-                    for (var order of user.userOrders) {
-                        if (order.number == number) {
-                            resolve(order.orderItems);
-                        }
-                    }
-                }
-            }
+    return User.findById(uid).populate({ path: "userOrders" })
+        .then(function (user) {
+            return user.userOrders.findOne({ number: number }).populate({ path: "orderItems" })
+                .then(function (userOrder) {
+                    return userOrder.orderItems;
+                })
         });
-    });
 };
 
 /* global Model */

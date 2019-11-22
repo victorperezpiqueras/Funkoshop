@@ -242,27 +242,41 @@ Model.findUser = function (emailf, passwordf) {
     })
 };
 Model.checkEmail = function (emailf) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            var i = 0;
-            var found = false;
-            while (i < Model.users.length && !found) {
-                if (emailf == Model.users[i].email) {
-                    found = true;
-                }
-                i++;
-            }
-            if (!found) {
-                console.log('Email is not already used');
-                resolve();
-            }
-            else {
-                console.log('Email already used');
-                reject();
-            }
+    return User.find({ email: emailf }).then(function (user) {
+        console.log(user);
+        if (user != null) {
+            reject();
+        }
+        else {
+            resolve();
+        }
+    })
 
-        }, 10);
-    });
+};
+Model.signup = function (newUser) {
+    return new Promise(function (resolve, reject) {
+        var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
+            newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
+        if (ok) {
+            if (newUser.password == newUser.confirmpassword) {
+                Model.checkEmail(newUser.email).then(function () {
+                    console.log('Passwords equals & Email checked');
+                    User.push(newUser);
+                    //Model.users.push(newUser); // Book.findById(bid).comments.push(comment);
+                    console.log('new User: ', newUser);
+                    resolve(newUser);
+                })
+                    .catch((error) => {
+                        reject({ error: "Email already used" });
+                    })
+            } else {
+                reject({ error: "Passwords do not match" });
+            }
+        }
+        else {
+            reject({ error: "Some field is empty" });
+        }
+    })
 };
 
 /* PRODUCT METHODS */

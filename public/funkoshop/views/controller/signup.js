@@ -20,7 +20,7 @@ Controller.controllers.signup.signup_clicked = function (event) {
     var date = $('#birth').val();
     date = new Date(date);
     var newUser = {
-        _id: Date.now(),
+        // _id: Date.now(), //Already in data base
         name: $('#name').val(),
         surname: $('#surname').val(),
         address: $('#address').val(),
@@ -36,36 +36,6 @@ Controller.controllers.signup.signup_clicked = function (event) {
             shoppingCartItems: []
         }
     }
-
-    // var found = false;
-    
-    // Model.checkEmail = function (emailf) {
-    //     return new Promise(function (resolve, reject) {
-    //         setTimeout(function () {
-    //             var i = 0;
-    //             var found = false;
-    //             while (i < Model.users.length && !found) { 
-    //                 if (emailf == Model.users[i].email) {
-    //                     found = true;
-    //                 }
-    //                 i++;
-    //             }
-    //             if (!found) {
-    //                 console.log('Email is not already used');
-    //                 resolve(); 
-    //             }
-    //             else {
-    //                 console.log('Email already used');
-    //                 alert('Email already used');
-    //                 reject();
-    //             }
-    
-    //         }, 10);
-    //     })
-    // }
-    
-    
-
 
     Model.signup(newUser)
         .then(() => {

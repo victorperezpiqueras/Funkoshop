@@ -112,7 +112,7 @@ Model.getUser = function (uid) {
             })
     });
 }
-Model.signup = function (userInfo) {
+/* Model.signup = function (userInfo) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/api/users/signup',
@@ -124,6 +124,23 @@ Model.signup = function (userInfo) {
             })
             .fail(function (error) {
                 reject(error);
+            });
+    });
+} */
+//SIGNUP METHODS
+Model.signup = function (userInfo) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: '/api/users/signup',
+            method: 'POST',
+            data: userInfo
+        })
+            .done(function (user) {
+                resolve(user);
+            })
+            .fail(function (error) {
+                console.log(error.responseJSON.error);
+                reject(error.responseJSON.error);
             });
     });
 }
@@ -176,23 +193,7 @@ Model.removeOneCartItem = function (pid) {
     });
 };
 
-//SIGNUP METHODS
-Model.signup = function (userInfo) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: '/api/users/signup',
-            method: 'POST',
-            data: userInfo
-        })
-            .done(function (user) {
-                resolve(user);
-            })
-            .fail(function (error) {
-                console.log(error.responseJSON.error);
-                reject(error.responseJSON.error);
-            });
-    });
-}
+
 
 /* PRACTICE 3 CART */
 Model.getShoppingCart = function (uid) {

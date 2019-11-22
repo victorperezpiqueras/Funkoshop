@@ -7,168 +7,6 @@ var Order = require('../model/order');
 var Product = require('../model/product');
 var User = require('../model/user');
 
-Model.products = [
-    {
-        id: 1,
-        name: "Goku",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/goku.jpg"
-    },
-    {
-        id: 2,
-        name: "Naruto",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/naruto.jpg"
-    },
-    {
-        id: 3,
-        name: "Krillin",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/krillin.jpg"
-    },
-    {
-        id: 4,
-        name: "Batman",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/batman.jpg"
-    },
-    {
-        id: 5,
-        name: "Charmander",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/charmander.jpg"
-    },
-    {
-        id: 6,
-        name: "Harry Potter",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/harrypotter.jpg"
-    },
-    {
-        id: 7,
-        name: "Captain America",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/capitanamerica.jpg"
-    },
-    {
-        id: 8,
-        name: "Timón",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/timon.jpg"
-    },
-    {
-        id: 9,
-        name: "Groot",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/groot.jpg"
-    },
-    {
-        id: 10,
-        name: "Toothless",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/toothless.jpg"
-    },
-    {
-        id: 11,
-        name: "Logan",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/logan.jpg"
-    },
-    {
-        id: 12,
-        name: "Ironspider",
-        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-        price: 10,
-        url: "/images/ironspider.jpg"
-    }
-];
-
-
-Model.users = [
-    {
-        _id: 1,
-        name: 'user',
-        surname: 'surname',
-        email: 'email@email.com',
-        birth: new Date('10/10/1998'),
-        address: 'Calle falsa 123',
-        password: 'password',
-        shoppingCart: {
-            subtotal: 0,
-            tax: 0.21,
-            total: 0,
-            shoppingCartItems: [/* 
-                {
-                    order: null,
-                    qty: 1,
-                    price: 20,
-                    total: 20,
-                    orderItemProduct: Model.products[0]
-                }
-             */]
-        },
-        userOrders: [
-            {
-                date: new Date('31/10/2019'),
-                number: 11111111,
-                address: "aaa",
-                subtotal: 20,
-                tax: 0.2,
-                total: 20,
-                cardHolder: 22222,
-                cardNumber: 3423424,
-                orderItems: [{
-                    qty: 1,
-                    price: 10,
-                    total: 20,
-                    orderItemProduct: {
-                        id: 1,
-                        name: "Goku",
-                        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-                        price: 10,
-                        url: "/images/goku.jpg"
-                    }
-                }]
-            }
-        ]
-    },
-    {
-        _id: 2,
-        name: 'user2',
-        surname: 'surname2',
-        email: 'email2@email.com',
-        birth: new Date('10/10/1998'),
-        address: 'Calle falsa 123',
-        password: 'password2',
-        shoppingCart: {
-            subtotal: 0,
-            tax: 0.2,
-            total: 0,
-            shoppingCartItems: [/* 
-                {
-                    order: null,
-                    qty: 1,
-                    price: 20,
-                    total: 20,
-                    orderItemProduct: Model.products[0]
-                }
-             */]
-        },
-        userOrders: []
-    },
-
-];
 
 /* AUXILIAR METHODS */
 Model.loadBadge = function (userId) {
@@ -223,47 +61,7 @@ Model.cartItemCount = function (userId) {
         });
     });
 };
-Model.findUser = function (emailf, passwordf) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            var i = 0;
-            var found = false;
-            while (i < Model.users.length && !found) { /* Para cuando se encuentra */
-                found = Model.users[i].email == emailf && Model.users[i].password == passwordf; /* Cuando es cumple pone a true la booleana */
-                i++;
-            }
-            if (found) {
-                console.log('User exists!!');
-                resolve(Model.users[(i - 1)]); /* CUIDADO! Es i-1 porque el while siempre incrementa, entonces al que se encuentra hará i++ antes de salir */
-            }
-            else
-                reject('User not found');
-        }, 10);
-    })
-};
-Model.checkEmail = function (emailf) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            var i = 0;
-            var found = false;
-            while (i < Model.users.length && !found) {
-                if (emailf == Model.users[i].email) {
-                    found = true;
-                }
-                i++;
-            }
-            if (!found) {
-                console.log('Email is not already used');
-                resolve();
-            }
-            else {
-                console.log('Email already used');
-                reject();
-            }
 
-        }, 10);
-    });
-};
 
 /* PRODUCT METHODS */
 Model.getProducts = function () {
@@ -275,51 +73,64 @@ Model.getProduct = function (pid) {
 
 /* USER METHODS */
 Model.getUser = function (uid) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var user = Model.users.find(function (user) {
-                console.log("get user serv: ", uid)
-                return user._id == uid;
-            });
-            resolve(user);
-        });
-    });
+    return User.findById(uid).populate([{ path: 'Cart' }, { path: 'Order' }]); 
 };
+
 Model.signin = function (emailf, passwordf) {
     return Model.findUser(emailf, passwordf)
         .then(function (userf) {
             return new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                    resolve({ _id: userf._id });
-                }, 10);
+                resolve({ _id: userf._id });
             })
         })
 };
+Model.findUser = function (emailf, passwordf) {
+    try {
+        return User.findOne({ email: emailf })/* .populate([{ path: 'Cart' }, { path: 'Order' }]) */
+            .then(function (user) {
+                return new Promise(function (resolve, reject) {
+                    if (user.password == passwordf) {
+                        resolve(user);
+                    }
+                    else {
+                        reject('Password not correct');
+                    }
+                })
+            })
+    } catch {
+        reject('Email not found');
+    }
+};
+
 Model.signup = function (newUser) {
     return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
-                newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
-            if (ok) {
-                if (newUser.password == newUser.confirmpassword) {
-                    Model.checkEmail(newUser.email).then(function () {
-                        console.log('Passwords equals & Email checked');
-                        Model.users.push(newUser);
-                        console.log('new User: ', newUser);
-                        resolve(newUser);
+        var ok = newUser.name.length && newUser.surname.length && newUser.address.length && newUser.birth != null &&
+            newUser.email.length && newUser.password.length && newUser.confirmpassword.length;
+        if (ok) {
+            if (newUser.password == newUser.confirmpassword) {
+                User.findOne({ email: newUser.email })
+                    .then(function (user) {
+                        console.log(user);
+                        if (user) {
+                            reject({ error: "Email already used" })
+                        }
+                        else {
+                            // console.log(newUser);
+                            new User(newUser).save();
+                            resolve(newUser);
+                        }
                     })
-                        .catch((error) => {
-                            reject({ error: "Email already used" });
-                        })
-                } else {
-                    reject({ error: "Passwords do not match" });
-                }
+                    .catch((error) => {
+                        reject({ error: "Email already used" });
+                    })
+            } else {
+                reject({ error: "Passwords do not match" });
             }
-            else {
-                reject({ error: "Some field is empty" });
-            }
-        });
-    });
+        }
+        else {
+            reject({ error: "Some field is empty" });
+        }
+    })
 };
 
 /* CART METHODS */

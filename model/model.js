@@ -350,7 +350,7 @@ Model.postUserOrder = function (uid, orderData) {
 };
 Model.getUserOrderByNumber = function (uid, number) {
     return new Promise(function (resolve, reject) {
-        return User.findById(uid).populate({ path: "userOrders", populate: { path: "orderItems" } })
+        return User.findById(uid).populate({ path: "userOrders", populate: { path: "orderItems", populate: { path: "orderItemProduct" } } })
             .then(function (user) {
                 for (var order of user.userOrders) {
                     if (order.number == number) resolve(order)

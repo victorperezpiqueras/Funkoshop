@@ -5,6 +5,7 @@ Controller.controllers.order.refresh = function (matching) {
     var userId = context.user;
     Model.getUserOrderByNumber(userId, matching[1])
         .then((order) => {
+            console.log(order);
             context.order = order;
         })
         .then(() => {//load badge and render

@@ -24,7 +24,6 @@ Controller.controllers.cart.removeOneCartItem_clicked = function (event, pid) {
     //add product:
     Model.removeOneCartItem(pid)
         .then((cart) => {
-            //console.log(cart);
             console.log('Item removed successfully');
         })
         .catch((err) => {

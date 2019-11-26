@@ -52,8 +52,6 @@ var users = [
             }
         ]
     },
-
-
 ];
 
 var db = mongoose.connection;
@@ -80,88 +78,6 @@ mongoose.connect(uri, {
     .then(function () { return Order.deleteMany(); })
     .then(function () { return Cart.deleteMany(); })
     .then(function () { return User.deleteMany(); })
-    /* .then(function () {
-        return Product.findOne({});
-    })
-    .then(function (product) {
-        console.log("Product ", product);
-        return new Item({
-            order: 123456,
-            qty: 1,
-            price: 10,
-            total: 20,
-            orderItemProduct: product._id
-        }).save();
-    })
-    .then(function (item) {
-        console.log("Item ", item);
-        return new Cart({
-            subtotal: 0,
-            tax: 0.21,
-            total: 0,
-            shoppingCartItems: [item]
-        }).save();
-    })
-    .then(function (cart) {
-        console.log("Cart ", cart);
-        return new User({
-            name: 'user',
-            surname: 'surname',
-            email: 'email@email.com',
-            birth: new Date('10/10/1998'),
-            address: 'Calle falsa 123',
-            password: 'password',
-            shoppingCart: cart,
-            userOrders: []
-        }).save();
-    })
-    .then(function (user) {
-        console.log("User ", user);
-        console.log(user.shoppingCart)
-    })
-    .then(function () {
-        return Product.findOne({});
-    })
-    .then(function (product) {
-        return new Item({
-            order: 123456,
-            qty: 1,
-            price: 10,
-            total: 20,
-            orderItemProduct: product._id
-        }).save();
-    })
-    .then(function (item) {
-        console.log("Item ", item);
-        return new Order({
-            number: 11111111,
-            date: new Date('2/10/2019'),
-            address: "aaa",
-            subtotal: 20,
-            tax: 0.2,
-            total: 20,
-            cardHolder: "22222",
-            cardNumber: 3423424,
-            user: null,
-            orderItems: [item._id]
-        }).save();
-    })
-    .then(function (order) {
-        return new User({
-            name: 'user2',
-            surname: 'surname2',
-            email: 'email2@email.com',
-            birth: new Date('10/10/1998'),
-            address: 'Calle falsa 123',
-            password: 'password',
-            shoppingCart: null,
-            userOrders: [order]
-        }).save();
-    })
-    .then(function (user) {
-        console.log("User2: ", user);
-        console.log("Orders: ", user.userOrders)
-    }) */
     .then(function () {
         var promises = [];
         var product = Product.findOne({});
@@ -219,11 +135,6 @@ mongoose.connect(uri, {
     .then(function () {
         return Promise.all([Item.findOne({}),Cart.findOne({})])    
     })
-    /* .then(function (promises) {
-        //item inside Cart
-        promises[1].shoppingCartItems.push(promises[0]);
-        return promises[1].save()
-    }) */
     .then(function () {
         return Promise.all([Item.findOne({}),Order.findOne({})])    
     })

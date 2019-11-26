@@ -24,20 +24,6 @@ Model.loadBadge = function (userId) {
         });
     });
 };
-Model.cartItemCount = function (userId) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            Model.getShoppingCart(userId)
-                .then((cart) => {
-                    var itemCount = 0;
-                    cart.shoppingCartItems.forEach(item => {
-                        itemCount += item.qty;
-                    });
-                    resolve(itemCount);
-                });
-        });
-    });
-};
 
 /* PRODUCTS */
 Model.getProducts = function () {

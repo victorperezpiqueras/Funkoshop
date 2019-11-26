@@ -10,49 +10,6 @@ var User = require('../model/user');
 var uri = 'mongodb://localhost/funkoshop';
 //standard promise library
 mongoose.Promise = global.Promise;
-var cart = {
-    subtotal: 0,
-    tax: 0.21,
-    total: 0,
-    shoppingCartItems: []
-};
-var users = [
-    {
-        name: 'user',
-        surname: 'surname',
-        email: 'email@email.com',
-        birth: new Date('10/10/1998'),
-        address: 'Calle falsa 123',
-        password: 'password',
-        shoppingCart: {},
-        userOrders: [
-            {
-                date: new Date('31/10/2019'),
-                number: 11111111,
-                address: "aaa",
-                subtotal: 20,
-                tax: 0.2,
-                total: 20,
-                cardHolder: 22222,
-                cardNumber: 3423424,
-                orderItems: [{
-                    qty: 1,
-                    price: 10,
-                    total: 20,
-                    orderItemProduct: {
-                        id: 1,
-                        name: "Goku",
-                        description: "lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-                        price: 10,
-                        url: "/images/goku.jpg"
-                    }
-                }]
-            }
-        ]
-    },
-
-
-];
 
 var db = mongoose.connection;
 db.on('connecting', function () {

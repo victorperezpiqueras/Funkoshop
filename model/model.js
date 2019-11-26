@@ -1,5 +1,4 @@
 var Model = {};
-var ObjectId = require('mongodb').ObjectID;
 //Mongo schema models:
 var Cart = require('../model/cart');
 var Item = require('../model/item');
@@ -19,19 +18,14 @@ Model.resetCart = function () {
     return cart;
 };
 Model.recalculateCart = function (cart) {
-    console.log("Carro: ", cart)
-
     return new Promise(function (resolve, reject) {
-
         var subtotal = 0;
         cart.shoppingCartItems.forEach(item => {
             console.log("item", item.total)
             subtotal += (item.total);
         });
-
         cart.subtotal = subtotal;
         cart.total = subtotal + (subtotal * cart.tax);
-        ////
         resolve(cart);
     });
 
@@ -60,7 +54,7 @@ Model.signin = function (emailf, passwordf) {
 };
 Model.findUser = function (emailf, passwordf) {
     try {
-        return User.findOne({ email: emailf })/* .populate([{ path: 'Cart' }, { path: 'Order' }]) */
+        return User.findOne({ email: emailf })
             .then(function (user) {
                 return new Promise(function (resolve, reject) {
                     if (user.password == passwordf) {
@@ -119,12 +113,6 @@ Model.signup = function (newUser) {
 
 /* CART METHODS */
 Model.getShoppingCart = function (userId) {
-    /* return new Promise(function (resolve, reject) {
-        Model.getUser(userId)
-            .then((user) => {
-                resolve(user.shoppingCart);
-            });
-    }); */
     return new Promise(function (resolve, reject) {
         return User.findById(userId).populate({ path: "shoppingCart", populate: { path: "shoppingCartItems", populate: { path: "orderItemProduct" } } })
             .then(function (user) {
@@ -147,12 +135,6 @@ Model.getShoppingCartCounter = function (userId) {
     });
 };
 Model.getShoppingCartItems = function (userId) {
-    /* return new Promise(function (resolve, reject) {
-        Model.getUser(userId)
-            .then((user) => {
-                resolve(user.shoppingCart.shoppingCartItems);
-            });
-    }); */
     return new Promise(function (resolve, reject) {
         return User.findById(userId).populate({ path: "shoppingCart", populate: { path: "shoppingCartItems" } })
             .then(function (user) {
@@ -179,9 +161,8 @@ Model.buy = function (userId, pid) {
                                 qty: 1,
                                 price: product.price,
                                 total: (product.price * 1),
-                                orderItemProduct: product//////////////////////////////////ERROR AQUI
+                                orderItemProduct: product
                             };
-                            //new Item(..,..,..,..).save()-->promise.all/o solo then->then->push
                             return new Item(newItem).save()
                                 .then(function (item) {
                                     cart.shoppingCartItems.push(item);
@@ -200,19 +181,14 @@ Model.buy = function (userId, pid) {
                                     return Model.getShoppingCart(userId);
                                 })
                         }
-                        //console.log(cart.shoppingCartItems)
-
                     })
                     .then((cart) => {
                         //recalculate shopping cart
-                        console.log("carro anterior", cart)
                         Model.recalculateCart(cart)
                             .then(function (cart) {
                                 cart.save().then(function () {
                                     resolve(cart);
                                 })
-
-                                //return cart.save();
                             });
                     });
             });
@@ -245,33 +221,6 @@ Model.removeOneCartItem = function (userId, pid) {
                     })
                     .then(function (cart) { return cart.save() })
             }
-
-
-
-            /* cart.shoppingCartItems.forEach((item) => {
-
-                if (item.orderItemProduct._id.toString() == pid) { //.toString()
-                    item.qty--;
-                    item.total -= item.price;
-                    var p = Promise.resolve();
-                    if (item.qty == 0) {
-                        var index = cart.shoppingCartItems.indexOf(item);
-                        if (index > -1) {
-                            cart.shoppingCartItems.splice(index, 1);
-                        }
-
-                    } else p = item.save();
-
-                    return p.then(function () {
-                        return Model.recalculateCart(cart)
-                            .then((cart) => {
-                                //resolve(cart);
-                                return cart.save();
-                            });
-                    })
-                }
-            }); */
-
         });
 };
 Model.removeAllCartItem = function (userId, pid) {
@@ -287,7 +236,6 @@ Model.removeAllCartItem = function (userId, pid) {
             });
             return Model.recalculateCart(cart)
                 .then((cart) => {
-                    //resolve(cart);
                     return cart.save();
                 });
         });
@@ -295,10 +243,6 @@ Model.removeAllCartItem = function (userId, pid) {
 
 /* ORDER METHODS */
 Model.getUserOrders = function (uid) {
-    /*  return User.findById(uid).populate({ path: "userOrders" })
-         .then(function (user) {
-             return user.userOrders.find().populate({ path: "orderItems" });
-         }); */
     return new Promise(function (resolve, reject) {
         return User.findById(uid).populate({ path: "userOrders", populate: { path: "orderItems" } })
             .then(function (user) {
@@ -308,8 +252,6 @@ Model.getUserOrders = function (uid) {
 };
 Model.postUserOrder = function (uid, orderData) {
     return new Promise(function (resolve, reject) {
-
-
         Model.getShoppingCart(uid)
             .then((cart) => {
                 //create order:
@@ -328,7 +270,6 @@ Model.postUserOrder = function (uid, orderData) {
                 return new Order(order).save()
             })
             .then(function (order) {
-                console.log(order);
                 Model.getUser(uid)
                     .then((user) => {
                         //add order and reset cart in user:
@@ -336,9 +277,7 @@ Model.postUserOrder = function (uid, orderData) {
                             .then(function (cart) {
                                 user.shoppingCart = cart;
                                 user.userOrders.push(order);
-                                //resolve(order);
                                 console.log(user)
-                                //resolve(user.save());
                                 user.save().then((user) => { resolve(user) });
                             })
 

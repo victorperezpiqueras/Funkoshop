@@ -1,7 +1,7 @@
 Controller.controllers.purchase = {};
 Controller.controllers.purchase.refresh = function () {
     var context = {};
-    context.user = localStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+    context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
     var userId = context.user;
     Model.getShoppingCart(userId)
         .then((cart) => {
@@ -25,7 +25,7 @@ Controller.controllers.purchase.checkout_clicked = function (event) {
     var cardHolder = $('#card-holder-name').val();
     var cardNumber = $('#card-number').val();
 
-    var userId = localStorage.getItem("user");
+    var userId = sessionStorage.getItem("user");
 
     var orderData = {
         date: date,

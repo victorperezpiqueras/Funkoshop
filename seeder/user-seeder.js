@@ -6,6 +6,7 @@ var Order = require('../model/order');
 var Product = require('../model/product');
 var User = require('../model/user');
 
+var ObjectId = require('mongodb').ObjectID;
 //protocol://address/db_name
 var uri = 'mongodb://localhost/funkoshop';
 //standard promise library
@@ -17,7 +18,8 @@ var cart = {
     shoppingCartItems: []
 };
 var users = [
-    {
+    { 
+        _id: new ObjectId("555555555555555555555555"),
         name: 'user',
         surname: 'surname',
         email: 'email@email.com',
@@ -217,11 +219,11 @@ mongoose.connect(uri, {
     .then(function () {
         return Promise.all([Item.findOne({}),Cart.findOne({})])    
     })
-    .then(function (promises) {
+    /* .then(function (promises) {
         //item inside Cart
         promises[1].shoppingCartItems.push(promises[0]);
         return promises[1].save()
-    })
+    }) */
     .then(function () {
         return Promise.all([Item.findOne({}),Order.findOne({})])    
     })

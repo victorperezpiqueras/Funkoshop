@@ -1,7 +1,7 @@
 Controller.controllers.index = {};
 Controller.controllers.index.refresh = function () {
     var context = {};
-    context.user = localStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+    context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
     var userId = context.user;
     console.log(context.user)
     Model.getProducts()
@@ -23,7 +23,7 @@ Controller.controllers.index.refresh = function () {
 }
 Controller.controllers.index.buyProduct_clicked = function (event, pid) {
     event.preventDefault();
-    var userId = localStorage.getItem("user");
+    var userId = sessionStorage.getItem("user");
     //add product:
     Model.buy(userId, pid)
         .then(() => {
@@ -42,7 +42,7 @@ Controller.controllers.index.buyProduct_clicked = function (event, pid) {
 }
 Controller.controllers.index.addProduct_clicked = function (event, pid) {
     event.preventDefault();
-    var userId = localStorage.getItem("user");
+    var userId = sessionStorage.getItem("user");
     //add product:
     Model.buy(userId, pid)
         .then(() => {

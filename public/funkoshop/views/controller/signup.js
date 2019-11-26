@@ -1,7 +1,7 @@
 Controller.controllers.signup = {};
 Controller.controllers.signup.refresh = function () {
     var context = {};
-    context.user = localStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+    context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
     var userId = context.user;
     //load badge and render
     Model.loadBadge(userId)
@@ -20,7 +20,7 @@ Controller.controllers.signup.signup_clicked = function (event) {
     var date = $('#birth').val();
     date = new Date(date);
     var newUser = {
-        _id: Date.now(),
+        // _id: Date.now(), //Already in data base
         name: $('#name').val(),
         surname: $('#surname').val(),
         address: $('#address').val(),
@@ -29,43 +29,13 @@ Controller.controllers.signup.signup_clicked = function (event) {
         password: $('#password').val(),
         confirmpassword: $('#confirmpassword').val(),
         userOrders: [],
-        shoppingCart: {
+        /* shoppingCart: {
             subtotal: 0,
             tax: 0.21,
             total: 0,
             shoppingCartItems: []
-        }
+        } */
     }
-
-    // var found = false;
-    
-    // Model.checkEmail = function (emailf) {
-    //     return new Promise(function (resolve, reject) {
-    //         setTimeout(function () {
-    //             var i = 0;
-    //             var found = false;
-    //             while (i < Model.users.length && !found) { 
-    //                 if (emailf == Model.users[i].email) {
-    //                     found = true;
-    //                 }
-    //                 i++;
-    //             }
-    //             if (!found) {
-    //                 console.log('Email is not already used');
-    //                 resolve(); 
-    //             }
-    //             else {
-    //                 console.log('Email already used');
-    //                 alert('Email already used');
-    //                 reject();
-    //             }
-    
-    //         }, 10);
-    //     })
-    // }
-    
-    
-
 
     Model.signup(newUser)
         .then(() => {

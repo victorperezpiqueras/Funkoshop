@@ -1,10 +1,11 @@
 Controller.controllers.cart = {};
 Controller.controllers.cart.refresh = function () {
     var context = {};
-    context.user = localStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+    context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
     var userId = context.user;
     Model.getShoppingCart(userId)
         .then((cart) => {
+            console.log("controller", cart)
             context.cart = cart;
         })
         .then(() => {//load badge and render
@@ -29,7 +30,9 @@ Controller.controllers.cart.removeOneCartItem_clicked = function (event, pid) {
         .catch((err) => {
             console.error('Item cannot be removed', err);
         })
-        .then(Controller.controllers.cart.refresh());
+        .then(function () {
+            Controller.controllers.cart.refresh()
+        });
 }
 Controller.controllers.cart.removeAllCartItem_clicked = function (event, pid) {
     event.preventDefault();
@@ -41,7 +44,9 @@ Controller.controllers.cart.removeAllCartItem_clicked = function (event, pid) {
         .catch((err) => {
             console.error('Item cannot be removed', err);
         })
-        .then(Controller.controllers.cart.refresh());
+        .then(function () {
+            Controller.controllers.cart.refresh()
+        });
 }
 Controller.controllers.cart.purchase_clicked = function (event) {
     event.preventDefault();

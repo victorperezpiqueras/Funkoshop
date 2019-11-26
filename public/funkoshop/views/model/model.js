@@ -1,13 +1,10 @@
 var Model = {};
 
-
-
-
 /* AUXILIAR METHODS */
 Model.signOut = function () {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            localStorage.removeItem("user");
+            sessionStorage.removeItem("user");
             resolve();
         })
     });
@@ -15,9 +12,8 @@ Model.signOut = function () {
 Model.loadBadge = function (userId) {
     return new Promise(function (resolve, reject) {
         setTimeout(() => {
-            // userId = localStorage.getItem("user"); //Ya está cogido en el controller
             if (userId != null) {
-                Model.cartItemCount(userId)
+                Model.getShoppingCartCounter(userId)
                     .then((itemCounter) => {
                         resolve(itemCounter);
                     });
@@ -25,29 +21,6 @@ Model.loadBadge = function (userId) {
             else {
                 resolve(0);
             }
-        });
-    });
-};
-Model.resetCart = function () {
-    var cart = {
-        subtotal: 0,
-        tax: 0.2,
-        total: 0,
-        shoppingCartItems: []
-    }
-    return cart;
-};
-Model.recalculateCart = function (cart) {
-    return new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            var subtotal = 0;
-            cart.shoppingCartItems.forEach(item => {
-                subtotal += (item.total);
-            });
-            cart.subtotal = subtotal;
-            cart.total = subtotal + (subtotal * cart.tax);
-            ////
-            resolve(cart);
         });
     });
 };
@@ -99,7 +72,7 @@ Model.getProduct = function (pid) {
 /* USER */
 Model.getUser = function (uid) {
     return new Promise(function (resolve, reject) {
-        uid = localStorage.getItem("user");
+        uid = sessionStorage.getItem("user");
         $.ajax({
             url: '/api/users/' + uid + '/profile',
             method: 'GET'
@@ -112,69 +85,6 @@ Model.getUser = function (uid) {
             })
     });
 }
-Model.signup = function (userInfo) {
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: '/api/users/signup',
-            method: 'POST',
-            data: userInfo
-        })
-            .done(function (user) {
-                resolve(user);
-            })
-            .fail(function (error) {
-                reject(error);
-            });
-    });
-}
-Model.signin = function (emailf, passwordf) { //FUNCIONA
-    return new Promise(function (resolve, reject) {
-        $.ajax({
-            url: '/api/users/signin',
-            method: 'POST',
-            data: { email: emailf, password: passwordf }
-        })
-            .done(function (user) {
-                localStorage.setItem("user", user._id); //Almacenamos el id en localstorage
-                resolve();
-            })
-            .fail(function (err) {
-                reject(err);
-            });
-    });
-};
-
-/* CART */
-Model.removeAllCartItem = function (pid) {
-    return new Promise(function (resolve, reject) {
-        var userId = localStorage.getItem("user");
-        $.ajax({
-            url: '/api/users/' + userId + '/cart/items/' + pid,
-            method: 'DELETE',
-        })
-            .done(function (data) {
-                resolve(data);
-            })
-            .fail(function (err) {
-                reject(err);
-            });
-    });
-};
-Model.removeOneCartItem = function (pid) {
-    return new Promise(function (resolve, reject) {
-        var userId = localStorage.getItem("user");
-        $.ajax({
-            url: '/api/users/' + userId + '/cart/items/' + pid + '/decrease',
-            method: 'DELETE',
-        })
-            .done(function (data) {
-                resolve(data);
-            })
-            .fail(function (err) {
-                reject(err);
-            });
-    });
-};
 
 //SIGNUP METHODS
 Model.signup = function (userInfo) {
@@ -193,8 +103,56 @@ Model.signup = function (userInfo) {
             });
     });
 }
+Model.signin = function (emailf, passwordf) { //FUNCIONA
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: '/api/users/signin',
+            method: 'POST',
+            data: { email: emailf, password: passwordf }
+        })
+            .done(function (user) {
+                sessionStorage.setItem("user", user._id); //Almacenamos el id en sessionStorage
+                resolve();
+            })
+            .fail(function (err) {
+                reject(err);
+            });
+    });
+};
 
-/* PRACTICE 3 CART */
+/* CART */
+Model.removeAllCartItem = function (pid) {
+    return new Promise(function (resolve, reject) {
+        var userId = sessionStorage.getItem("user");
+        $.ajax({
+            url: '/api/users/' + userId + '/cart/items/' + pid,
+            method: 'DELETE',
+        })
+            .done(function (data) {
+                resolve(data);
+            })
+            .fail(function (err) {
+                reject(err);
+            });
+    });
+};
+Model.removeOneCartItem = function (pid) {
+    return new Promise(function (resolve, reject) {
+        var userId = sessionStorage.getItem("user");
+        $.ajax({
+            url: '/api/users/' + userId + '/cart/items/' + pid + '/decrease',
+            method: 'DELETE',
+        })
+            .done(function (data) {
+                resolve(data);
+            })
+            .fail(function (err) {
+                reject(err);
+            });
+    });
+};
+
+/* CART */
 Model.getShoppingCart = function (uid) {
     return new Promise(function (resolve, reject) {
         $.ajax({
@@ -287,6 +245,20 @@ Model.getUserOrderItems = function (uid, number) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/api/users/' + uid + '/orders/' + number + '/items',
+            method: 'GET'
+        })
+            .done(function (data) {
+                resolve(data);
+            })
+            .fail(function (err) {
+                reject(err);
+            })
+    });
+}
+Model.getShoppingCartCounter = function (uid) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: '/api/users/' + uid + '/cart/counter',
             method: 'GET'
         })
             .done(function (data) {

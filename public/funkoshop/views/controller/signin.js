@@ -1,7 +1,7 @@
 Controller.controllers.signin = {};
 Controller.controllers.signin.refresh = function () {
     var context = {};
-    context.user = localStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+    context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
     var userId = context.user;
     //load badge and render
     Model.loadBadge(userId)

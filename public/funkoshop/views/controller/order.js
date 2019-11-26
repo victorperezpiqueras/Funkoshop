@@ -1,7 +1,7 @@
 Controller.controllers.order = {};
 Controller.controllers.order.refresh = function (matching) {
     var context = {};
-    context.user = localStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+    context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
     var userId = context.user;
     Model.getUserOrderByNumber(userId, matching[1])
         .then((order) => {

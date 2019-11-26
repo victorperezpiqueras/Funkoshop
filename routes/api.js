@@ -63,6 +63,7 @@ router.delete('/users/:uid/cart/items/:pid', function (req, res, next) {
 router.delete('/users/:uid/cart/items/:pid/decrease', function (req, res, next) {
     model.removeOneCartItem(req.params.uid, req.params.pid)
         .then(function (cart) {
+            console.log("api",cart)
             res.json(cart);
         })
         .catch(function (err) {
@@ -141,5 +142,15 @@ router.get('/users/:uid/orders/:number/items', function (req, res, next) {
             res.status(500).json(err);
         })
 });
+router.get('/users/:uid/cart/counter', function (req, res, next) {
+    model.getShoppingCartCounter(req.params.uid)
+        .then(function (counter) {
+            res.json(counter);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+});
+
 
 module.exports = router;

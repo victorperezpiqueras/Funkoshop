@@ -6,6 +6,8 @@ var Order = require('../model/order');
 var Product = require('../model/product');
 var User = require('../model/user');
 
+var bcrypt = require('bcryptjs');
+
 
 /* AUXILIAR METHODS */
 Model.resetCart = function () {
@@ -44,7 +46,20 @@ Model.getUser = function (uid) {
     return User.findById(uid).populate([{ path: 'shoppingCart' }, { path: 'userOrders' }]);
 };
 
-Model.signin = function (emailf, passwordf) {
+
+Model.signin = function (email, password) {
+    return new Promise(function (resolve, reject) {
+        return User.findOne({ email: email })
+            .then(function (user) {
+                if (!user) reject('Email not found');
+                else if (!bcrypt.compareSync(password, user.password))
+                    reject('Password mismatch')
+                else resolve({ _id: user._id });
+            })
+    });
+}
+
+/* Model.signin = function (emailf, passwordf) {
     return Model.findUser(emailf, passwordf)
         .then(function (userf) {
             return new Promise(function (resolve, reject) {
@@ -57,7 +72,7 @@ Model.findUser = function (emailf, passwordf) {
         return User.findOne({ email: emailf })
             .then(function (user) {
                 return new Promise(function (resolve, reject) {
-                    if (user.password == passwordf) {
+                    if (bcrypt.compareSync(password, user.password)) {
                         resolve(user);
                     }
                     else {
@@ -68,7 +83,7 @@ Model.findUser = function (emailf, passwordf) {
     } catch {
         reject('Email not found');
     }
-};
+}; */
 
 Model.signup = function (newUser) {
     return new Promise(function (resolve, reject) {

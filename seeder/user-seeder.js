@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 
+var bcrypt = require('bcryptjs');
+
 var Cart = require('../model/cart');
 var Item = require('../model/item');
 var Order = require('../model/order');
@@ -25,7 +27,7 @@ var users = [
         email: 'email@email.com',
         birth: new Date('10/10/1998'),
         address: 'Calle falsa 123',
-        password: 'password',
+        password: bcrypt.hashSync('password', bcrypt.genSaltSync(10)),
         shoppingCart: {},
         userOrders: [
             {
@@ -112,7 +114,7 @@ mongoose.connect(uri, {
             email: 'email@email.com',
             birth: new Date('10/10/1998'),
             address: 'Calle falsa 123',
-            password: 'password',
+            password: bcrypt.hashSync('password', bcrypt.genSaltSync(10)),
             shoppingCart: /* cart */undefined,
             userOrders: []
         }).save();
@@ -161,6 +163,8 @@ mongoose.connect(uri, {
     })
     .then(function (user) {
         console.log(user);
+        console.log('Password match', bcrypt.compareSync('password', user.password))
+        console.log('Password does not match', bcrypt.compareSync('sample', user.password))
         console.log("--Cart--",user.shoppingCart)
         console.log("--Orders--",user.userOrders)
         mongoose.disconnect();

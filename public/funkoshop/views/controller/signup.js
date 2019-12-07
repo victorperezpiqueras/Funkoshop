@@ -43,10 +43,8 @@ Controller.controllers.signup.signup_clicked = function (event) {
             Controller.router.go('/funkoshop/views/signin'); //He pensado que cuando se crea la cuenta le vaya a iniciar sesión --> Reducir el numero de clicks del usuario
         })
         .catch((error) => {
-
             console.log(error);
-            alert(error);       
-            
+            alert(error);                 
             Controller.router.go('/funkoshop/views/signup'); /* Como esta creado con un a se puede con href */
         })
     //Controller.controllers.signup.refresh();

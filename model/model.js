@@ -93,12 +93,10 @@ Model.signup = function (newUser) {
             if (newUser.password == newUser.confirmpassword) {
                 User.findOne({ email: newUser.email })
                     .then(function (user) {
-                        console.log(user);
                         if (user) {
                             reject({ error: "Email already used" })
                         }
                         else {
-                            // console.log(newUser);
                             var cart = {
                                 subtotal: 0,
                                 tax: 0.21,
@@ -108,6 +106,8 @@ Model.signup = function (newUser) {
                             return new Cart(cart).save()
                                 .then(function (cart) {
                                     newUser.shoppingCart = cart;
+                                    newUser.password = bcrypt.hashSync(newUser.password); /////////
+                                    console.log('Contraseña: ',newUser.password)
                                     new User(newUser).save();
                                     resolve(newUser);
                                 })

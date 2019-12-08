@@ -1,7 +1,14 @@
 Controller.controllers.index = {};
 Controller.controllers.index.refresh = function () {
+    Model.checkToken(); /* To get a new token for the user */
     var context = {};
-    context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+        /* IMPORTANTE */
+        /* Ahora en sessionStorage user tenemos el token, no el id */
+    //context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+    /* Model.getUser(_id) // Y de donde narices le pillo el ID 
+        .then(function(user){
+            context.user = user._id;
+        }) */
     var userId = context.user;
     console.log(context.user)
     Model.getProducts()

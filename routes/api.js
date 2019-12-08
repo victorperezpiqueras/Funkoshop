@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
+const passportConfig = require('../config/passport');
+
 var model = require('../model/model');
 
 /* PRODUCTS */
@@ -82,7 +86,7 @@ router.delete('/users/:uid/cart/items/:pid/decrease', function (req, res, next) 
 
 /* USERS */
 router.post('/users/signin', function (req, res, next) {
-    var emailf = req.body.email;
+    /* var emailf = req.body.email;
     var passwordf = req.body.password;
     model.signin(emailf, passwordf)
         .then(function (userf) {
@@ -90,7 +94,18 @@ router.post('/users/signin', function (req, res, next) {
         })
         .catch(function (err) {
             res.status(500).json(err);
-        })
+        }) */
+    return passport.authenticate('local', { session: false }, (err, user, info) => { /* Local refers to that in the database */
+        if (err || !user) { return res.status(400).json(err); } /* If error or not user --> error */
+        req.logIn(user, { session: false }, (err) => { /* If OK -> login user */
+            if (err) { res.send(err); }
+            var data = { id: user._id };
+            const token = jwt.sign(data, passportConfig.secretKey, { expiresIn: 60 }); //seconds
+            console.log('en api signin');
+            return res.json({ token }); /* Get the token */
+        });
+    })(req, res);
+
 });
 router.post('/users/signup', function (req, res, next) {
     var newUser = req.body;
@@ -151,6 +166,18 @@ router.get('/users/:uid/orders/:number/items', function (req, res, next) {
             res.status(500).json(err);
         })
 });
+
+
+/* To add an extra minute when this function is called */
+router.get('/checkToken', passport.authenticate('jwt', { session: false }),
+    function (req, res, next) {
+        console.log('checktoken', req.user._id);
+        var data = { id: req.user._id };
+        const token = jwt.sign(data, passportConfig.secretKey, { /* Getting a new token */
+            expiresIn: 60
+        }); //seconds
+        return res.json({ token });
+    });
 
 
 module.exports = router;

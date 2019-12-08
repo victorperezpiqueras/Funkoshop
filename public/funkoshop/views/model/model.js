@@ -97,8 +97,9 @@ Model.signin = function (emailf, passwordf) { //FUNCIONA
             data: { email: emailf, password: passwordf }
         })
             .done(function (user) {
-                sessionStorage.setItem("user", user._id); //Almacenamos el id en sessionStorage
-                resolve();
+                console.log('en model client signin');
+               // sessionStorage.setItem("user", user._id); //O poner en el controller?-->quitar //Almacenamos el id en sessionStorage
+                resolve(user);
             })
             .fail(function (err) {
                 reject(err);
@@ -245,7 +246,7 @@ Model.getShoppingCartCounter = function (uid) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/api/users/' + uid + '/cart/counter',
-            method: 'GET'
+            method: 'GET',
         })
             .done(function (data) {
                 resolve(data);
@@ -253,5 +254,23 @@ Model.getShoppingCartCounter = function (uid) {
             .fail(function (err) {
                 reject(err);
             })
+    });
+}
+
+
+/* FOT THE TOKEN */
+Model.checkToken = function () {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: '/api/checkToken',
+            method: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
+        })
+            .done(function (token) {
+                window.sessionStorage.setItem('user',token.token); resolve(token);
+            })
+            .fail(function (err) { console.log(err); console.log('Expired token!') });
     });
 }

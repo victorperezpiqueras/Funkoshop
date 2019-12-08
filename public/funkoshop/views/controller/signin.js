@@ -25,10 +25,10 @@ Controller.controllers.signin.signin_clicked = function (event) {
     //console.log(password_put);
 
     Model.signin(email_put, password_put)
-        .then(() => {
+        .then(function(token) {
+            window.sessionStorage.setItem("user", token.token);
             console.log('Signin successful');
             console.log('Current user signin ID: ' + Model.user);
-            //Controller.router.go('/funkoshop/views/index');
             Controller.router.go(event.target.href);
         })
         .catch((error) => {

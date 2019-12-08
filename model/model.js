@@ -51,6 +51,7 @@ Model.signin = function (email, password) {
     return new Promise(function (resolve, reject) {
         return User.findOne({ email: email })
             .then(function (user) {
+                console.log('en signin model server');
                 if (!user) reject('Email not found');
                 else if (!bcrypt.compareSync(password, user.password))
                     reject('Password mismatch')
@@ -185,7 +186,6 @@ Model.buy = function (userId, pid) {
                                         return Model.getShoppingCart(userId);
                                     })
                                 })
-
                         }
                         else {
                             newItem.qty++;

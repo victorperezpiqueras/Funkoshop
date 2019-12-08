@@ -1,5 +1,6 @@
 Controller.controllers.profile = {};
 Controller.controllers.profile.refresh = function () {
+    Model.checkToken(); /* To get a new token for the user */
     var context = {};
     context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
     var userId = context.user;

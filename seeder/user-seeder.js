@@ -10,7 +10,7 @@ var User = require('../model/user');
 
 var ObjectId = require('mongodb').ObjectID;
 //protocol://address/db_name
-var uri = 'mongodb://localhost/funkoshop';
+var uri = 'mongodb+srv://victorperezpiqueras:quieroquefuncione@clustergame-safci.mongodb.net/funkoshop?retryWrites=true&w=majority';
 //standard promise library
 mongoose.Promise = global.Promise;
 var cart = {

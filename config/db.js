@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var uri = 'mongodb://localhost/funkoshop';
+var uri = 'mongodb+srv://victorperezpiqueras:quieroquefuncione@clustergame-safci.mongodb.net/funkoshop?retryWrites=true&w=majority';
 
 mongoose.Promise = global.Promise;
 

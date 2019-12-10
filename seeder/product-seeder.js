@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Product = require('../model/product');
 
 //protocol://address/db_name
-var uri = 'mongodb+srv://victorperezpiqueras:quieroquefuncione@clustergame-safci.mongodb.net/funkoshop?retryWrites=true&w=majority';
+var uri = 'mongodb+srv://'+process.env.mongoUser+':'+process.env.mongoPass+'@clustergame-safci.mongodb.net/funkoshop?retryWrites=true&w=majority';
 //standard promise library
 mongoose.Promise = global.Promise;
 

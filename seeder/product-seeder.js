@@ -2,9 +2,11 @@ var mongoose = require('mongoose');
 
 var Product = require('../model/product');
 
-//protocol://address/db_name
-var uri = 'mongodb+srv://'+process.env.mongoUser+':'+process.env.mongoPass+'@clustergame-safci.mongodb.net/funkoshop?retryWrites=true&w=majority';
-//standard promise library
+var user = process.env.mongoUser;
+var password = process.env.mongoPass;
+
+var uri = 'mongodb+srv://'+user+':'+password+'@clustergame-safci.mongodb.net/funkoshop?retryWrites=true&w=majority';
+
 mongoose.Promise = global.Promise;
 
 var products = [

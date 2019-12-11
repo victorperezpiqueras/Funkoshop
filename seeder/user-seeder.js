@@ -9,8 +9,15 @@ var Product = require('../model/product');
 var User = require('../model/user');
 
 var ObjectId = require('mongodb').ObjectID;
-//protocol://address/db_name
-var uri = 'mongodb://localhost/funkoshop';
+
+//environment variables:
+require('dotenv').config();
+const mongoUser = process.env.mongoUser;
+const mongoPass = process.env.mongoPass;
+
+//var uri = 'mongodb://localhost/funkoshop';
+var uri = "mongodb+srv://" + mongoUser + ":" + mongoPass + "@clustergame-safci.mongodb.net/funkoshop?retryWrites=true&w=majority";
+
 //standard promise library
 mongoose.Promise = global.Promise;
 var cart = {

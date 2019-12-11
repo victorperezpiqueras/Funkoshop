@@ -1,6 +1,12 @@
 var mongoose = require('mongoose');
 
-var uri = 'mongodb://localhost/funkoshop';
+//environment variables:
+require('dotenv').config();
+const mongoUser = process.env.mongoUser;
+const mongoPass = process.env.mongoPass;
+
+//var uri = 'mongodb://localhost/funkoshop';
+var uri = "mongodb+srv://" + mongoUser + ":" + mongoPass + "@clustergame-safci.mongodb.net/funkoshop?retryWrites=true&w=majority";
 
 mongoose.Promise = global.Promise;
 

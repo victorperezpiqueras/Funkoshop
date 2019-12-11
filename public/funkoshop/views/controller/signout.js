@@ -1,6 +1,4 @@
 Controller.controllers.signout = {};
-
-
 Controller.controllers.signout.goToIndexSignOut_clicked = function (event) {
     event.preventDefault();
     console.log(Model.user);

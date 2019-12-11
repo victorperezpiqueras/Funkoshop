@@ -16,11 +16,10 @@ Controller.controllers.signup.refresh = function () {
 
 Controller.controllers.signup.signup_clicked = function (event) {
     event.preventDefault();
-    
+
     var date = $('#birth').val();
     date = new Date(date);
     var newUser = {
-        // _id: Date.now(), //Already in data base
         name: $('#name').val(),
         surname: $('#surname').val(),
         address: $('#address').val(),
@@ -40,12 +39,11 @@ Controller.controllers.signup.signup_clicked = function (event) {
     Model.signup(newUser)
         .then(() => {
             console.log('Signup successful');
-            Controller.router.go('/funkoshop/views/signin'); //He pensado que cuando se crea la cuenta le vaya a iniciar sesión --> Reducir el numero de clicks del usuario
+            Controller.router.go('/funkoshop/views/signin');
         })
         .catch((error) => {
             console.log(error);
-            alert(error);                 
-            Controller.router.go('/funkoshop/views/signup'); /* Como esta creado con un a se puede con href */
+            alert(error);
+            Controller.router.go('/funkoshop/views/signup');
         })
-    //Controller.controllers.signup.refresh();
 }

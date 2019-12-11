@@ -8,7 +8,7 @@ Controller.controllers.signup.refresh = function () {
         .then((counter) => {
             context.counter = counter;
         })
-        .then(() => {
+        .finally(() => {
             View.renderer.signup.render(context);
         });
 

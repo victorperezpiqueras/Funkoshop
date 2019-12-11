@@ -302,8 +302,14 @@ Model.checkToken = function () {
             }
         })
             .done(function (token) {
-                window.sessionStorage.setItem('user',token.token); resolve(token);
+                window.sessionStorage.setItem('user',token.token); 
+                resolve(token);
             })
-            .fail(function (err) { console.log(err); console.log('Expired token!') });
+            .fail(function (err) { 
+                window.sessionStorage.removeItem('user');
+                console.log(err); 
+                console.log('Expired token!'); 
+                reject();
+            });
     });
 }

@@ -82,7 +82,6 @@ router.delete('/users/:uid/cart/items/:pid/decrease', passport.authenticate('jwt
     function (req, res, next) {
         model.removeOneCartItem(req.user._id, req.params.pid)
             .then(function (cart) {
-                console.log("api", cart)
                 res.json(cart);
             })
             .catch(function (err) {
@@ -97,8 +96,7 @@ router.post('/users/signin', function (req, res, next) {
         req.logIn(user, { session: false }, (err) => { /* If OK -> login user */
             if (err) { res.send(err); }
             var data = { id: user._id };
-            const token = jwt.sign(data, passportConfig.secretKey, { expiresIn: 60 }); //seconds
-            console.log('en api signin');
+            const token = jwt.sign(data, passportConfig.secretKey, { expiresIn: 15 }); //seconds
             return res.json({ token }); /* Get the token */
         });
     })(req, res);
@@ -139,7 +137,6 @@ router.get('/users/:uid/orders', passport.authenticate('jwt', { session: false }
 router.post('/users/:uid/orders', passport.authenticate('jwt', { session: false }),
     function (req, res, next) {
         var order = req.body;
-        console.log(order);
         model.postUserOrder(req.user._id, order)
             .then(function (uid) {
                 res.json(uid);
@@ -176,7 +173,7 @@ router.get('/checkToken', passport.authenticate('jwt', { session: false }),
         console.log('checktoken', req.user._id);
         var data = { id: req.user._id };
         const token = jwt.sign(data, passportConfig.secretKey, { /* Getting a new token */
-            expiresIn: 60
+            expiresIn: 15
         }); //seconds
         return res.json({ token });
     });

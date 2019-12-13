@@ -1,24 +1,28 @@
 Controller.controllers.cart = {};
 Controller.controllers.cart.refresh = function () {
-    Model.checkToken(); /* To get a new token for the user */
-    var context = {};
-    context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
-    var userId = context.user;
-    Model.getShoppingCart(userId)
-        .then((cart) => {
-            console.log("controller", cart)
-            context.cart = cart;
-        })
-        .then(() => {//load badge and render
-            Model.loadBadge(userId)
-                .then((counter) => {
-                    context.counter = counter;
+    Model.checkToken() /* To get a new token for the user */
+        .then(() => {
+            var context = {};
+            context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+            var userId = context.user;
+            Model.getShoppingCart(userId)
+                .then((cart) => {
+                    console.log("controller", cart)
+                    context.cart = cart;
                 })
-                .then(() => {
-                    View.renderer.cart.render(context);
+                .then(() => {//load badge and render
+                    Model.loadBadge(userId)
+                        .then((counter) => {
+                            context.counter = counter;
+                        })
+                        .finally(() => {
+                            View.renderer.cart.render(context);
+                        });
                 });
-        });
-
+        })
+        .catch(function(){
+            Controller.router.go('/funkoshop/views/signin');
+        })
 }
 Controller.controllers.cart.removeOneCartItem_clicked = function (event, pid) {
     event.preventDefault();

@@ -1,32 +1,29 @@
 Controller.controllers.index = {};
 Controller.controllers.index.refresh = function () {
-    Model.checkToken(); /* To get a new token for the user */
-    var context = {};
-        /* IMPORTANTE */
-        /* Ahora en sessionStorage user tenemos el token, no el id */
-    //context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
-    /* Model.getUser(_id) // Y de donde narices le pillo el ID 
-        .then(function(user){
-            context.user = user._id;
-        }) */
-    var userId = context.user;
-    console.log(context.user)
-    Model.getProducts()
-        .then((products) => {
-            context.products = products;
-            context.products.forEach(product => {
-                product.user = context.user;
-            });
-        })
-        .then(() => {//load badge and render
-            Model.loadBadge(userId)
-                .then((counter) => {
-                    context.counter = counter;
+    Model.checkToken() /* To get a new token for the user */
+        .finally(() => {
+            var context = {};
+            context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
+            var userId = context.user;
+
+            Model.getProducts()
+                .then((products) => {
+                    context.products = products;
+                    context.products.forEach(product => {
+                        product.user = context.user;
+                    });
                 })
-                .then(() => {
-                    View.renderer.index.render(context);
-                });
-        });
+                .then(() => {//load badge and render
+                    Model.loadBadge(userId)
+                        .then((counter) => {
+                            context.counter = counter;
+                        })
+                        .finally(() => {
+                            console.log(sessionStorage.getItem('user'));
+                            View.renderer.index.render(context);
+                        });
+                })
+        })
 }
 Controller.controllers.index.buyProduct_clicked = function (event, pid) {
     event.preventDefault();

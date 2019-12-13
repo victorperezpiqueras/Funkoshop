@@ -8,7 +8,7 @@ Controller.controllers.signin.refresh = function () {
         .then((counter) => {
             context.counter = counter;
         })
-        .then(() => {
+        .finally(() => {
             View.renderer.signin.render(context);
         });
 

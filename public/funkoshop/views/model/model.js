@@ -61,7 +61,10 @@ Model.getUser = function (uid) {
         uid = sessionStorage.getItem("user");
         $.ajax({
             url: '/api/users/' + uid + '/profile',
-            method: 'GET'
+            method: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (user) {
                 resolve(user);
@@ -114,6 +117,9 @@ Model.removeAllCartItem = function (pid) {
         $.ajax({
             url: '/api/users/' + userId + '/cart/items/' + pid,
             method: 'DELETE',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (data) {
                 resolve(data);
@@ -129,6 +135,9 @@ Model.removeOneCartItem = function (pid) {
         $.ajax({
             url: '/api/users/' + userId + '/cart/items/' + pid + '/decrease',
             method: 'DELETE',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (data) {
                 resolve(data);
@@ -144,7 +153,10 @@ Model.getShoppingCart = function (uid) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/api/users/' + uid + '/cart',
-            method: 'GET'
+            method: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (data) {
                 resolve(data);
@@ -158,7 +170,10 @@ Model.getShoppingCartItems = function (uid) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/api/users/' + uid + '/cart/items',
-            method: 'GET'
+            method: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (data) {
                 resolve(data);
@@ -172,7 +187,10 @@ Model.buy = function (uid, pid) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/api/users/' + uid + '/cart/items/' + pid,
-            method: 'POST'
+            method: 'POST',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (data) {
                 resolve(data);
@@ -189,7 +207,10 @@ Model.getUserOrders = function (uid) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/api/users/' + uid + '/orders',
-            method: 'GET'
+            method: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (data) {
                 resolve(data);
@@ -204,7 +225,10 @@ Model.postUserOrder = function (uid, orderData) {
         $.ajax({
             url: '/api/users/' + uid + '/orders',
             method: 'POST',
-            data: orderData
+            data: orderData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (data) {
                 resolve(data);
@@ -218,7 +242,10 @@ Model.getUserOrderByNumber = function (uid, number) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/api/users/' + uid + '/orders/' + number,
-            method: 'GET'
+            method: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (data) {
                 resolve(data);
@@ -232,7 +259,10 @@ Model.getUserOrderItems = function (uid, number) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             url: '/api/users/' + uid + '/orders/' + number + '/items',
-            method: 'GET'
+            method: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (data) {
                 resolve(data);
@@ -247,6 +277,9 @@ Model.getShoppingCartCounter = function (uid) {
         $.ajax({
             url: '/api/users/' + uid + '/cart/counter',
             method: 'GET',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + window.sessionStorage.getItem('user'));
+            }
         })
             .done(function (data) {
                 resolve(data);
@@ -269,8 +302,14 @@ Model.checkToken = function () {
             }
         })
             .done(function (token) {
-                window.sessionStorage.setItem('user',token.token); resolve(token);
+                window.sessionStorage.setItem('user',token.token); 
+                resolve(token);
             })
-            .fail(function (err) { console.log(err); console.log('Expired token!') });
+            .fail(function (err) { 
+                window.sessionStorage.removeItem('user');
+                console.log(err); 
+                console.log('Expired token!'); 
+                reject();
+            });
     });
 }

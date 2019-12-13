@@ -2,7 +2,13 @@ var mongoose = require('mongoose');
 var user = process.env.mongoUser;
 var password = process.env.mongoPass;
 
-var uri = 'mongodb+srv://'+user+':'+password+'@clustergame-safci.mongodb.net/funkoshop?retryWrites=true&w=majority';
+//environment variables:
+require('dotenv').config();
+const mongoUser = process.env.mongoUser;
+const mongoPass = process.env.mongoPass;
+
+//var uri = 'mongodb://localhost/funkoshop';
+var uri = "mongodb+srv://" + mongoUser + ":" + mongoPass + "@clustergame-safci.mongodb.net/funkoshop?retryWrites=true&w=majority";
 
 mongoose.Promise = global.Promise;
 

@@ -3,25 +3,105 @@
     {{> nav-partial }}
 
     {{> header-partial }}
+    <style type="text/css">
+        body {
+            font-family: 'Varela Round', sans-serif;
+        }
 
+        .modal-login {
+            color: #636363;
+        }
+
+        .modal-login .modal-content {
+            padding: 20px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .modal-login .modal-header {
+            border-bottom: none;
+            position: relative;
+            justify-content: center;
+        }
+
+        .modal-login h4 {
+            text-align: center;
+            font-size: 32px;
+        }
+
+        .modal-login .form-group {
+            position: relative;
+        }
+
+        .modal-login i {
+            position: absolute;
+            left: 13px;
+            top: 11px;
+            font-size: 18px;
+        }
+
+        .modal-login .form-control {
+            padding-left: 40px;
+        }
+
+        .modal-login .form-control:focus {
+            border-color: #00ce81;
+        }
+
+        .modal-login .form-control,
+        .modal-login .btn {
+            min-height: 40px;
+            border-radius: 3px;
+        }
+
+        .modal-login .hint-text {
+            text-align: center;
+            padding-top: 10px;
+        }
+
+        .modal-login .btn {
+            background: #00ce81;
+            border: none;
+            line-height: normal;
+        }
+
+        .modal-login .btn:hover,
+        .modal-login .btn:focus {
+            background: #00bf78;
+        }
+    </style>
     <main>
         <div class="container">
-            <h3 class="text-center">Sign in</h3>
-            <br>
-            <form>
-                <div class="form-group">
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
-                        placeholder="Email address" value="email@email.com">
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" id="password" placeholder="Password" value="password">
-                </div>
-                <div class="form-check">
-                    <a class="btn btn-info" style="float: right;" href="/funkoshop/views/index"
-                        onclick="Controller.controllers.signin.signin_clicked(event);">Sign in</a>
-                </div>
+            <div>
+                <div class="modal-dialog modal-login">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Sign in</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <i class="fa fa-user"></i>
+                                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                                        placeholder="Email address" value="email@email.com">
+                                </div>
+                                <div class="form-group">
+                                    <i class="fa fa-lock"></i>
+                                    <input type="password" class="form-control" id="password" placeholder="Password"
+                                        value="password">
+                                </div>
+                                <div class="form-group">
+                                    <a class="btn btn-info btn-block btn-lg" style="float: right;"
+                                        href="/funkoshop/views/index"
+                                        onclick="Controller.controllers.signin.signin_clicked(event);">Sign in</a>
+                                </div>
+                            </form>
 
-            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
         </div> <br><br>
     </main>

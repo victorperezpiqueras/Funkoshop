@@ -1,5 +1,6 @@
 Controller.controllers.purchase = {};
 Controller.controllers.purchase.refresh = function () {
+    Spinner.mostrarCargando();
     Model.checkToken() /* To get a new token for the user */
         .then(() => {
             var context = {};
@@ -15,11 +16,13 @@ Controller.controllers.purchase.refresh = function () {
                             context.counter = counter;
                         })
                         .finally(() => {
+                            Spinner.quitarCargando();
                             View.renderer.purchase.render(context);
                         });
                 });
         })
         .catch(function(){
+            Spinner.quitarCargando();
             Controller.router.go('/funkoshop/views/signin');
         })
 }

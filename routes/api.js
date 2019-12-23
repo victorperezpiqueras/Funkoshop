@@ -96,7 +96,7 @@ router.post('/users/signin', function (req, res, next) {
         req.logIn(user, { session: false }, (err) => { /* If OK -> login user */
             if (err) { res.send(err); }
             var data = { id: user._id };
-            const token = jwt.sign(data, passportConfig.secretKey, { expiresIn: 15 }); //seconds
+            const token = jwt.sign(data, passportConfig.secretKey, { expiresIn: 60 }); //seconds
             return res.json({ token }); /* Get the token */
         });
     })(req, res);
@@ -173,7 +173,7 @@ router.get('/checkToken', passport.authenticate('jwt', { session: false }),
         console.log('checktoken', req.user._id);
         var data = { id: req.user._id };
         const token = jwt.sign(data, passportConfig.secretKey, { /* Getting a new token */
-            expiresIn: 15
+            expiresIn: 60
         }); //seconds
         return res.json({ token });
     });

@@ -1,5 +1,6 @@
 Controller.controllers.signup = {};
 Controller.controllers.signup.refresh = function () {
+    Spinner.mostrarCargando();
     var context = {};
     context.user = sessionStorage.getItem("user"); //Load Model.user to disable or not the nav buttons
     var userId = context.user;
@@ -9,6 +10,7 @@ Controller.controllers.signup.refresh = function () {
             context.counter = counter;
         })
         .finally(() => {
+            Spinner.quitarCargando();
             View.renderer.signup.render(context);
         });
 

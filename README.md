@@ -1,23 +1,11 @@
-# IWS_Project
-Repo of the project of the subject
+# Funkoshop
+Cliente web que simula una tienda online de funkos, desarrollado para la asignatura de Ingeniería Web y Servicios
 
-## clonar repo en una carpeta: 
-git clone url
+## URL en Heroku
 
-## agregar cambios:
-git add .
-o git add nombrefichero
+https://funkoshop.herokuapp.com/
 
-## hacer commit:
-git commit -m "Nombre del commit"
-
-## hacer push:
-git push origin master
-
-## hacer pull
-git pull
-
-## Comandos MongoDB
+## Comandos MongoDB local
 
 - d:\mongodb\bin\mongod -->arrancar demonio
 
